@@ -1,0 +1,6 @@
+D:\Project\NexTaskScheduler\NexTaskScheduler.Criteria\bin\Debug\netcoreapp2.1\NexTaskScheduler.Criteria.deps.json
+D:\Project\NexTaskScheduler\NexTaskScheduler.Criteria\bin\Debug\netcoreapp2.1\NexTaskScheduler.Criteria.dll
+D:\Project\NexTaskScheduler\NexTaskScheduler.Criteria\obj\Debug\netcoreapp2.1\NexTaskScheduler.Criteria.csprojAssemblyReference.cache
+D:\Project\NexTaskScheduler\NexTaskScheduler.Criteria\obj\Debug\netcoreapp2.1\NexTaskScheduler.Criteria.csproj.CoreCompileInputs.cache
+D:\Project\NexTaskScheduler\NexTaskScheduler.Criteria\obj\Debug\netcoreapp2.1\NexTaskScheduler.Criteria.AssemblyInfoInputs.cache
+D:\Project\NexTaskScheduler\NexTaskScheduler.Criteria\obj\Debug\netcoreapp2.1\NexTaskScheduler.Criteria.AssemblyInfo.cs

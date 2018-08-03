@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Functions>
+  <Function>
+    <Setting Key="Nexbot_GetRegisteredConversation" SpName="Nexbot_GetRegisteredConversation" DbName="hangfire" Plain="0"></Setting>
+  </Function>
+</Functions>
