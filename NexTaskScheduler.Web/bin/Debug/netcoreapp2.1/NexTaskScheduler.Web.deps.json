@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1",
-    "signature": "cf53fb1c073856296e75bb2136520f76bc2e488f"
+    "signature": "ad296ff7f4dff00b0c3def182b1a67ab391be6b4"
   },
   "compilationOptions": {
     "defines": [
@@ -29,6 +29,7 @@
           "Hangfire": "1.6.20",
           "Microsoft.AspNetCore.App": "2.1.1",
           "Microsoft.NETCore.App": "2.1.0",
+          "NexTaskScheduler.AutoJobs": "1.0.0",
           "NexTaskScheduler.Service": "1.0.0"
         },
         "runtime": {
@@ -52,6 +53,17 @@
         },
         "compile": {
           "lib/netstandard2.0/Dapper.dll": {}
+        }
+      },
+      "Fanex.Common/1.1.0.1": {
+        "runtime": {
+          "lib/net40/Fanex.Common.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          }
+        },
+        "compile": {
+          "lib/net40/Fanex.Common.dll": {}
         }
       },
       "Fanex.Data/3.0.0-rc1": {
@@ -348,9 +360,31 @@
       },
       "Microsoft.NETCore.Targets/2.1.0": {},
       "Microsoft.NETCore.Windows.ApiSets/1.0.1": {},
+      "Nancy/1.4.4": {
+        "runtime": {
+          "lib/net40/Nancy.dll": {
+            "assemblyVersion": "1.4.4.0",
+            "fileVersion": "1.4.4.0"
+          }
+        },
+        "compile": {
+          "lib/net40/Nancy.dll": {}
+        }
+      },
       "NETStandard.Library/2.0.3": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.1.0"
+        }
+      },
+      "RestSharp/106.3.1": {
+        "runtime": {
+          "lib/netstandard2.0/RestSharp.dll": {
+            "assemblyVersion": "106.3.1.0",
+            "fileVersion": "106.3.1.3"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/RestSharp.dll": {}
         }
       },
       "System.ComponentModel/4.0.1": {
@@ -371,10 +405,52 @@
         }
       },
       "System.Reflection.TypeExtensions/4.4.0": {},
+      "NexTaskScheduler.AutoJobs/1.0.0": {
+        "dependencies": {
+          "Hangfire.Core": "1.6.20",
+          "NexTaskScheduler.Core": "1.0.0",
+          "NexTaskScheduler.Service": "1.0.0"
+        },
+        "runtime": {
+          "NexTaskScheduler.AutoJobs.dll": {}
+        },
+        "compile": {
+          "NexTaskScheduler.AutoJobs.dll": {}
+        }
+      },
+      "NexTaskScheduler.Core/1.0.0": {
+        "dependencies": {
+          "Fanex.Common": "1.1.0.1"
+        },
+        "runtime": {
+          "NexTaskScheduler.Core.dll": {}
+        },
+        "compile": {
+          "NexTaskScheduler.Core.dll": {}
+        }
+      },
+      "NexTaskScheduler.Criteria/1.0.0": {
+        "dependencies": {
+          "Fanex.Data.Repository": "3.0.0-rc1",
+          "NexTaskScheduler.Core": "1.0.0"
+        },
+        "runtime": {
+          "NexTaskScheduler.Criteria.dll": {}
+        },
+        "compile": {
+          "NexTaskScheduler.Criteria.dll": {}
+        }
+      },
       "NexTaskScheduler.Service/1.0.0": {
         "dependencies": {
           "Fanex.Data": "3.0.0-rc1",
-          "Fanex.Data.Repository": "3.0.0-rc1"
+          "Fanex.Data.Repository": "3.0.0-rc1",
+          "Microsoft.Extensions.Configuration.Abstractions": "2.1.1",
+          "Microsoft.Extensions.Options": "2.1.1",
+          "Nancy": "1.4.4",
+          "NexTaskScheduler.Core": "1.0.0",
+          "NexTaskScheduler.Criteria": "1.0.0",
+          "RestSharp": "106.3.1"
         },
         "runtime": {
           "NexTaskScheduler.Service.dll": {}
@@ -3334,6 +3410,13 @@
       "path": "dapper/1.50.5",
       "hashPath": "dapper.1.50.5.nupkg.sha512"
     },
+    "Fanex.Common/1.1.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vkUIclZmZF3eqQhH/gdGO6Mr35Du/2kOtNep7lCXIVu+Q/8Jd7rOxELmeFHJUThzTPl7ZhwH9WdnBv99uSNyzw==",
+      "path": "fanex.common/1.1.0.1",
+      "hashPath": "fanex.common.1.1.0.1.nupkg.sha512"
+    },
     "Fanex.Data/3.0.0-rc1": {
       "type": "package",
       "serviceable": true,
@@ -3446,12 +3529,26 @@
       "path": "microsoft.netcore.windows.apisets/1.0.1",
       "hashPath": "microsoft.netcore.windows.apisets.1.0.1.nupkg.sha512"
     },
+    "Nancy/1.4.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FT8JT55ICC5JwsYsJvTl6ZkCsMdRTECp3E8s6NLymVTBUZbP+LAfJpV1Eb6OaxlTjBZJkmn0v59Zd2UshxfwsQ==",
+      "path": "nancy/1.4.4",
+      "hashPath": "nancy.1.4.4.nupkg.sha512"
+    },
     "NETStandard.Library/2.0.3": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-st47PosZSHrjECdjeIzZQbzivYBJFv6P2nv4cj2ypdI204DO+vZ7l5raGMiX4eXMJ53RfOIg+/s4DHVZ54Nu2A==",
       "path": "netstandard.library/2.0.3",
       "hashPath": "netstandard.library.2.0.3.nupkg.sha512"
+    },
+    "RestSharp/106.3.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TmlN7SXjK52zzpQDTuzw7IH3XQ2Svtss/4zvQBKIgf74QIVxvlxoAqQYu1EhNQ1bMSBIQ4aK120BO7W+v8/kiQ==",
+      "path": "restsharp/106.3.1",
+      "hashPath": "restsharp.106.3.1.nupkg.sha512"
     },
     "System.ComponentModel/4.0.1": {
       "type": "package",
@@ -3473,6 +3570,21 @@
       "sha512": "sha512-dkmh/ySlwnXJp/1qYP9uyKkCK1CXR/REFzl7abHcArxBcV91mY2CgrrzSRA5Z/X4MevJWwXsklGRdR3A7K9zbg==",
       "path": "system.reflection.typeextensions/4.4.0",
       "hashPath": "system.reflection.typeextensions.4.4.0.nupkg.sha512"
+    },
+    "NexTaskScheduler.AutoJobs/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NexTaskScheduler.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NexTaskScheduler.Criteria/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "NexTaskScheduler.Service/1.0.0": {
       "type": "project",

@@ -4,4 +4,12 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Fanex.Data.Repository" Version="3.0.0-rc1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NexTaskSheduler.Core\NexTaskScheduler.Core.csproj" />
+  </ItemGroup>
+
 </Project>

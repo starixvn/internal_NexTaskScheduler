@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
+      "Fanex.Common/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Fanex.Common.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Fanex.Common.dll": {}
+        }
+      },
       "Microsoft.NETCore.App/2.1.0": {
         "type": "package",
         "dependencies": {
@@ -211,6 +220,16 @@
     }
   },
   "libraries": {
+    "Fanex.Common/1.1.0.1": {
+      "sha512": "vkUIclZmZF3eqQhH/gdGO6Mr35Du/2kOtNep7lCXIVu+Q/8Jd7rOxELmeFHJUThzTPl7ZhwH9WdnBv99uSNyzw==",
+      "type": "package",
+      "path": "fanex.common/1.1.0.1",
+      "files": [
+        "Fanex.Common.1.1.0.1.nupkg.sha512",
+        "Fanex.Common.nuspec",
+        "lib/net40/Fanex.Common.dll"
+      ]
+    },
     "Microsoft.NETCore.App/2.1.0": {
       "sha512": "AvT774nTFgU8cYcGO9j1EMwuayKslxqYTurg32HGpWa2hEYNuW2+XgYVVNcZe6Ndbr84QX6fwaOZfd5n+1m2OA==",
       "type": "package",
@@ -677,6 +696,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "Fanex.Common >= 1.1.0.1",
       "Microsoft.NETCore.App >= 2.1.0"
     ]
   },
@@ -722,6 +742,10 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
+          "Fanex.Common": {
+            "target": "Package",
+            "version": "[1.1.0.1, )"
+          },
           "Microsoft.NETCore.App": {
             "suppressParent": "All",
             "target": "Package",
@@ -736,5 +760,17 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Fanex.Common 1.1.0.1' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Fanex.Common",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.1"
+      ]
+    }
+  ]
 }

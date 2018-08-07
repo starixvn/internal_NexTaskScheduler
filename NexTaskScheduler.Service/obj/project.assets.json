@@ -16,6 +16,15 @@
           "lib/netstandard2.0/Dapper.dll": {}
         }
       },
+      "Fanex.Common/1.1.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Fanex.Common.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Fanex.Common.dll": {}
+        }
+      },
       "Fanex.Data/3.0.0-rc1": {
         "type": "package",
         "dependencies": {
@@ -303,6 +312,15 @@
           }
         }
       },
+      "Nancy/1.4.4": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Nancy.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Nancy.dll": {}
+        }
+      },
       "NETStandard.Library/2.0.3": {
         "type": "package",
         "dependencies": {
@@ -587,6 +605,9 @@
       "NexTaskScheduler.Core/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.1",
+        "dependencies": {
+          "Fanex.Common": "1.1.0.1"
+        },
         "compile": {
           "bin/placeholder/NexTaskScheduler.Core.dll": {}
         },
@@ -624,6 +645,16 @@
         "lib/netstandard1.3/Dapper.xml",
         "lib/netstandard2.0/Dapper.dll",
         "lib/netstandard2.0/Dapper.xml"
+      ]
+    },
+    "Fanex.Common/1.1.0.1": {
+      "sha512": "vkUIclZmZF3eqQhH/gdGO6Mr35Du/2kOtNep7lCXIVu+Q/8Jd7rOxELmeFHJUThzTPl7ZhwH9WdnBv99uSNyzw==",
+      "type": "package",
+      "path": "fanex.common/1.1.0.1",
+      "files": [
+        "Fanex.Common.1.1.0.1.nupkg.sha512",
+        "Fanex.Common.nuspec",
+        "lib/net40/Fanex.Common.dll"
       ]
     },
     "Fanex.Data/3.0.0-rc1": {
@@ -1069,6 +1100,17 @@
         "runtimes/win/lib/netstandard2.0/Microsoft.Win32.Registry.dll",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Nancy/1.4.4": {
+      "sha512": "FT8JT55ICC5JwsYsJvTl6ZkCsMdRTECp3E8s6NLymVTBUZbP+LAfJpV1Eb6OaxlTjBZJkmn0v59Zd2UshxfwsQ==",
+      "type": "package",
+      "path": "nancy/1.4.4",
+      "files": [
+        "lib/net40/Nancy.dll",
+        "lib/net40/Nancy.xml",
+        "nancy.1.4.4.nupkg.sha512",
+        "nancy.nuspec"
       ]
     },
     "NETStandard.Library/2.0.3": {
@@ -2137,6 +2179,7 @@
       "Microsoft.Extensions.Configuration.Abstractions >= 2.1.1",
       "Microsoft.Extensions.Options >= 2.1.1",
       "Microsoft.NETCore.App >= 2.1.0",
+      "Nancy >= 1.4.4",
       "NexTaskScheduler.Core >= 1.0.0",
       "NexTaskScheduler.Criteria >= 1.0.0",
       "RestSharp >= 106.3.1"
@@ -2213,6 +2256,10 @@
             "version": "[2.1.0, )",
             "autoReferenced": true
           },
+          "Nancy": {
+            "target": "Package",
+            "version": "[1.4.4, )"
+          },
           "RestSharp": {
             "target": "Package",
             "version": "[106.3.1, )"
@@ -2225,5 +2272,27 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Fanex.Common 1.1.0.1' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Fanex.Common",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.1"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Nancy 1.4.4' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.1'. This package may not be fully compatible with your project.",
+      "libraryId": "Nancy",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.1"
+      ]
+    }
+  ]
 }

@@ -1,4 +1,4 @@
-﻿namespace NexTaskScheduler.Service.Models.Nexbot
+﻿namespace NexTaskScheduler.Core.Models
 {
     public class NexbotConfigs
     {
@@ -10,3 +10,4 @@
 
         public string TokenUrl { get; set; } = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token";
     }
+}

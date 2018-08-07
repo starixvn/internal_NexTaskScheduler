@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.1",
+    "signature": "1843a49d27e1f16c3328f6164ed776dd2e5782a2"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.1": {
+      "NexTaskScheduler.Core/1.0.0": {
+        "dependencies": {
+          "Fanex.Common": "1.1.0.1"
+        },
+        "runtime": {
+          "NexTaskScheduler.Core.dll": {}
+        }
+      },
+      "Fanex.Common/1.1.0.1": {
+        "runtime": {
+          "lib/net40/Fanex.Common.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NexTaskScheduler.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Fanex.Common/1.1.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vkUIclZmZF3eqQhH/gdGO6Mr35Du/2kOtNep7lCXIVu+Q/8Jd7rOxELmeFHJUThzTPl7ZhwH9WdnBv99uSNyzw==",
+      "path": "fanex.common/1.1.0.1",
+      "hashPath": "fanex.common.1.1.0.1.nupkg.sha512"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+D:\Project\NexTaskScheduler\NexTaskSheduler.Core\bin\Debug\netcoreapp2.1\NexTaskScheduler.Core.deps.json
+D:\Project\NexTaskScheduler\NexTaskSheduler.Core\bin\Debug\netcoreapp2.1\NexTaskScheduler.Core.dll
+D:\Project\NexTaskScheduler\NexTaskSheduler.Core\bin\Debug\netcoreapp2.1\NexTaskScheduler.Core.pdb
+D:\Project\NexTaskScheduler\NexTaskSheduler.Core\obj\Debug\netcoreapp2.1\NexTaskScheduler.Core.csproj.CoreCompileInputs.cache
+D:\Project\NexTaskScheduler\NexTaskSheduler.Core\obj\Debug\netcoreapp2.1\NexTaskScheduler.Core.AssemblyInfoInputs.cache
+D:\Project\NexTaskScheduler\NexTaskSheduler.Core\obj\Debug\netcoreapp2.1\NexTaskScheduler.Core.AssemblyInfo.cs
+D:\Project\NexTaskScheduler\NexTaskSheduler.Core\obj\Debug\netcoreapp2.1\NexTaskScheduler.Core.dll
+D:\Project\NexTaskScheduler\NexTaskSheduler.Core\obj\Debug\netcoreapp2.1\NexTaskScheduler.Core.pdb

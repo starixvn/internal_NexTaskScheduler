@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NexTaskScheduler.AutoJobs\NexTaskScheduler.AutoJobs.csproj" />
     <ProjectReference Include="..\NexTaskScheduler.Service\NexTaskScheduler.Service.csproj" />
   </ItemGroup>
 
