@@ -85,7 +85,7 @@
 
                 foreach (var timeEntry in timeEntries)
                 {
-                    var spendOn = DateTime.ParseExact(timeEntry.ToString(), dateTimeFormat, CultureInfo.InvariantCulture);
+                    var spendOn = DateTime.ParseExact(timeEntry["spent_on"].ToString(), dateTimeFormat, CultureInfo.InvariantCulture);
                     listDates.Add(spendOn);
                 }
             }
