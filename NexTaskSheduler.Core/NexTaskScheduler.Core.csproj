@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fanex.Common" Version="1.1.0.1" />
+    <PackageReference Include="Hangfire.Core" Version="1.6.20" />
   </ItemGroup>
 
 </Project>

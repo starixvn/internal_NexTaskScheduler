@@ -9,7 +9,7 @@
     using System.Net.Http.Headers;
     using System.Text;
     using System.Threading.Tasks;
-    using Fanex.Common;
+    using Fanex.Data;
     using Microsoft.Extensions.Options;
     using Nancy.Json;
     using NexTaskScheduler.Core.Models;
@@ -46,7 +46,7 @@
         {
             var authValue = new AuthenticationHeaderValue("Basic",
                 Convert.ToBase64String(
-                    Encoding.UTF8.GetBytes($"{Cryptography.CfsDeCrypt(configs.Value.RedmineConnection)}")
+                    Encoding.UTF8.GetBytes($"{Cryptography.DecryptPassword(configs.Value.RedmineConnection)}")
                     ));
 
             var client = new HttpClient

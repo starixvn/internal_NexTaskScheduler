@@ -14,6 +14,7 @@
     using NexTaskScheduler.AutoJobs.BioTasks;
     using NexTaskScheduler.AutoJobs.HRMTasks;
     using NexTaskScheduler.AutoJobs.RedmineTasks;
+    using NexTaskScheduler.Core.Authorize;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Service.Services;
@@ -67,9 +68,17 @@
         {
             app.UseStaticFiles();
             app.UseAuthentication();
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new HangfireAuthorization() }
+            });
             app.UseHangfireServer();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
 
         private void InitAutoJobs(IServiceCollection services)
