@@ -11,7 +11,7 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Microsoft.Extensions.Options;
-    using Nancy.Json;
+    using Newtonsoft.Json.Linq;
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Core.Models.Redmine;
     using NexTaskScheduler.Criteria.HRM;
@@ -78,17 +78,15 @@
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                JavaScriptSerializer jss = new JavaScriptSerializer();
-                var obj = jss.Deserialize<dynamic>(json);
-                if (obj.ContainsKey("time_entries"))
-                {
-                    var timeEntries = obj["time_entries"];
+                //var obj = JsonConvert.DeserializeObject<dynamic>(json);
+                JObject obj = JObject.Parse(json);
 
-                    foreach (var timeEntry in timeEntries)
-                    {
-                        var spendOn = DateTime.ParseExact(timeEntry["spent_on"], dateTimeFormat, CultureInfo.InvariantCulture);
-                        listDates.Add(spendOn);
-                    }
+                var timeEntries = obj["time_entries"];
+
+                foreach (var timeEntry in timeEntries)
+                {
+                    var spendOn = DateTime.ParseExact(timeEntry.ToString(), dateTimeFormat, CultureInfo.InvariantCulture);
+                    listDates.Add(spendOn);
                 }
             }
 
