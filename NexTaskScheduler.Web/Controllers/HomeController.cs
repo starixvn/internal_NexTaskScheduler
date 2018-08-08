@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using NexTaskScheduler.Web.Models;
+﻿using System.Diagnostics;
 
 namespace NexTaskScheduler.Web.Controllers
 {
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using NexTaskScheduler.Web.Models;
+
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
+            var auth = HttpContext.User;
             return View();
         }
 
