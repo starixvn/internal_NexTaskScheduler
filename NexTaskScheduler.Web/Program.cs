@@ -2,7 +2,6 @@
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Server.HttpSys;
     using Microsoft.Extensions.Configuration;
 
     public class Program
@@ -15,12 +14,6 @@
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseHttpSys(options =>
-                {
-                    options.Authentication.Schemes =
-                        AuthenticationSchemes.NTLM | AuthenticationSchemes.Negotiate;
-                    options.Authentication.AllowAnonymous = false;
-                })
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     var env = hostingContext.HostingEnvironment;
