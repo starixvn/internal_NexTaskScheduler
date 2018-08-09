@@ -50,7 +50,6 @@
 
             services.AddHangfire(config => config.UseSqlServerStorage(Cryptography.DecryptConnectionString(Configuration.GetConnectionString("Hangfire"))));
             services.AddSingleton<IRecurringJobManager, RecurringJobManager>();
-            services.AddSingleton<IBackgroundJobClient, BackgroundJobClient>();
             services.AddSingleton(_ => Configuration);
             services.AddSingleton<IRestClient, RestClient>();
             services.AddScoped<IBaseService, BaseService>();

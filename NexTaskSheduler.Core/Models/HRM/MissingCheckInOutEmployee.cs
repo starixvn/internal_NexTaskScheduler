@@ -14,15 +14,9 @@
 
         public string ConversationId { get; set; }
 
-        public string Team { get; set; }
-
-        public string TeamCode { get; set; }
-
         public DateTime AttendanceDate { get; set; }
 
         public string ShiftCode { get; set; }
-
-        public string Email { get; set; }
 
         public int MissingType { get; set; }
     }

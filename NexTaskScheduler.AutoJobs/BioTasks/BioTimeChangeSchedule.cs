@@ -65,7 +65,7 @@
         private string GenerateMesssage(IEnumerable<BioTimeChange> timeChanges)
         {
             var message = new StringBuilder();
-            message.Append($"Hi All, There is/are {timeChanges.Count()} change(s) of time, today ({today.ToString("dd MMM, yyyy")}): {Constants.NewLine}");
+            message.Append($"Hi All, There is/are {timeChanges.Count()} change(s) of time, today ({today.ToShortFormatedDate()}): {Constants.NewLine}");
             foreach (var timeChange in timeChanges)
             {
                 message.Append($"_- Device Id: {timeChange.DeviceId}. Device Name: {timeChange.DeviceName}. Time Changed: {timeChange.TimeChange.ToShortFormatedDate()}. _ {Constants.NewLine}");
