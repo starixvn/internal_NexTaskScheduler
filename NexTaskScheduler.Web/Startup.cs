@@ -50,11 +50,11 @@
 
             services.AddHangfire(config => config.UseSqlServerStorage(Cryptography.DecryptConnectionString(Configuration.GetConnectionString("Hangfire"))));
             services.AddSingleton<IRecurringJobManager, RecurringJobManager>();
+            services.AddSingleton<IBaseService, BaseService>();
             services.AddSingleton(_ => Configuration);
-            services.AddSingleton<IRestClient, RestClient>();
-            services.AddScoped<IBaseService, BaseService>();
-            services.AddScoped<INexbotService, NexbotService>();
-            services.AddScoped<IRedmineService, RedmineService>();
+            services.AddTransient<IRestClient, RestClient>();
+            services.AddTransient<INexbotService, NexbotService>();
+            services.AddTransient<IRedmineService, RedmineService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             InjectAutoJobs(services);
@@ -95,6 +95,7 @@
             services.AddTransient<FingerprintAndCardVerifySchedule>();
             services.AddTransient<RemindMissingCheckInCheckOutSchedule>();
             services.AddTransient<RemindForgotLogtimeSchedule>();
+            services.AddTransient<RemindHRDeductLateInEarlyOutSchedule>();
 
             services.AddTransient<Func<MessageCategory, IAutoReminder>>(serviceProvider => key =>
             {
@@ -114,6 +115,9 @@
 
                     case MessageCategory.ForgotSpendTime:
                         return serviceProvider.GetService<RemindForgotLogtimeSchedule>();
+
+                    case MessageCategory.LateInEarlyOutWarningDeduct:
+                        return serviceProvider.GetService<RemindHRDeductLateInEarlyOutSchedule>();
 
                     default:
                         throw new KeyNotFoundException(); // or maybe return null, up to you

@@ -4,8 +4,10 @@
 
     public class GetLateInEarlyOutDuductionCriteria : CriteriaBase
     {
-        public override string GetSettingKey() => "HRM_GetLateInEarlyOutDeduction";
+        public int Year { get; set; }
 
-        public override bool IsValid() => true;
+        public override string GetSettingKey() => "HRM_GetLateInEarlyOutToDeduct";
+
+        public override bool IsValid() => Year > 2000;
     }
 }

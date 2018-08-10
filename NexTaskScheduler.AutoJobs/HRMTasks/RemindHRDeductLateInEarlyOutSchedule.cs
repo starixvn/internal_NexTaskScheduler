@@ -4,8 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Core.Constant;
+    using Hangfire;
+    using Hangfire.Common;
     using Microsoft.Extensions.Options;
     using NexTaskScheduler.Core.Enum;
+    using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Core.Models.HRM;
     using NexTaskScheduler.Criteria.HRM;
@@ -15,40 +19,64 @@
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
-        private readonly IOptionsSnapshot<HangfireConfigs> cron;
+        private readonly IRecurringJobManager recurringJob;
+        private readonly IOptionsSnapshot<HangfireConfigs> configs;
 
-        public RemindHRDeductLateInEarlyOutSchedule(INexbotService nexbotService,
+        public RemindHRDeductLateInEarlyOutSchedule(
+            INexbotService nexbotService,
             IBaseService baseService,
-            IOptionsSnapshot<HangfireConfigs> cron)
+            IRecurringJobManager recurringJob,
+            IOptionsSnapshot<HangfireConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.baseService = baseService;
-            this.cron = cron;
+            this.recurringJob = recurringJob;
+            this.configs = configs;
         }
 
         public void Initialize()
         {
-            throw new System.NotImplementedException();
+            recurringJob.AddOrUpdate(MessageCategory.LateInEarlyOutWarningDeduct.GetDisplayName(),
+                Job.FromExpression(() => SendMessages(MessageCategory.LateInEarlyOutWarningDeduct)),
+                configs.Value.BioStationCronExpression);
         }
 
-        public Task SendMessages(MessageCategory categoryId)
+        public async Task SendMessages(MessageCategory categoryId)
         {
-            throw new System.NotImplementedException();
+            var deductedEmployees = await baseService.GetDataAsync<LateInEarlyOutModel>(
+                new GetLateInEarlyOutDuductionCriteria { Year = DateTime.Now.Year });
+
+            if (deductedEmployees.Any())
+            {
+                var conversations = await nexbotService.GetRegisteredConversation(categoryId);
+
+                if (conversations.Any())
+                {
+                    var message = GenerateMessage(deductedEmployees);
+                    await SendMessageToConversation(conversations, message);
+                }
+            }
         }
 
-        private bool IsWarningUserInCurrentMonth(LateInEarlyOutModel lateInEarlyOut)
+        private async Task SendMessageToConversation(IEnumerable<string> conversations, string message)
         {
-            string currentMonth = DateTime.Now.ToString("MMM");
-            var violateTimeInCurrentMonth = lateInEarlyOut.GetType().GetProperty($"TimesIn{currentMonth}").GetValue(lateInEarlyOut, null).ToString();
-            int time = int.Parse(violateTimeInCurrentMonth);
-            return time > 3;
+            foreach (var conversation in conversations)
+            {
+                await nexbotService.SendMessage(conversation, message);
+            }
         }
 
-        private async Task<IEnumerable<LateInEarlyOutModel>> GetDeductionBanlanceUsers()
+        private string GenerateMessage(IEnumerable<LateInEarlyOutModel> deductedEmployees)
         {
-            var lateInEarlyOuts = await baseService.GetDataAsync<LateInEarlyOutModel>(new GetLateInEarlyOutDuductionCriteria());
-
-            return lateInEarlyOuts.Where(e => e.BalanceCurrentYear >= 240);
+            var message = $"Hi All,{Constants.NewLine}";
+            message += $"There is/are inform {deductedEmployees.Count()} employee(s) need to deduct balance for Late in/Early out: {Constants.NewLine}";
+            foreach (var e in deductedEmployees)
+            {
+                string balanceCurrentYear = (e.BalanceCurrentYear / 60).ToString("0.0");
+                message += $"_- {e.FullName} ({e.NickName}). Balance Current Year: {balanceCurrentYear} hour(s)._ {Constants.NewLine}";
+            }
+            message += "Please access https://hrm.nexcel.vn/report/lateinearlyout to review and take a deduction. Thanks.";
+            return message;
         }
     }
 }

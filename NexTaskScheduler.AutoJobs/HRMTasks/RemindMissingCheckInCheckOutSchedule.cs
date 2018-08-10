@@ -3,6 +3,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Hangfire;
+    using Hangfire.Common;
     using Microsoft.Extensions.Options;
     using NexTaskScheduler.Core.Constant;
     using NexTaskScheduler.Core.Enum;
@@ -16,21 +17,24 @@
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
+        private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<HangfireConfigs> configs;
 
         public RemindMissingCheckInCheckOutSchedule(INexbotService nexbotService,
             IBaseService baseService,
+            IRecurringJobManager recurringJob,
             IOptionsSnapshot<HangfireConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.baseService = baseService;
             this.configs = configs;
+            this.recurringJob = recurringJob;
         }
 
         public void Initialize()
         {
-            RecurringJob.AddOrUpdate(MessageCategory.MissingCheckInCheckOut.GetDisplayName(),
-                () => SendMessages(MessageCategory.MissingCheckInCheckOut),
+            recurringJob.AddOrUpdate(MessageCategory.MissingCheckInCheckOut.GetDisplayName(),
+                Job.FromExpression(() => SendMessages(MessageCategory.MissingCheckInCheckOut)),
                 configs.Value.HRMCronExpression);
         }
 

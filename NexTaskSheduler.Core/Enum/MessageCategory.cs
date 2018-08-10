@@ -19,7 +19,7 @@
         [Display(Name = "Forgot spend time Remind")]
         ForgotSpendTime = 5,
 
-        //[Display(Name = "Late in/Early out Deduction Warning")]
-        //LateInEarlyOutWarning = 6,
+        [Display(Name = "Late in/Early out Deduction Warning")]
+        LateInEarlyOutWarningDeduct = 6,
     }
 }
