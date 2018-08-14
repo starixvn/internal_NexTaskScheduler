@@ -42,7 +42,7 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.LateInEarlyOutViolateCurrentMonth.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.LateInEarlyOutViolateCurrentMonth)),
-                configs.Value.LateInEarlyOutDeduction);
+                configs.Value.LateInEarlyDailySchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)
