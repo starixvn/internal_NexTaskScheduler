@@ -127,7 +127,7 @@
                 string violateMonths = string.Join(",", violater.Details.Select(d => d.Month.ToString("MM, yyyy")));
                 message += $"_- {violater.FullName} ({violater.NickName}) vioalte {violater.TotalTimes} time(s). On {violateMonths}._ {Constants.NewLine}";
             }
-            message += "Please access http://localhost:51384/report/lateinearlyoutdiscipline to view more details. And don't forget to warning employees who violate the discipline. Thanks ";
+            message += "Please access https://hrm.nexcel.vn/report/lateinearlyoutdiscipline to view more details. And don't forget to warning employees who violate the discipline. Thanks ";
 
             return message;
         }
