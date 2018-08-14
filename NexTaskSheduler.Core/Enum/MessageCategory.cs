@@ -21,5 +21,11 @@
 
         [Display(Name = "Late in/Early out Deduction Warning")]
         LateInEarlyOutWarningDeduct = 6,
+
+        [Display(Name = "Violate Late in/Early out on current month")]
+        LateInEarlyOutViolateCurrentMonth = 7,
+
+        [Display(Name = "Violate Late in/Early out discipline")]
+        ViolateLateInEarlyOutDiscipline = 8,
     }
 }

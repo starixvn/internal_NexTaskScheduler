@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Functions>
+  <Function Name="NexHangfire">
+    <Setting Key="NexHangfire_CheckIfObjectNotChange" SpName="NexHangfire_CheckIfObjectNotChange" DbName="hangfire" Plain="0"></Setting>
+    <Setting Key="NexHangfire_GetJsonObjectByCategoryId" SpName="NexHangfire_GetJsonObjectByCategoryId" DbName="hangfire" Plain="0"></Setting>
+    <Setting Key="NexHangfire_UpdateJsonObject" SpName="NexHangfire_UpdateJsonObject" DbName="hangfire" Plain="0"></Setting>
+  </Function>
   <Function Name="Nexbot">
     <Setting Key="Nexbot_GetRegisteredConversation" SpName="Nexbot_GetRegisteredConversation" DbName="hangfire" Plain="0"></Setting>
   </Function>
@@ -13,5 +18,7 @@
     <Setting Key="HRM_GetMissingCheckInCheckOut" SpName="HRM_GetMissingCheckInCheckOut" DbName="hangfire" Plain="0"></Setting>
     <Setting Key="HRM_GetEmployeeWorkingDates" SpName="HRM_GetEmployeeWorkingDates" DbName="hangfire" Plain="0"></Setting>
     <Setting Key="HRM_GetRedmineUsers" SpName="HRM_GetRedmineUsers" DbName="hangfire" Plain="0"></Setting>
+    <Setting Key="HRM_GetLateInEarlyOutOnMonth" SpName="HRM_GetLateInEarlyOutOnMonth" DbName="hangfire" Plain="0"></Setting>
+    <Setting Key="HRM_GetLateInEarlyOutDisciplineViolate" SpName="HRM_GetLateInEarlyOutDisciplineViolate" DbName="hangfire" Plain="0"></Setting>
   </Fucntion>
 </Functions>

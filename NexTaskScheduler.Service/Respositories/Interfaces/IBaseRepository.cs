@@ -1,4 +1,4 @@
-﻿namespace NexTaskScheduler.Service.Respositories
+﻿namespace NexTaskScheduler.Service.Respositories.Interfaces
 {
     using System.Threading.Tasks;
     using Fanex.Data.Repository;

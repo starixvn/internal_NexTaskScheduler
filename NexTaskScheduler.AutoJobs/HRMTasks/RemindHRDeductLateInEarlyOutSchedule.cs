@@ -1,6 +1,5 @@
 ﻿namespace NexTaskScheduler.AutoJobs.HRMTasks
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -38,13 +37,13 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.LateInEarlyOutWarningDeduct.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.LateInEarlyOutWarningDeduct)),
-                configs.Value.BioStationCronExpression);
+                configs.Value.LateInEarlyOutDeduction);
         }
 
         public async Task SendMessages(MessageCategory categoryId)
         {
             var deductedEmployees = await baseService.GetDataAsync<LateInEarlyOutModel>(
-                new GetLateInEarlyOutDuductionCriteria { Year = DateTime.Now.Year });
+                new GetLateInEarlyOutDuductionCriteria { Year = 2016 });
 
             if (deductedEmployees.Any())
             {

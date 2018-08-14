@@ -17,6 +17,8 @@
     using NexTaskScheduler.Core.Authorize;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Models;
+    using NexTaskScheduler.Service.Respositories;
+    using NexTaskScheduler.Service.Respositories.Interfaces;
     using NexTaskScheduler.Service.Services;
     using NexTaskScheduler.Service.Services.Interfaces;
     using RestSharp;
@@ -47,14 +49,9 @@
             services.Configure<NexbotConfigs>(options => Configuration.GetSection("NexbotConfigs").Bind(options));
             services.Configure<HangfireConfigs>(options => Configuration.GetSection("HangfireConfigs").Bind(options));
             services.Configure<RedmineConfigs>(options => Configuration.GetSection("RedmineConfigs").Bind(options));
-
             services.AddHangfire(config => config.UseSqlServerStorage(Cryptography.DecryptConnectionString(Configuration.GetConnectionString("Hangfire"))));
-            services.AddSingleton<IRecurringJobManager, RecurringJobManager>();
-            services.AddSingleton<IBaseService, BaseService>();
-            services.AddSingleton(_ => Configuration);
-            services.AddTransient<IRestClient, RestClient>();
-            services.AddTransient<INexbotService, NexbotService>();
-            services.AddTransient<IRedmineService, RedmineService>();
+
+            Injector(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             InjectAutoJobs(services);
@@ -87,6 +84,20 @@
             initAutoJobs.Initialize();
         }
 
+        private void Injector(IServiceCollection services)
+        {
+            services.AddSingleton(_ => Configuration);
+            services.AddSingleton<IRecurringJobManager, RecurringJobManager>();
+            services.AddSingleton<IBaseService, BaseService>();
+            services.AddTransient<IRestClient, RestClient>();
+            services.AddTransient<INexbotService, NexbotService>();
+            services.AddTransient<IRedmineService, RedmineService>();
+            services.AddTransient<IHRMRepository, HRMRepository>();
+            services.AddTransient<IHRMService, HRMService>();
+            services.AddTransient<IRedmineService, RedmineService>();
+            services.AddTransient<IHangFireService, HangFireService>();
+        }
+
         private void InjectAutoJobs(IServiceCollection services)
         {
             services.AddTransient<InitAutoJobs>();
@@ -96,6 +107,8 @@
             services.AddTransient<RemindMissingCheckInCheckOutSchedule>();
             services.AddTransient<RemindForgotLogtimeSchedule>();
             services.AddTransient<RemindHRDeductLateInEarlyOutSchedule>();
+            services.AddTransient<RemindCurrentMonthLateInEarlyOutViolateSchedule>();
+            services.AddTransient<RemindViolateDisciplineSchedule>();
 
             services.AddTransient<Func<MessageCategory, IAutoReminder>>(serviceProvider => key =>
             {
@@ -118,6 +131,12 @@
 
                     case MessageCategory.LateInEarlyOutWarningDeduct:
                         return serviceProvider.GetService<RemindHRDeductLateInEarlyOutSchedule>();
+
+                    case MessageCategory.LateInEarlyOutViolateCurrentMonth:
+                        return serviceProvider.GetService<RemindCurrentMonthLateInEarlyOutViolateSchedule>();
+
+                    case MessageCategory.ViolateLateInEarlyOutDiscipline:
+                        return serviceProvider.GetService<RemindViolateDisciplineSchedule>();
 
                     default:
                         throw new KeyNotFoundException(); // or maybe return null, up to you

@@ -6,6 +6,7 @@
     using Fanex.Data;
     using Fanex.Data.Repository;
     using NexTaskScheduler.Service.Models;
+    using NexTaskScheduler.Service.Respositories.Interfaces;
 
     public class BaseRepository : IBaseRepository
     {

@@ -1,4 +1,4 @@
-﻿namespace NexTaskScheduler.Criteria.Nexbot
+﻿namespace NexTaskScheduler.Criteria.Hangfire
 {
     using Fanex.Data.Repository;
     using NexTaskScheduler.Core.Enum;
