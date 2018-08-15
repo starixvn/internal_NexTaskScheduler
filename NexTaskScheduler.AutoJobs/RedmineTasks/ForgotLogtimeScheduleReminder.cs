@@ -12,14 +12,14 @@
     using NexTaskScheduler.Core.Models.Redmine;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class RemindForgotLogtimeSchedule : IAutoReminder
+    public class ForgotLogtimeScheduleReminder : IAutoReminder
     {
         private readonly INexbotService nexbotService;
         private readonly IRedmineService redmineService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
-        public RemindForgotLogtimeSchedule(INexbotService nexbotService,
+        public ForgotLogtimeScheduleReminder(INexbotService nexbotService,
             IRedmineService redmineService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)

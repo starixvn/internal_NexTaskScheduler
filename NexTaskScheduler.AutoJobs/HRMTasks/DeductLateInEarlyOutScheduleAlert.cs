@@ -1,5 +1,6 @@
 ﻿namespace NexTaskScheduler.AutoJobs.HRMTasks
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -14,14 +15,14 @@
     using NexTaskScheduler.Criteria.HRM;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class RemindHRDeductLateInEarlyOutSchedule : IAutoReminder
+    public class DeductLateInEarlyOutScheduleAlert : IAutoReminder
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
-        public RemindHRDeductLateInEarlyOutSchedule(
+        public DeductLateInEarlyOutScheduleAlert(
             INexbotService nexbotService,
             IBaseService baseService,
             IRecurringJobManager recurringJob,
@@ -35,15 +36,15 @@
 
         public void Initialize()
         {
-            recurringJob.AddOrUpdate(MessageCategory.LateInEarlyOutWarningDeduct.GetDisplayName(),
-                Job.FromExpression(() => SendMessages(MessageCategory.LateInEarlyOutWarningDeduct)),
+            recurringJob.AddOrUpdate(MessageCategory.DeductLateInEarlyOut.GetDisplayName(),
+                Job.FromExpression(() => SendMessages(MessageCategory.DeductLateInEarlyOut)),
                 configs.Value.LateInEarlyOutDeductSchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)
         {
             var deductedEmployees = await baseService.GetDataAsync<LateInEarlyOutModel>(
-                new GetLateInEarlyOutDuductionCriteria { Year = 2016 });
+                new GetLateInEarlyOutDuductionCriteria { Year = DateTime.Now.Year });
 
             if (deductedEmployees.Any())
             {

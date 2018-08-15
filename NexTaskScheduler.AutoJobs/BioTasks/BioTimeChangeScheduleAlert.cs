@@ -1,27 +1,30 @@
 ﻿namespace NexTaskScheduler.AutoJobs.BioTasks
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
-    using Hangfire.Common;
     using Microsoft.Extensions.Options;
     using NexTaskScheduler.Core.Constant;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
+    using NexTaskScheduler.Core.Models.Bio;
     using NexTaskScheduler.Criteria.BioStation;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class BioDeviceSchedule : IAutoReminder
+    public class BioTimeChangeScheduleAlert : IAutoReminder
     {
-        private readonly IBaseService baseService;
         private readonly INexbotService nexbotService;
+        private readonly IBaseService baseService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
-        public BioDeviceSchedule(IBaseService baseService,
+        private readonly DateTime today = DateTime.Now;
+
+        public BioTimeChangeScheduleAlert(IBaseService baseService,
             INexbotService nexbotService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)
@@ -34,21 +37,23 @@
 
         public void Initialize()
         {
-            recurringJob.AddOrUpdate(MessageCategory.BioDevice.GetDisplayName(),
-                Job.FromExpression(() => SendMessages(MessageCategory.BioDevice)),
-                configs.Value.BioDeviceSchedule);
+            RecurringJob.AddOrUpdate(MessageCategory.BioTimeChange.GetDisplayName(),
+                () => SendMessages(MessageCategory.BioTimeChange),
+                configs.Value.BioTimeChangeSchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)
         {
-            var pendingDevices = await baseService.GetDataAsync<BioDevice>(new GetPendingBioDevicesCriteria()).ConfigureAwait(false);
-            if (pendingDevices.Any())
+            var warningTimeChanges = await baseService.GetDataAsync<BioTimeChange>(new GetWarningBioTimeChangeCriteria());
+            warningTimeChanges = warningTimeChanges.Where(t => t.Warning);
+
+            if (warningTimeChanges.Any())
             {
                 var conversationIds = await nexbotService.GetRegisteredConversation(categoryId).ConfigureAwait(false);
 
                 if (conversationIds.Any())
                 {
-                    var message = GenerateMessage(pendingDevices);
+                    var message = GenerateMesssage(warningTimeChanges);
                     foreach (var conversationId in conversationIds)
                     {
                         await nexbotService.SendMessage(conversationId, message).ConfigureAwait(false);
@@ -57,15 +62,15 @@
             }
         }
 
-        private static string GenerateMessage(IEnumerable<BioDevice> bioDevices)
+        private string GenerateMesssage(IEnumerable<BioTimeChange> timeChanges)
         {
-            StringBuilder message = new StringBuilder();
-            message.Append($"Hi All, There is/are {bioDevices.Count()} device(s) injected into the BIO system: {Constants.NewLine}");
-            foreach (var device in bioDevices)
+            var message = new StringBuilder();
+            message.Append($"Hi All, There is/are {timeChanges.Count()} change(s) of time, today ({today.ToShortFormatedDate()}): {Constants.NewLine}");
+            foreach (var timeChange in timeChanges)
             {
-                message.Append($"_ - Device Id: {device.DeviceId}. Device Name: {device.DeviceName } _ {Constants.NewLine}");
+                message.Append($"_- Device Id: {timeChange.DeviceId}. Device Name: {timeChange.DeviceName}. Time Changed: {timeChange.TimeChange.ToShortFormatedDate()}. _ {Constants.NewLine}");
             }
-            message.Append($"Please review this. Thanks");
+            message.Append($"Please, review the change(s). Thanks");
             return message.ToString();
         }
     }

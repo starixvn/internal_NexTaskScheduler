@@ -16,7 +16,7 @@
     using NexTaskScheduler.Criteria.HRM;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class RemindViolateDisciplineSchedule : IAutoReminder
+    public class ViolateDisciplineScheduleWarning : IAutoReminder
     {
         private readonly IHRMService hrmService;
         private readonly INexbotService nexbotService;
@@ -26,7 +26,7 @@
         private readonly DateTime fromDate = new DateTime(DateTime.Now.Year, 1, 1);
         private readonly DateTime toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
 
-        public RemindViolateDisciplineSchedule(
+        public ViolateDisciplineScheduleWarning(
             IHRMService hrmService,
             INexbotService nexbotService,
             IHangFireService hangFireService,

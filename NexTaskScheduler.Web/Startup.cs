@@ -101,42 +101,42 @@
         private void InjectAutoJobs(IServiceCollection services)
         {
             services.AddTransient<InitAutoJobs>();
-            services.AddTransient<BioDeviceSchedule>();
-            services.AddTransient<BioTimeChangeSchedule>();
-            services.AddTransient<FingerprintAndCardVerifySchedule>();
+            services.AddTransient<BioDeviceScheduleAlert>();
+            services.AddTransient<BioTimeChangeScheduleAlert>();
+            services.AddTransient<FingerprintAndCardVerifyScheduleAlert>();
             services.AddTransient<RemindMissingCheckInCheckOutSchedule>();
-            services.AddTransient<RemindForgotLogtimeSchedule>();
-            services.AddTransient<RemindHRDeductLateInEarlyOutSchedule>();
-            services.AddTransient<RemindCurrentMonthLateInEarlyOutViolateSchedule>();
-            services.AddTransient<RemindViolateDisciplineSchedule>();
+            services.AddTransient<ForgotLogtimeScheduleReminder>();
+            services.AddTransient<DeductLateInEarlyOutScheduleAlert>();
+            services.AddTransient<LateInEarlyOutViolateOnMonthScheduleWarning>();
+            services.AddTransient<ViolateDisciplineScheduleWarning>();
 
             services.AddTransient<Func<MessageCategory, IAutoReminder>>(serviceProvider => key =>
             {
                 switch (key)
                 {
                     case MessageCategory.BioDevice:
-                        return serviceProvider.GetService<BioDeviceSchedule>();
+                        return serviceProvider.GetService<BioDeviceScheduleAlert>();
 
                     case MessageCategory.BioTimeChange:
-                        return serviceProvider.GetService<BioTimeChangeSchedule>();
+                        return serviceProvider.GetService<BioTimeChangeScheduleAlert>();
 
                     case MessageCategory.BioFingerprintAndCard:
-                        return serviceProvider.GetService<FingerprintAndCardVerifySchedule>();
+                        return serviceProvider.GetService<FingerprintAndCardVerifyScheduleAlert>();
 
                     case MessageCategory.MissingCheckInCheckOut:
                         return serviceProvider.GetService<RemindMissingCheckInCheckOutSchedule>();
 
                     case MessageCategory.ForgotSpendTime:
-                        return serviceProvider.GetService<RemindForgotLogtimeSchedule>();
+                        return serviceProvider.GetService<ForgotLogtimeScheduleReminder>();
 
-                    case MessageCategory.LateInEarlyOutWarningDeduct:
-                        return serviceProvider.GetService<RemindHRDeductLateInEarlyOutSchedule>();
+                    case MessageCategory.DeductLateInEarlyOut:
+                        return serviceProvider.GetService<DeductLateInEarlyOutScheduleAlert>();
 
-                    case MessageCategory.LateInEarlyOutViolateCurrentMonth:
-                        return serviceProvider.GetService<RemindCurrentMonthLateInEarlyOutViolateSchedule>();
+                    case MessageCategory.LateInEarlyOutViolateInMonth:
+                        return serviceProvider.GetService<LateInEarlyOutViolateOnMonthScheduleWarning>();
 
                     case MessageCategory.ViolateLateInEarlyOutDiscipline:
-                        return serviceProvider.GetService<RemindViolateDisciplineSchedule>();
+                        return serviceProvider.GetService<ViolateDisciplineScheduleWarning>();
 
                     default:
                         throw new KeyNotFoundException(); // or maybe return null, up to you

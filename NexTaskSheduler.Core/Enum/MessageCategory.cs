@@ -4,28 +4,28 @@
 
     public enum MessageCategory
     {
-        [Display(Name = "New Finger Machine")]
+        [Display(Name = "New Finger Machine Alert")]
         BioDevice = 1,
 
-        [Display(Name = "BIO Change Time")]
+        [Display(Name = "BIO Change Time Alert")]
         BioTimeChange = 2,
 
-        [Display(Name = "Fingerprint & Card")]
+        [Display(Name = "New Fingerprint & Card Alert")]
         BioFingerprintAndCard = 3,
 
-        [Display(Name = "Missing Check In/Check Out")]
-        MissingCheckInCheckOut = 4,
+        [Display(Name = "Deduct AL when exceeding Late In/ Early Out Alert")]
+        DeductLateInEarlyOut = 4,
 
-        [Display(Name = "Forgot spend time Remind")]
+        [Display(Name = "Reminder Forgot spend time")]
         ForgotSpendTime = 5,
 
-        [Display(Name = "Late in/Early out Deduction Warning")]
-        LateInEarlyOutWarningDeduct = 6,
+        [Display(Name = "Reminder Missing Check In/Out")]
+        MissingCheckInCheckOut = 6,
 
-        [Display(Name = "Violate Late in/Early out on current month")]
-        LateInEarlyOutViolateCurrentMonth = 7,
+        [Display(Name = "Warning Violate Late In/ Early Out In a Month")]
+        LateInEarlyOutViolateInMonth = 7,
 
-        [Display(Name = "Violate Late in/Early out discipline")]
+        [Display(Name = "Warning Not Follow Late In/ Early Out Policy")]
         ViolateLateInEarlyOutDiscipline = 8,
     }
 }

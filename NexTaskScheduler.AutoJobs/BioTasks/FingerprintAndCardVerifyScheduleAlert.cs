@@ -1,11 +1,11 @@
 ﻿namespace NexTaskScheduler.AutoJobs.BioTasks
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
+    using Hangfire.Common;
     using Microsoft.Extensions.Options;
     using NexTaskScheduler.Core.Constant;
     using NexTaskScheduler.Core.Enum;
@@ -15,45 +15,44 @@
     using NexTaskScheduler.Criteria.BioStation;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class BioTimeChangeSchedule : IAutoReminder
+    public class FingerprintAndCardVerifyScheduleAlert : IAutoReminder
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
-        private readonly DateTime today = DateTime.Now;
-
-        public BioTimeChangeSchedule(IBaseService baseService,
+        public FingerprintAndCardVerifyScheduleAlert(IBaseService baseService,
             INexbotService nexbotService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
-            this.baseService = baseService;
             this.nexbotService = nexbotService;
+            this.baseService = baseService;
             this.recurringJob = recurringJob;
             this.configs = configs;
         }
 
         public void Initialize()
         {
-            RecurringJob.AddOrUpdate(MessageCategory.BioTimeChange.GetDisplayName(),
-                () => SendMessages(MessageCategory.BioTimeChange),
-                configs.Value.BioTimeChangeSchedule);
+            recurringJob.AddOrUpdate(MessageCategory.BioFingerprintAndCard.GetDisplayName(),
+               Job.FromExpression(() => SendMessages(MessageCategory.BioFingerprintAndCard)),
+               configs.Value.FingerprintAndCardCheckSchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)
         {
-            var warningTimeChanges = await baseService.GetDataAsync<BioTimeChange>(new GetWarningBioTimeChangeCriteria());
-            warningTimeChanges = warningTimeChanges.Where(t => t.Warning);
+            var members = await baseService.GetDataAsync<FingerprintAndCardSummary>(
+                new GetPendingFingerprintAndCardCriteria()
+                ).ConfigureAwait(false);
 
-            if (warningTimeChanges.Any())
+            if (members.Any())
             {
                 var conversationIds = await nexbotService.GetRegisteredConversation(categoryId).ConfigureAwait(false);
 
                 if (conversationIds.Any())
                 {
-                    var message = GenerateMesssage(warningTimeChanges);
+                    var message = GenerateMesssage(members);
                     foreach (var conversationId in conversationIds)
                     {
                         await nexbotService.SendMessage(conversationId, message).ConfigureAwait(false);
@@ -62,15 +61,20 @@
             }
         }
 
-        private string GenerateMesssage(IEnumerable<BioTimeChange> timeChanges)
+        private static string GenerateMesssage(IEnumerable<FingerprintAndCardSummary> members)
         {
-            var message = new StringBuilder();
-            message.Append($"Hi All, There is/are {timeChanges.Count()} change(s) of time, today ({today.ToShortFormatedDate()}): {Constants.NewLine}");
-            foreach (var timeChange in timeChanges)
+            StringBuilder message = new StringBuilder();
+            message.Append($"Hi All, There is/are {members.Count()} new registered fingerprint(s) and/or card(s) waiting to be approved:{Constants.NewLine}");
+            foreach (var member in members)
             {
-                message.Append($"_- Device Id: {timeChange.DeviceId}. Device Name: {timeChange.DeviceName}. Time Changed: {timeChange.TimeChange.ToShortFormatedDate()}. _ {Constants.NewLine}");
+                string typeToApprove = member.IsFingerprintWarning ? "**Fingerprint**" : string.Empty;
+                typeToApprove += member.IsFingerprintWarning && member.IsCardWarning ? " and **Card**" : string.Empty;
+                typeToApprove += member.IsCardWarning && !member.IsFingerprintWarning ? "**Card**" : string.Empty;
+
+                message.Append($"_ - {member.FullName} ({member.NickName})'s {typeToApprove}. _ {Constants.NewLine}");
             }
-            message.Append($"Please, review the change(s). Thanks");
+            var hrmLink = "https://hrm.nexcel.vn/fingerprintscanner";
+            message.Append($"Please, access {hrmLink} to review and take appropriate action. Thanks");
             return message.ToString();
         }
     }
