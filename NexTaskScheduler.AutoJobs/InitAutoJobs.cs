@@ -16,10 +16,7 @@
         {
             foreach (MessageCategory category in Enum.GetValues(typeof(MessageCategory)))
             {
-                if (category != MessageCategory.LateInEarlyOutWarningDeduct)
-                {
-                    autoReminder(category).Initialize();
-                }
+                autoReminder(category).Initialize();
             }
         }
     }

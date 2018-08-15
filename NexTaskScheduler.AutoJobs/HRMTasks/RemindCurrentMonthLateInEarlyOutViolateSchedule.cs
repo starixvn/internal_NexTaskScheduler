@@ -49,7 +49,7 @@
         {
             var criteria = new GetLateInEarlyOutViolaterOnCurrentMonthCriteria
             {
-                Month = DateTime.Now.Month,
+                Month = DateTime.Now.Day == 1 ? (DateTime.Now.Month - 1) : DateTime.Now.Month,
                 Year = DateTime.Now.Year
             };
             var violaters = await baseService.GetDataAsync<LateInEarlyOutViolateModel>(criteria);
