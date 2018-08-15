@@ -4,7 +4,6 @@
     using Newtonsoft.Json;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Criteria.Hangfire;
-    using NexTaskScheduler.Criteria.Nexbot;
     using NexTaskScheduler.Service.Services.Interfaces;
 
     public class HangFireService : BaseService, IHangFireService

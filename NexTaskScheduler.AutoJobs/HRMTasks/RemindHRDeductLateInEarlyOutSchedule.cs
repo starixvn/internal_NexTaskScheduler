@@ -19,13 +19,13 @@
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
         private readonly IRecurringJobManager recurringJob;
-        private readonly IOptionsSnapshot<HangfireConfigs> configs;
+        private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         public RemindHRDeductLateInEarlyOutSchedule(
             INexbotService nexbotService,
             IBaseService baseService,
             IRecurringJobManager recurringJob,
-            IOptionsSnapshot<HangfireConfigs> configs)
+            IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.baseService = baseService;
@@ -37,7 +37,7 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.LateInEarlyOutWarningDeduct.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.LateInEarlyOutWarningDeduct)),
-                configs.Value.LateInEarlyOutDeduction);
+                configs.Value.LateInEarlyOutDeductSchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

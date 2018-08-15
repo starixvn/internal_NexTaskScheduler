@@ -17,12 +17,12 @@
         private readonly INexbotService nexbotService;
         private readonly IRedmineService redmineService;
         private readonly IRecurringJobManager recurringJob;
-        private readonly IOptionsSnapshot<HangfireConfigs> configs;
+        private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         public RemindForgotLogtimeSchedule(INexbotService nexbotService,
             IRedmineService redmineService,
             IRecurringJobManager recurringJob,
-            IOptionsSnapshot<HangfireConfigs> configs)
+            IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.redmineService = redmineService;
@@ -34,7 +34,7 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.ForgotSpendTime.GetDisplayName(),
                Job.FromExpression(() => SendMessages(MessageCategory.ForgotSpendTime)),
-               configs.Value.BioStationCronExpression);
+               configs.Value.RemindForgotLogtimeSchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

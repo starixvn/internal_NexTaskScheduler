@@ -20,14 +20,14 @@
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
         private readonly IRecurringJobManager recurringJob;
-        private readonly IOptionsSnapshot<HangfireConfigs> configs;
+        private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         private readonly DateTime today = DateTime.Now;
 
         public BioTimeChangeSchedule(IBaseService baseService,
             INexbotService nexbotService,
             IRecurringJobManager recurringJob,
-            IOptionsSnapshot<HangfireConfigs> configs)
+            IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.baseService = baseService;
             this.nexbotService = nexbotService;
@@ -39,7 +39,7 @@
         {
             RecurringJob.AddOrUpdate(MessageCategory.BioTimeChange.GetDisplayName(),
                 () => SendMessages(MessageCategory.BioTimeChange),
-                configs.Value.BioStationCronExpression);
+                configs.Value.BioTimeChangeSchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

@@ -18,12 +18,12 @@
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
         private readonly IRecurringJobManager recurringJob;
-        private readonly IOptionsSnapshot<HangfireConfigs> configs;
+        private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         public RemindMissingCheckInCheckOutSchedule(INexbotService nexbotService,
             IBaseService baseService,
             IRecurringJobManager recurringJob,
-            IOptionsSnapshot<HangfireConfigs> configs)
+            IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.baseService = baseService;
@@ -35,7 +35,7 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.MissingCheckInCheckOut.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.MissingCheckInCheckOut)),
-                configs.Value.HRMCronExpression);
+                configs.Value.MissingCheckInCheckOutSchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

@@ -22,14 +22,14 @@
         private readonly IBaseService baseService;
         private readonly IHangFireService hangFireService;
         private readonly IRecurringJobManager recurringJob;
-        private readonly IOptionsSnapshot<HangfireConfigs> configs;
+        private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         public RemindCurrentMonthLateInEarlyOutViolateSchedule(
             INexbotService nexbotService,
             IBaseService baseService,
             IHangFireService hangFireService,
             IRecurringJobManager recurringJob,
-            IOptionsSnapshot<HangfireConfigs> configs)
+            IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.baseService = baseService;
@@ -42,7 +42,7 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.LateInEarlyOutViolateCurrentMonth.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.LateInEarlyOutViolateCurrentMonth)),
-                configs.Value.LateInEarlyDailySchedule);
+                configs.Value.CurrentMonthLateInEarlyOutSchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

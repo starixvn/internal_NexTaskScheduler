@@ -20,12 +20,12 @@
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
         private readonly IRecurringJobManager recurringJob;
-        private readonly IOptionsSnapshot<HangfireConfigs> configs;
+        private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         public FingerprintAndCardVerifySchedule(IBaseService baseService,
             INexbotService nexbotService,
             IRecurringJobManager recurringJob,
-            IOptionsSnapshot<HangfireConfigs> configs)
+            IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.baseService = baseService;
@@ -37,7 +37,7 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.BioFingerprintAndCard.GetDisplayName(),
                Job.FromExpression(() => SendMessages(MessageCategory.BioFingerprintAndCard)),
-               configs.Value.BioStationCronExpression);
+               configs.Value.FingerprintAndCardCheckSchedule);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

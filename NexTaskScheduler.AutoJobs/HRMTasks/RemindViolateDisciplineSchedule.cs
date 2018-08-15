@@ -22,7 +22,7 @@
         private readonly INexbotService nexbotService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IHangFireService hangFireService;
-        private readonly IOptionsSnapshot<HangfireConfigs> configs;
+        private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
         private readonly DateTime fromDate = new DateTime(DateTime.Now.Year, 1, 1);
         private readonly DateTime toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
 
@@ -31,7 +31,7 @@
             INexbotService nexbotService,
             IHangFireService hangFireService,
             IRecurringJobManager recurringJob,
-            IOptionsSnapshot<HangfireConfigs> configs)
+            IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.hrmService = hrmService;
             this.nexbotService = nexbotService;
@@ -44,7 +44,7 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.ViolateLateInEarlyOutDiscipline.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.ViolateLateInEarlyOutDiscipline)),
-                configs.Value.LateInEarlyDailySchedule);
+                configs.Value.ViolateLateInEarlyOutDiscipline);
         }
 
         public async Task SendMessages(MessageCategory categoryId)
