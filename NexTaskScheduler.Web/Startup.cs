@@ -51,7 +51,7 @@
             services.Configure<RedmineConfigs>(options => Configuration.GetSection("RedmineConfigs").Bind(options));
             services.AddHangfire(config => config.UseSqlServerStorage(Cryptography.DecryptConnectionString(Configuration.GetConnectionString("Hangfire"))));
 
-            Injector(services);
+            InjecServices(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             InjectAutoJobs(services);
@@ -84,7 +84,7 @@
             initAutoJobs.Initialize();
         }
 
-        private void Injector(IServiceCollection services)
+        private void InjecServices(IServiceCollection services)
         {
             services.AddSingleton(_ => Configuration);
             services.AddSingleton<IRecurringJobManager, RecurringJobManager>();
