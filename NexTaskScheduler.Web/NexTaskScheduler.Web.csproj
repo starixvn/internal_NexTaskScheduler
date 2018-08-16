@@ -26,4 +26,10 @@
     <ProjectReference Include="..\NexTaskScheduler.Service\NexTaskScheduler.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="web.pro.local.config">
+      <DependentUpon>web.pro.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+
 </Project>

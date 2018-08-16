@@ -5,6 +5,7 @@
     using System.Linq;
     using Fanex.Data;
     using Hangfire;
+    using Hangfire.Storage;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
@@ -60,8 +61,10 @@
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
         {
+            applicationLifetime.ApplicationStopping.Register(OnShutdown);
+
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseHangfireDashboard("/hangfire", new DashboardOptions
@@ -142,6 +145,17 @@
                         throw new KeyNotFoundException(); // or maybe return null, up to you
                 }
             });
+        }
+
+        private void OnShutdown()
+        {
+            using (var connection = JobStorage.Current.GetConnection())
+            {
+                foreach (var recurringJob in connection.GetRecurringJobs())
+                {
+                    RecurringJob.RemoveIfExists(recurringJob.Id);
+                }
+            }
         }
     }
 }
