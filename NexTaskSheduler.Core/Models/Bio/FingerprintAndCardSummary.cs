@@ -8,8 +8,6 @@
 
         public string NickName { get; set; }
 
-        public string ConversationId { get; set; }
-
         public bool IsFingerprintWarning { get; set; }
 
         public bool IsCardWarning { get; set; }
