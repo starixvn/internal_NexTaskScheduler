@@ -5,10 +5,12 @@
 
     public class GetWarningBioTimeChangeCriteria : CriteriaBase
     {
-        public DateTime OnDate { get; set; } = DateTime.Now;
+        public DateTime FromDate { get; set; }
+
+        public DateTime ToDate { get; set; }
 
         public override string GetSettingKey() => "Bio_GetWarningTimeChange";
 
-        public override bool IsValid() => true;
+        public override bool IsValid() => FromDate < ToDate;
     }
 }

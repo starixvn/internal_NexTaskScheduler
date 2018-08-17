@@ -44,8 +44,12 @@
 
         public async Task SendMessages(MessageCategory categoryId)
         {
-            var warningTimeChanges = await baseService.GetDataAsync<BioTimeChange>(new GetWarningBioTimeChangeCriteria());
-            warningTimeChanges = warningTimeChanges.Where(t => t.Warning);
+            var criteria = new GetWarningBioTimeChangeCriteria
+            {
+                FromDate = DateTime.Now.Date.AddDays(-1),
+                ToDate = DateTime.Now.Date.AddDays(1)
+            };
+            var warningTimeChanges = await baseService.GetDataAsync<BioTimeChange>(criteria);
 
             if (warningTimeChanges.Any())
             {
@@ -65,7 +69,7 @@
         private string GenerateMesssage(IEnumerable<BioTimeChange> timeChanges)
         {
             var message = new StringBuilder();
-            message.Append($"Hi All, There is/are {timeChanges.Count()} change(s) of time, today ({today.ToShortFormatedDate()}): {Constants.NewLine}");
+            message.Append($"Hi All, There is/are {timeChanges.Count()} change(s) of time: {Constants.NewLine}");
             foreach (var timeChange in timeChanges)
             {
                 message.Append($"_- Device Id: {timeChange.DeviceId}. Device Name: {timeChange.DeviceName}. Time Changed: {timeChange.TimeChange.ToShortFormatedDate()}. _ {Constants.NewLine}");
