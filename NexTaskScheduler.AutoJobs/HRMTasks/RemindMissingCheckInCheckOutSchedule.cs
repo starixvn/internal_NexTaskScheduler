@@ -1,5 +1,6 @@
 ﻿namespace NexTaskScheduler.AutoJobs.HRMTasks
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Hangfire;
@@ -46,23 +47,51 @@
 
             if (missingCheckInOuts.Any())
             {
-                foreach (var emp in missingCheckInOuts)
+                await SendMessageToGroups(categoryId, missingCheckInOuts);
+
+                await SendMessageToEmployees(missingCheckInOuts.Where(e => !string.IsNullOrWhiteSpace(e.ConversationId)));
+            }
+        }
+
+        private async Task SendMessageToGroups(MessageCategory categoryId, IEnumerable<MissingCheckInOutEmployee> missingCheckInOuts)
+        {
+            var conversationIds = await nexbotService.GetRegisteredConversation(categoryId);
+
+            if (conversationIds.Any())
+            {
+                string msg = GenerateGroupMessage(missingCheckInOuts);
+
+                foreach (var conversationId in conversationIds)
                 {
-                    await SendMessageToEmployee(emp);
+                    await nexbotService.SendMessage(conversationId, msg);
                 }
             }
         }
 
-        private async Task SendMessageToEmployee(MissingCheckInOutEmployee employee)
+        private string GenerateGroupMessage(IEnumerable<MissingCheckInOutEmployee> missingCheckInOuts)
         {
-            if (!string.IsNullOrWhiteSpace(employee.ConversationId))
+            string message = $"Hi All. There is/are {missingCheckInOuts.Count()} employee(s) got missing Check in/Check out: {Constants.NewLine}";
+
+            foreach (var employee in missingCheckInOuts)
             {
-                var message = GenerateMessage(employee);
+                var missType = employee.MissingType == 1 ? "Check In" : "Check Out";
+                message += $"_- {employee.FullName} ({employee.NickName}) missing {missType} on {employee.AttendanceDate.ToShortFormatedDate()} _ {Constants.NewLine}";
+            }
+            message += "Please access https://hrm.nexcel.vn/report/attendance to view more details. Thanks ";
+
+            return message;
+        }
+
+        private async Task SendMessageToEmployees(IEnumerable<MissingCheckInOutEmployee> employees)
+        {
+            foreach (var employee in employees)
+            {
+                var message = GenerateMessageForEmployee(employee);
                 await nexbotService.SendMessage(employee.ConversationId, message);
             }
         }
 
-        private static string GenerateMessage(MissingCheckInOutEmployee employee)
+        private static string GenerateMessageForEmployee(MissingCheckInOutEmployee employee)
         {
             var hrmLink = "https://hrm.nexcel.vn/checkinout/Create";
             var missType = employee.MissingType == 1 ? "Check In" : "Check Out";
