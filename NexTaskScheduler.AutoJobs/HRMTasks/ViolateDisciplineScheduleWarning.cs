@@ -7,7 +7,6 @@
     using Hangfire;
     using Hangfire.Common;
     using Microsoft.Extensions.Options;
-    using Newtonsoft.Json;
     using NexTaskScheduler.Core.Constant;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
@@ -65,42 +64,9 @@
                 {
                     await SendMessageToGroup(violaters);
 
-                    await SendMessageToEmployees(categoryId, violaters.Where(v => !string.IsNullOrWhiteSpace(v.ConversationId)));
-
                     await hangFireService.UpdateJsonObject(categoryId, violaters);
                 }
             }
-        }
-
-        private async Task SendMessageToEmployees(MessageCategory categoryId, IEnumerable<LateInEarlyOutDiscipline> violaters)
-        {
-            string jsonObject = await hangFireService.GetJsonObject(categoryId);
-
-            if (!string.IsNullOrWhiteSpace(jsonObject))
-            {
-                IEnumerable<LateInEarlyOutDiscipline> oldViolaters = JsonConvert.DeserializeObject<IEnumerable<LateInEarlyOutDiscipline>>(jsonObject);
-
-                foreach (var violater in violaters)
-                {
-                    if (oldViolaters.Any(o => o.EmpId == violater.EmpId && o.TotalTimes != violater.TotalTimes))
-                    {
-                        string message = GenerateEmployeeMessage(violater);
-                        await nexbotService.SendMessage(violater.ConversationId, message);
-                    }
-                }
-            }
-        }
-
-        private string GenerateEmployeeMessage(LateInEarlyOutDiscipline violater)
-        {
-            string msg = $"Hi {violater.NickName},{Constants.NewLine}";
-            msg += $"There is inform that you has violate Late in/Early out discipline {violater.TotalTimes} time(s) form {fromDate.ToString("dd, MMM, yyyy")} to {toDate.ToString("dd, MMM, yyyy")}.{Constants.NewLine}";
-            foreach (var detail in violater.Details)
-            {
-                msg += $"_- On {detail.Month.ToString("MM, yyyy")}. Total: {detail.TotalTimes} time(s)._{Constants.NewLine}";
-            }
-            msg += $"Please notice that. Thanks";
-            return msg;
         }
 
         private async Task SendMessageToGroup(IEnumerable<LateInEarlyOutDiscipline> violaters)
@@ -120,12 +86,12 @@
 
         private string GenerateGroupMessage(IEnumerable<LateInEarlyOutDiscipline> violaters)
         {
-            string message = $"Hi All. There is/are {violaters.Count()} employee(s) violate Late in/Early out discipline from {fromDate.ToString("dd, MMM, yyyy")} to {toDate.ToString("dd, MMM, yyyy")}: {Constants.NewLine}";
+            string message = $"Hi All. There is/are {violaters.Count()} employee(s) violate Late in/Early out discipline over 3 times from {fromDate.ToString("dd, MMM, yyyy")} to {toDate.ToString("dd, MMM, yyyy")}: {Constants.NewLine}";
 
             foreach (var violater in violaters)
             {
-                string violateMonths = string.Join(",", violater.Details.Select(d => d.Month.ToString("MM, yyyy")));
-                message += $"_- {violater.FullName} ({violater.NickName}) vioalte {violater.TotalTimes} time(s). On {violateMonths}._ {Constants.NewLine}";
+                string violateMonths = string.Join(",", violater.Details.Select(d => d.Month.ToString("MMM, yyyy")));
+                message += $"_- {violater.FullName} ({violater.NickName}) violate {violater.TotalTimes} time(s) on {violateMonths}._ {Constants.NewLine}";
             }
             message += "Please access https://hrm.nexcel.vn/report/lateinearlyoutdiscipline to view more details. And don't forget to warning employees who violate the discipline. Thanks ";
 
