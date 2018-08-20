@@ -45,7 +45,7 @@
 
             if (forgotLogtimeEmployees.Any())
             {
-                await SendMessageToEmployees(forgotLogtimeEmployees);
+                await SendMessageToEmployees(forgotLogtimeEmployees.Where(e => !string.IsNullOrWhiteSpace(e.ConversationId)));
 
                 await SendMessageToGroups(forgotLogtimeEmployees, categoryId);
             }
