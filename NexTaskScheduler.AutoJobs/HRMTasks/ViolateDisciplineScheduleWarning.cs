@@ -89,7 +89,7 @@
 
         private string GenerateGroupMessage(IEnumerable<LateInEarlyOutDiscipline> violaters, DateTime fromDate, DateTime toDate)
         {
-            string message = $"Hi All. There is/are {violaters.Count()} employee(s) violate Late in/Early out discipline over 3 times from {fromDate.ToString("dd, MMM, yyyy")} to {toDate.ToString("dd, MMM, yyyy")}: {Constants.NewLine}";
+            string message = $"Hi All. There is/are {violaters.Count()} employee(s) violate Late in/Early out discipline over 3 times from {fromDate.ToString("dd MMM, yyyy")} to {toDate.ToString("dd MMM, yyyy")}: {Constants.NewLine}";
 
             foreach (var violater in violaters)
             {
