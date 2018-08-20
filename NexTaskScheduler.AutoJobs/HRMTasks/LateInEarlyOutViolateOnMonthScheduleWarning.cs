@@ -94,7 +94,7 @@
         private string GeneratePersonalMessage(LateInEarlyOutViolateModel violater)
         {
             string msg = $"Hi {violater.NickName},{Constants.NewLine}";
-            msg += $"There is inform that you got {violater.TimeOnMonth} time(s) Late in/Early out on this month {DateTime.Now.ToString("MMM, yyyy")} ({(violater.MinuteOnMonth / 60).ToString("0.0")} hour(s) ).{Constants.NewLine}";
+            msg += $"There is inform that you got {violater.TimeOnMonth} time(s) Late in/Early out on {DateTime.Now.ToString("MMM, yyyy")} ({(violater.MinuteOnMonth / 60).ToString("0.0")} hour(s) ).{Constants.NewLine}";
             msg += $"Please notice that. Thanks";
             return msg;
         }
