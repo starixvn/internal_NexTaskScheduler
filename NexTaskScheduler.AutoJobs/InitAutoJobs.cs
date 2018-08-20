@@ -34,7 +34,7 @@
 
         public async Task WriteLogToDetectServerStatus()
         {
-            await nexbotService.WriteLog("Server Live Log", $"Server still online at {DateTime.Now.ToLongTimeString()}");
+            await nexbotService.WriteLog("Server Status Log", $"Server still online at {DateTime.Now.ToLongTimeString()}");
         }
     }
 }
