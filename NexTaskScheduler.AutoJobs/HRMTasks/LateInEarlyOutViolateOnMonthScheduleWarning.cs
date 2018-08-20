@@ -114,7 +114,7 @@
 
         private string GenerateGroupMessage(IEnumerable<LateInEarlyOutViolateModel> violaters)
         {
-            string message = $"Hi All. There is/are {violaters.Count()} employee(s) Late in/Early out over 4 times on this month {DateTime.Now.ToString("MMM, yyyy")}: {Constants.NewLine}";
+            string message = $"Hi All. There is/are {violaters.Count()} employee(s) Late in/Early out over 4 times on {DateTime.Now.ToString("MMM, yyyy")}: {Constants.NewLine}";
 
             foreach (var violater in violaters)
             {
