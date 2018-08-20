@@ -77,7 +77,7 @@
             foreach (var employee in employees)
             {
                 string forgotDates = string.Join("; ", employee.ForgotLogtimeDates.Select(d => d.ToString("dd MMM, yyyy")));
-                message += $"_- {employee.FullName} ({employee.NickName}) forgot log time on {employee}._ {Constants.NewLine}";
+                message += $"_- {employee.FullName} ({employee.NickName}) forgot log time on {forgotDates}._ {Constants.NewLine}";
             }
             message += "Please notice that. Thanks ";
 
@@ -95,9 +95,9 @@
 
         private static string GenerateMessage(RedmineUser employee)
         {
-            var dates = string.Join(", ", employee.ForgotLogtimeDates.Select(d => d.ToString("dd, MMM, yyyy")));
+            var dates = string.Join("; ", employee.ForgotLogtimeDates.Select(d => d.ToString("dd MMM, yyyy")));
             var message = $"Dear {employee.NickName}, {Constants.NewLine}";
-            message += $"You have forgot log time on _{dates}_. {Constants.NewLine}";
+            message += $"You have forgot log time on _ {dates} _. {Constants.NewLine}";
             message += $"Please log time on https://nexdev.net/ or you can log time directly on https://hrm.nexcel.vn/ Dashboard. Thanks";
             return message;
         }

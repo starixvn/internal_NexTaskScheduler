@@ -93,8 +93,7 @@
 
             foreach (var violater in violaters)
             {
-                string violateMonths = string.Join(", ", violater.Details.Select(d => d.Month.ToString("MMM yyyy")));
-                message += $"_- {violater.FullName} ({violater.NickName}) violate {violater.TotalTimes} time(s) on {violateMonths}._ {Constants.NewLine}";
+                message += $"_- {violater.FullName} ({violater.NickName}) violate {violater.TotalTimes} time(s)._ {Constants.NewLine}";
             }
             message += "Please access https://hrm.nexcel.vn/report/lateinearlyoutdiscipline to view more details. And don't forget to warning employees who violate the discipline over 3 times. Thanks ";
 

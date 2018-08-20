@@ -15,6 +15,6 @@
 
         public string ConversationId { get; set; }
 
-        public IEnumerable<DateTime> ForgotLogtimeDates { get; set; }
+        public IList<DateTime> ForgotLogtimeDates { get; set; }
     }
 }

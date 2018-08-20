@@ -64,7 +64,7 @@
             var logtimeDates = await GetTimeEntries(employee.RedmineId, fromDate, toDate);
             var workingDates = await GetWorkedDates(employee.EmpId, fromDate, toDate);
 
-            employee.ForgotLogtimeDates = workingDates.Except(logtimeDates).OrderBy(x => x);
+            employee.ForgotLogtimeDates = workingDates.Except(logtimeDates).OrderBy(x => x).ToList();
         }
 
         private async Task<IEnumerable<DateTime>> GetTimeEntries(int redmineId, DateTime fromDate, DateTime toDate)
