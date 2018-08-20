@@ -117,7 +117,7 @@
             foreach (var violater in violaters)
             {
                 string totalHours = (violater.MinuteOnMonth / 60).ToString("0.0");
-                message += $"_- {violater.FullName} ({violater.NickName}) vioalte {violater.TimeOnMonth} time(s). Total {totalHours} hour(s)._ {Constants.NewLine}";
+                message += $"_- {violater.FullName} ({violater.NickName}) violate {violater.TimeOnMonth} time(s). Total {totalHours} hour(s)._ {Constants.NewLine}";
             }
             message += "Please access https://hrm.nexcel.vn/report/lateinearlyout to view more details. And don't forget to warning employees who violate more than 4 times on this month. Thanks ";
 
