@@ -75,7 +75,7 @@
                 string balanceCurrentYear = (e.BalanceCurrentYear / 60).ToString("0.0");
                 message += $"_- {e.FullName} ({e.NickName}). Balance Current Year: {balanceCurrentYear} hour(s)._ {Constants.NewLine}";
             }
-            message += "Please access https://hrm.nexcel.vn/report/lateinearlyout to review and take a deduction. Thanks.";
+            message += "Please access https://hrm.nexcel.vn/report/lateinearlyout to review it and take a deduction. Thanks.";
             return message;
         }
     }

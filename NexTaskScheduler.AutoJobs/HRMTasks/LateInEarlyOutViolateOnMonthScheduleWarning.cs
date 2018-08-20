@@ -92,7 +92,7 @@
         private string GeneratePersonalMessage(LateInEarlyOutViolateModel violater)
         {
             string msg = $"Hi {violater.NickName},{Constants.NewLine}";
-            msg += $"There is inform that you got {violater.TimeOnMonth} time(s) anh {(violater.MinuteOnMonth / 60).ToString("0.0")} hour(s) Late in/Early out on this month {DateTime.Now.ToString("MMM, yyyy")}.{Constants.NewLine}";
+            msg += $"There is inform that you got {violater.TimeOnMonth} time(s) Late in/Early out on this month {DateTime.Now.ToString("MMM, yyyy")} ({(violater.MinuteOnMonth / 60).ToString("0.0")} hour(s) ).{Constants.NewLine}";
             msg += $"Please notice that. Thanks";
             return msg;
         }
@@ -112,7 +112,7 @@
 
         private string GenerateGroupMessage(IEnumerable<LateInEarlyOutViolateModel> violaters)
         {
-            string message = $"Hi All. There is/are {violaters.Count()} Late in/Early out violater(s) on this month {DateTime.Now.ToString("MMM, yyyy")}: {Constants.NewLine}";
+            string message = $"Hi All. There is/are {violaters.Count()} employee(s) Late in/Early out over 4 times on this month {DateTime.Now.ToString("MMM, yyyy")}: {Constants.NewLine}";
 
             foreach (var violater in violaters)
             {
