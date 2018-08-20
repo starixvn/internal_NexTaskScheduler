@@ -46,7 +46,7 @@
 
         public async Task SendMessages(MessageCategory categoryId)
         {
-            var toDate = new DateTime(2016, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            var toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
             var fromDate = toDate.AddYears(-1).AddDays(1);
 
             var criteria = new GetViolateLateInEarlyOutDisciplineCriteria
