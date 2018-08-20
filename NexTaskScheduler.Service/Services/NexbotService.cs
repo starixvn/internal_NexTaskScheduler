@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Microsoft.Extensions.Options;
     using NexTaskScheduler.Core.Enum;
+    using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Criteria.Hangfire;
     using NexTaskScheduler.Service.Models.Nexbot;
@@ -62,6 +63,23 @@
             var response = await webClient.ExecutePostTaskAsync<Token>(request).ConfigureAwait(false);
 
             return response.Data;
+        }
+
+        public async Task WriteLog(string messageType, string logContent)
+        {
+            var criteria = new WriteLogCriteria
+            {
+                MessageType = messageType,
+                LogContent = logContent
+            };
+
+            await ExecuteNonQueryAsync(criteria);
+        }
+
+        public async Task WriteCategoryMessageLog(MessageCategory category)
+        {
+            string type = category.GetDisplayName();
+            await WriteLog(type, $"Task {type} executed at {DateTime.Now.ToShortFormatedDate()}");
         }
     }
 }

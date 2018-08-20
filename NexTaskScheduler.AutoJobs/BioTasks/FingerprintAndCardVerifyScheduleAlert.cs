@@ -57,8 +57,12 @@
                     {
                         await nexbotService.SendMessage(conversationId, message).ConfigureAwait(false);
                     }
+
+                    await nexbotService.WriteCategoryMessageLog(categoryId);
                 }
             }
+
+            await nexbotService.WriteCategoryMessageLog(categoryId);
         }
 
         private static string GenerateMesssage(IEnumerable<FingerprintAndCardSummary> members)

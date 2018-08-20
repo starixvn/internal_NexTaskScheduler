@@ -1,5 +1,7 @@
 ﻿namespace NexTaskScheduler.AutoJobs.RedmineTasks
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Hangfire;
@@ -43,11 +45,51 @@
 
             if (forgotLogtimeEmployees.Any())
             {
-                foreach (var employee in forgotLogtimeEmployees)
+                await SendMessageToEmployees(forgotLogtimeEmployees);
+
+                await SendMessageToGroups(forgotLogtimeEmployees, categoryId);
+            }
+
+            await nexbotService.WriteCategoryMessageLog(categoryId);
+        }
+
+        private async Task SendMessageToGroups(IEnumerable<RedmineUser> forgotLogtimeEmployees, MessageCategory categoryId)
+        {
+            var conversationIds = await nexbotService.GetRegisteredConversation(categoryId);
+
+            if (conversationIds.Any())
+            {
+                string message = GenerateGroupMessage(forgotLogtimeEmployees);
+
+                foreach (var conversationId in conversationIds)
                 {
-                    var message = GenerateMessage(employee);
-                    await nexbotService.SendMessage(employee.ConversationId, message);
+                    await nexbotService.SendMessage(conversationId, message);
                 }
+            }
+        }
+
+        private string GenerateGroupMessage(IEnumerable<RedmineUser> employees)
+        {
+            var toDate = DateTime.Now.AddDays(-1);
+            var fromDate = toDate.AddDays(-6);
+            string message = $"Hi All. There is/are {employees.Count()} employee(s) forgot log time on Redmine from {fromDate.ToString("dd, MMM, yyyy")} to {toDate.ToString("dd, MMM, yyyy")}: {Constants.NewLine}";
+
+            foreach (var employee in employees)
+            {
+                string forgotDates = string.Join("; ", employee.ForgotLogtimeDates.Select(d => d.ToString("dd MMM, yyyy")));
+                message += $"_- {employee.FullName} ({employee.NickName}) forgot log time on {employee}._ {Constants.NewLine}";
+            }
+            message += "Please notice that. Thanks ";
+
+            return message;
+        }
+
+        private async Task SendMessageToEmployees(IEnumerable<RedmineUser> forgotLogtimeEmployees)
+        {
+            foreach (var employee in forgotLogtimeEmployees)
+            {
+                var message = GenerateMessage(employee);
+                await nexbotService.SendMessage(employee.ConversationId, message);
             }
         }
 

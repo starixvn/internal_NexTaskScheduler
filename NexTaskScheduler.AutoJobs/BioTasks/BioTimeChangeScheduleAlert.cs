@@ -64,6 +64,8 @@
                     }
                 }
             }
+
+            await nexbotService.WriteCategoryMessageLog(categoryId);
         }
 
         private string GenerateMesssage(IEnumerable<BioTimeChange> timeChanges)

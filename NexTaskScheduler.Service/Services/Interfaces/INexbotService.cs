@@ -9,5 +9,9 @@
         Task SendMessage(string conversationId, string message);
 
         Task<IEnumerable<string>> GetRegisteredConversation(MessageCategory categoryId);
+
+        Task WriteLog(string messageType, string logContent);
+
+        Task WriteCategoryMessageLog(MessageCategory category);
     }
 }

@@ -22,8 +22,6 @@
         private readonly IRecurringJobManager recurringJob;
         private readonly IHangFireService hangFireService;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
-        private readonly DateTime fromDate = new DateTime(DateTime.Now.Year, 1, 1);
-        private readonly DateTime toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
 
         public ViolateDisciplineScheduleWarning(
             IHRMService hrmService,
@@ -48,6 +46,9 @@
 
         public async Task SendMessages(MessageCategory categoryId)
         {
+            var toDate = new DateTime(2016, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            var fromDate = toDate.AddYears(-1).AddDays(1);
+
             var criteria = new GetViolateLateInEarlyOutDisciplineCriteria
             {
                 FromDate = fromDate,
@@ -62,20 +63,22 @@
 
                 if (isChangedObject)
                 {
-                    await SendMessageToGroup(violaters);
+                    await SendMessageToGroup(violaters, fromDate, toDate);
 
                     await hangFireService.UpdateJsonObject(categoryId, violaters);
                 }
             }
+
+            await nexbotService.WriteCategoryMessageLog(categoryId);
         }
 
-        private async Task SendMessageToGroup(IEnumerable<LateInEarlyOutDiscipline> violaters)
+        private async Task SendMessageToGroup(IEnumerable<LateInEarlyOutDiscipline> violaters, DateTime fromDate, DateTime toDate)
         {
             var conversations = await nexbotService.GetRegisteredConversation(MessageCategory.ViolateLateInEarlyOutDiscipline);
 
             if (conversations.Any())
             {
-                string message = GenerateGroupMessage(violaters);
+                string message = GenerateGroupMessage(violaters, fromDate, toDate);
 
                 foreach (var conversation in conversations)
                 {
@@ -84,13 +87,13 @@
             }
         }
 
-        private string GenerateGroupMessage(IEnumerable<LateInEarlyOutDiscipline> violaters)
+        private string GenerateGroupMessage(IEnumerable<LateInEarlyOutDiscipline> violaters, DateTime fromDate, DateTime toDate)
         {
             string message = $"Hi All. There is/are {violaters.Count()} employee(s) violate Late in/Early out discipline over 3 times from {fromDate.ToString("dd, MMM, yyyy")} to {toDate.ToString("dd, MMM, yyyy")}: {Constants.NewLine}";
 
             foreach (var violater in violaters)
             {
-                string violateMonths = string.Join(",", violater.Details.Select(d => d.Month.ToString("MMM, yyyy")));
+                string violateMonths = string.Join(", ", violater.Details.Select(d => d.Month.ToString("MMM yyyy")));
                 message += $"_- {violater.FullName} ({violater.NickName}) violate {violater.TotalTimes} time(s) on {violateMonths}._ {Constants.NewLine}";
             }
             message += "Please access https://hrm.nexcel.vn/report/lateinearlyoutdiscipline to view more details. And don't forget to warning employees who violate the discipline over 3 times. Thanks ";

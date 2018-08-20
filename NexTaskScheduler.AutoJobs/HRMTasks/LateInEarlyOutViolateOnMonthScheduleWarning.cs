@@ -67,6 +67,8 @@
                     await hangFireService.UpdateJsonObject(categoryId, violaters);
                 }
             }
+
+            await nexbotService.WriteCategoryMessageLog(categoryId);
         }
 
         private async Task SendMessageToEmployees(MessageCategory categoryId, IEnumerable<LateInEarlyOutViolateModel> violaters)

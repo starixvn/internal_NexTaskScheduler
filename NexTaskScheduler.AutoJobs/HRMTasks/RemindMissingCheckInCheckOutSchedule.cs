@@ -51,6 +51,8 @@
 
                 await SendMessageToEmployees(missingCheckInOuts.Where(e => !string.IsNullOrWhiteSpace(e.ConversationId)));
             }
+
+            await nexbotService.WriteCategoryMessageLog(categoryId);
         }
 
         private async Task SendMessageToGroups(MessageCategory categoryId, IEnumerable<MissingCheckInOutEmployee> missingCheckInOuts)
@@ -74,8 +76,8 @@
 
             foreach (var employee in missingCheckInOuts)
             {
-                var missType = employee.MissingType == 1 ? "Check In" : "Check Out";
-                message += $"_- {employee.FullName} ({employee.NickName}) missing {missType} on {employee.AttendanceDate.ToShortFormatedDate()} _ {Constants.NewLine}";
+                var missType = employee.Type == 1 ? "Check In" : "Check Out";
+                message += $"_- {employee.FullName} ({employee.NickName}) missing {missType} on {employee.AttendanceDate.ToString("dd MMM, yyyy")} _ {Constants.NewLine}";
             }
             message += "Please access https://hrm.nexcel.vn/report/attendance to view more details. Thanks ";
 
@@ -94,9 +96,9 @@
         private static string GenerateMessageForEmployee(MissingCheckInOutEmployee employee)
         {
             var hrmLink = "https://hrm.nexcel.vn/checkinout/Create";
-            var missType = employee.MissingType == 1 ? "Check In" : "Check Out";
+            var missType = employee.Type == 1 ? "Check In" : "Check Out";
             var message = $"Dear {employee.NickName}, {Constants.NewLine}";
-            message += $"You have forgot _{missType}_ on _{employee.AttendanceDate.ToString("dd, MMM, yyyy")}_ (shift {employee.ShiftCode}). {Constants.NewLine}";
+            message += $"You have forgot _{missType}_ on _{employee.AttendanceDate.ToString("dd MMM, yyyy")}_ (shift {employee.ShiftCode}). {Constants.NewLine}";
             message += $"Please make a request at: {hrmLink}";
             return message;
         }

@@ -1,15 +1,25 @@
 ﻿namespace NexTaskScheduler.AutoJobs
 {
     using System;
+    using System.Threading.Tasks;
+    using Hangfire;
+    using Hangfire.Common;
     using NexTaskScheduler.Core.Enum;
+    using NexTaskScheduler.Service.Services.Interfaces;
 
     public class InitAutoJobs
     {
         private readonly Func<MessageCategory, IAutoReminder> autoReminder;
+        private readonly INexbotService nexbotService;
+        private readonly IRecurringJobManager recurringJob;
 
-        public InitAutoJobs(Func<MessageCategory, IAutoReminder> autoReminder)
+        public InitAutoJobs(Func<MessageCategory, IAutoReminder> autoReminder,
+            INexbotService nexbotService,
+            IRecurringJobManager recurringJob)
         {
             this.autoReminder = autoReminder;
+            this.nexbotService = nexbotService;
+            this.recurringJob = recurringJob;
         }
 
         public void Initialize()
@@ -18,6 +28,13 @@
             {
                 autoReminder(category).Initialize();
             }
+
+            recurringJob.AddOrUpdate("Server log", Job.FromExpression(() => WriteLogToDetectServerStatus()), Cron.MinuteInterval(15));
+        }
+
+        public async Task WriteLogToDetectServerStatus()
+        {
+            await nexbotService.WriteLog("Server Live Log", $"Server still online at {DateTime.Now.ToLongTimeString()}");
         }
     }
 }

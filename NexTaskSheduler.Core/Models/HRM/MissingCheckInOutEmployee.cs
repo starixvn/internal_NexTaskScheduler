@@ -18,6 +18,6 @@
 
         public string ShiftCode { get; set; }
 
-        public int MissingType { get; set; }
+        public int Type { get; set; }
     }
 }

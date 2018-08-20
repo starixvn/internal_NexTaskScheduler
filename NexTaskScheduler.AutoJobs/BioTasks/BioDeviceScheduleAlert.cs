@@ -55,6 +55,8 @@
                     }
                 }
             }
+
+            await nexbotService.WriteCategoryMessageLog(categoryId);
         }
 
         private static string GenerateMessage(IEnumerable<BioDevice> bioDevices)

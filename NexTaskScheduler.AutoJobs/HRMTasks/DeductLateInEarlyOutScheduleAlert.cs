@@ -56,6 +56,8 @@
                     await SendMessageToConversation(conversations, message);
                 }
             }
+
+            await nexbotService.WriteCategoryMessageLog(categoryId);
         }
 
         private async Task SendMessageToConversation(IEnumerable<string> conversations, string message)
