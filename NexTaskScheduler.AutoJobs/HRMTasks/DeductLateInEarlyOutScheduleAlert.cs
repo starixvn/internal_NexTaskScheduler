@@ -38,7 +38,8 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.DeductLateInEarlyOut.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.DeductLateInEarlyOut)),
-                configs.Value.LateInEarlyOutDeductSchedule);
+                configs.Value.LateInEarlyOutDeductSchedule,
+                TimeZoneInfo.Local);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

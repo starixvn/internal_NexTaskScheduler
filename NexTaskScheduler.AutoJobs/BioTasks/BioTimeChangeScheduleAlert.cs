@@ -39,7 +39,8 @@
         {
             RecurringJob.AddOrUpdate(MessageCategory.BioTimeChange.GetDisplayName(),
                 () => SendMessages(MessageCategory.BioTimeChange),
-                configs.Value.BioTimeChangeSchedule);
+                configs.Value.BioTimeChangeSchedule,
+                TimeZoneInfo.Local);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

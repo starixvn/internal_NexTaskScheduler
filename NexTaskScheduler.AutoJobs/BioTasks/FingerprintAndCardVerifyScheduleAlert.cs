@@ -1,5 +1,6 @@
 ﻿namespace NexTaskScheduler.AutoJobs.BioTasks
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -37,7 +38,8 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.BioFingerprintAndCard.GetDisplayName(),
                Job.FromExpression(() => SendMessages(MessageCategory.BioFingerprintAndCard)),
-               configs.Value.FingerprintAndCardCheckSchedule);
+               configs.Value.FingerprintAndCardCheckSchedule,
+               TimeZoneInfo.Local);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

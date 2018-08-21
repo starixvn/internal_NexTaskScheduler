@@ -36,7 +36,8 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.ForgotSpendTime.GetDisplayName(),
                Job.FromExpression(() => SendMessages(MessageCategory.ForgotSpendTime)),
-               configs.Value.RemindForgotLogtimeSchedule);
+               configs.Value.RemindForgotLogtimeSchedule,
+               TimeZoneInfo.Local);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

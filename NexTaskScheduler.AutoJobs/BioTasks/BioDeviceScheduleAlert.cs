@@ -1,5 +1,6 @@
 ﻿namespace NexTaskScheduler.AutoJobs.BioTasks
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -36,7 +37,8 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.BioDevice.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.BioDevice)),
-                configs.Value.BioDeviceSchedule);
+                configs.Value.BioDeviceSchedule,
+                TimeZoneInfo.Local);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

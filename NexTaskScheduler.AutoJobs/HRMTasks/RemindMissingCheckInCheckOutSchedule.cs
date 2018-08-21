@@ -1,5 +1,6 @@
 ﻿namespace NexTaskScheduler.AutoJobs.HRMTasks
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -36,7 +37,8 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.MissingCheckInCheckOut.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.MissingCheckInCheckOut)),
-                configs.Value.MissingCheckInCheckOutSchedule);
+                configs.Value.MissingCheckInCheckOutSchedule,
+                TimeZoneInfo.Local);
         }
 
         public async Task SendMessages(MessageCategory categoryId)

@@ -41,7 +41,8 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.ViolateLateInEarlyOutDiscipline.GetDisplayName(),
                 Job.FromExpression(() => SendMessages(MessageCategory.ViolateLateInEarlyOutDiscipline)),
-                configs.Value.ViolateLateInEarlyOutDiscipline);
+                configs.Value.ViolateLateInEarlyOutDiscipline,
+                TimeZoneInfo.Local);
         }
 
         public async Task SendMessages(MessageCategory categoryId)
