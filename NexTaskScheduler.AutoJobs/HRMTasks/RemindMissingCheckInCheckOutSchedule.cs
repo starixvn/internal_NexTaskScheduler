@@ -101,7 +101,7 @@
             var missType = employee.Type == 1 ? "Check In" : "Check Out";
             var message = $"Dear {employee.NickName}, {Constants.NewLine}";
             message += $"You have forgot _{missType}_ on _{employee.AttendanceDate.ToString("dd MMM, yyyy")}_ (shift {employee.ShiftCode}). {Constants.NewLine}";
-            message += $"Please make a request at: {hrmLink}";
+            message += $"Please review and make a request at: {hrmLink}";
             return message;
         }
     }
