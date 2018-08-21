@@ -71,14 +71,14 @@
 
         private string GenerateGroupMessage(IEnumerable<RedmineUser> employees)
         {
-            var toDate = DateTime.Now.AddDays(-1);
-            var fromDate = toDate.AddDays(-6);
-            string message = $"Hi All. There is/are {employees.Count()} employee(s) forgot log time on Redmine from {fromDate.ToString("dd, MMM, yyyy")} to {toDate.ToString("dd, MMM, yyyy")}: {Constants.NewLine}";
+            string message = $"Hi All. There is/are {employees.Count()} employee(s) forgot log time on Nexdev: {Constants.NewLine}";
 
             foreach (var employee in employees)
             {
-                string forgotDates = string.Join("; ", employee.ForgotLogtimeDates.Select(d => d.ToString("dd MMM, yyyy")));
-                message += $"_- {employee.FullName} ({employee.NickName}) forgot log time on {forgotDates}._ {Constants.NewLine}";
+                foreach (var date in employee.ForgotLogtimeDates)
+                {
+                    message += $"_- {employee.FullName} ({employee.NickName}) forgot log time on {date.ToString("dd MMM, yyyy")}._ {Constants.NewLine}";
+                }
             }
             message += "Please notice that. Thanks ";
 
@@ -96,9 +96,12 @@
 
         private static string GenerateMessage(RedmineUser employee)
         {
-            var dates = string.Join("; ", employee.ForgotLogtimeDates.Select(d => d.ToString("dd MMM, yyyy")));
             var message = $"Dear {employee.NickName}, {Constants.NewLine}";
-            message += $"You have forgot log time on _ {dates} _. {Constants.NewLine}";
+            message += $"You have forgot log time on: {Constants.NewLine}";
+            foreach (var date in employee.ForgotLogtimeDates)
+            {
+                message += $"_- {date.ToString("dd MMM, yyyy")} .{Constants.NewLine}_";
+            }
             message += $"Please log time on https://nexdev.net/ or you can log time directly on https://hrm.nexcel.vn/ Dashboard. Thanks";
             return message;
         }
