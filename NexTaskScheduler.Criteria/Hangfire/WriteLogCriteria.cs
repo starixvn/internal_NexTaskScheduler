@@ -8,7 +8,7 @@
 
         public string LogContent { get; set; }
 
-        public override string GetSettingKey() => "Nexbot_WriteLog";
+        public override string GetSettingKey() => "NexHangfire_WriteLog";
 
         public override bool IsValid() => !string.IsNullOrWhiteSpace(MessageType)
                                        && !string.IsNullOrWhiteSpace(LogContent);
