@@ -59,8 +59,6 @@
                     {
                         await nexbotService.SendMessage(conversationId, message).ConfigureAwait(false);
                     }
-
-                    await nexbotService.WriteCategoryMessageLog(categoryId);
                 }
             }
 
