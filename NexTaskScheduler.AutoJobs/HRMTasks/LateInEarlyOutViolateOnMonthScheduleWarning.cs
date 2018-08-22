@@ -62,9 +62,9 @@
 
                 if (isChange)
                 {
-                    await SendMessageToRegisterConversation(violaters, categoryId);
+                    await SendMessageToViolatedEmployees(categoryId, violaters.Where(v => !string.IsNullOrWhiteSpace(v.ConversationId)));
 
-                    await SendMessageToEmployees(categoryId, violaters);
+                    await SendMessageToRegisterConversation(violaters.Where(v => v.TimeOnMonth >= 4), categoryId);
 
                     await hangFireService.UpdateJsonObject(categoryId, violaters);
                 }
@@ -73,7 +73,7 @@
             await nexbotService.WriteCategoryMessageLog(categoryId);
         }
 
-        private async Task SendMessageToEmployees(MessageCategory categoryId, IEnumerable<LateInEarlyOutViolateModel> violaters)
+        private async Task SendMessageToViolatedEmployees(MessageCategory categoryId, IEnumerable<LateInEarlyOutViolateModel> violaters)
         {
             if (violaters.Any())
             {
@@ -96,8 +96,16 @@
         private string GeneratePersonalMessage(LateInEarlyOutViolateModel violater)
         {
             string msg = $"Hi {violater.NickName},{Constants.NewLine}";
-            msg += $"There is inform that you got {violater.TimeOnMonth} time(s) Late in/Early out on {DateTime.Now.ToString("MMM, yyyy")} ({(violater.MinuteOnMonth / 60).ToString("0.0")} hour(s) ).{Constants.NewLine}";
-            msg += $"Please notice that. Thanks";
+            if (violater.TimeOnMonth >= 4)
+            {
+                msg += $"There is inform that you got {violater.TimeOnMonth} time(s) Late in/Early out on {DateTime.Now.ToString("MMM, yyyy")}.{Constants.NewLine}";
+                msg += $"Please notice that. Thanks";
+            }
+            else
+            {
+                msg += $"You got {violater.TimeOnMonth} time(s) Late in/Early out on {DateTime.Now.ToString("MMM, yyyy")}. If you Late in/Early out one more time on this month, you should violate Nexcel's policy.{Constants.NewLine}Please notice that. Thanks";
+            }
+
             return msg;
         }
 
