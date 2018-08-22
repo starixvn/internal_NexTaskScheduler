@@ -64,7 +64,7 @@
             var logtimeDates = await GetTimeEntries(employee.RedmineId, fromDate, toDate);
             var workingDates = await GetWorkedDates(employee.EmpId, fromDate, toDate);
 
-            employee.ForgotLogtimeDates = workingDates.Except(logtimeDates).OrderBy(x => x).ToList();
+            employee.ForgotLogtimeDates = workingDates.Except(logtimeDates).Distinct().OrderBy(x => x).ToList();
         }
 
         private async Task<IEnumerable<DateTime>> GetTimeEntries(int redmineId, DateTime fromDate, DateTime toDate)
@@ -78,7 +78,6 @@
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                //var obj = JsonConvert.DeserializeObject<dynamic>(json);
                 JObject obj = JObject.Parse(json);
 
                 var timeEntries = obj["time_entries"];

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Core.Constant;
     using Hangfire;
@@ -115,16 +116,16 @@
 
         private string GenerateGroupMessage(IEnumerable<LateInEarlyOutViolateModel> violaters)
         {
-            string message = $"Hi All. There is/are {violaters.Count()} employee(s) Late in/Early out over 4 times on {DateTime.Now.ToString("MMM, yyyy")}: {Constants.NewLine}";
+            StringBuilder message = new StringBuilder();
+            message.Append($"Hi All. There is/are {violaters.Count()} employee(s) Late in/Early out over 4 times on {DateTime.Now.ToString("MMM, yyyy")}: {Constants.NewLine}");
 
             foreach (var violater in violaters)
             {
-                string totalHours = (violater.MinuteOnMonth / 60).ToString("0.0");
-                message += $"_- {violater.FullName} ({violater.NickName}) violate {violater.TimeOnMonth} time(s)._ {Constants.NewLine}";
+                message.Append($"_- {violater.FullName} ({violater.NickName}) violate {violater.TimeOnMonth} time(s)._ {Constants.NewLine}");
             }
-            message += "Please access https://hrm.nexcel.vn/report/lateinearlyout to view more details. And don't forget to warning employees who violate more than 4 times on this month. Thanks ";
+            message.Append("Please access https://hrm.nexcel.vn/report/lateinearlyout to view more details. And don't forget to warning employees who violate more than 4 times on this month. Thanks");
 
-            return message;
+            return message.ToString();
         }
     }
 }

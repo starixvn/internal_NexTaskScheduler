@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
@@ -71,18 +72,19 @@
 
         private string GenerateGroupMessage(IEnumerable<RedmineUser> employees)
         {
-            string message = $"Hi All. There is/are {employees.Count()} employee(s) forgot log time on Nexdev: {Constants.NewLine}";
+            StringBuilder message = new StringBuilder();
+            message.Append($"Hi All. There is/are {employees.Count()} employee(s) forgot log time on Nexdev: {Constants.NewLine}");
 
             foreach (var employee in employees)
             {
                 foreach (var date in employee.ForgotLogtimeDates)
                 {
-                    message += $"_- {employee.FullName} ({employee.NickName}) forgot log time on {date.ToString("dd MMM, yyyy")}._ {Constants.NewLine}";
+                    message.Append($"_- {employee.FullName} ({employee.NickName}) forgot log time on {date.ToString("dd MMM, yyyy")}_ {Constants.NewLine}");
                 }
             }
-            message += "Please notice that. Thanks ";
+            message.Append("Please notice that. Thanks ");
 
-            return message;
+            return message.ToString();
         }
 
         private async Task SendMessageToEmployees(IEnumerable<RedmineUser> forgotLogtimeEmployees)
@@ -96,14 +98,15 @@
 
         private static string GenerateMessage(RedmineUser employee)
         {
-            var message = $"Dear {employee.NickName}, {Constants.NewLine}";
-            message += $"You have forgot log time on: {Constants.NewLine}";
+            StringBuilder message = new StringBuilder();
+            message.Append($"Dear {employee.NickName}, {Constants.NewLine}");
+            message.Append($"You have forgot log time on: {Constants.NewLine}");
             foreach (var date in employee.ForgotLogtimeDates)
             {
-                message += $"_- {date.ToString("dd MMM, yyyy")} .{Constants.NewLine}_";
+                message.Append($"_- {date.ToString("dd MMM, yyyy")}_{Constants.NewLine}");
             }
-            message += $"Please log time on https://nexdev.net/ or you can log time directly on https://hrm.nexcel.vn/ Dashboard. Thanks";
-            return message;
+            message.Append($"Please log time on https://nexdev.net/ or you can log time directly on https://hrm.nexcel.vn/ Dashboard. Thanks");
+            return message.ToString();
         }
     }
 }

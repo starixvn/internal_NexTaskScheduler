@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
@@ -74,16 +75,17 @@
 
         private string GenerateGroupMessage(IEnumerable<MissingCheckInOutEmployee> missingCheckInOuts)
         {
-            string message = $"Hi All. There is/are {missingCheckInOuts.Count()} employee(s) got missing Check in/Check out: {Constants.NewLine}";
+            StringBuilder message = new StringBuilder();
+            message.Append($"Hi All. There is/are {missingCheckInOuts.Count()} employee(s) got missing Check in/Check out: {Constants.NewLine}");
 
             foreach (var employee in missingCheckInOuts)
             {
                 var missType = employee.Type == 1 ? "Check In" : "Check Out";
-                message += $"_- {employee.FullName} ({employee.NickName}) missing {missType} on {employee.AttendanceDate.ToString("dd MMM, yyyy")} _ {Constants.NewLine}";
+                message.Append($"_- {employee.FullName} ({employee.NickName}) missing {missType} on {employee.AttendanceDate.ToString("dd MMM, yyyy")}_ {Constants.NewLine}");
             }
-            message += "Please access https://hrm.nexcel.vn/report/attendance to view more details. Thanks ";
+            message.Append("Please access https://hrm.nexcel.vn/report/attendance to view more details. Thanks");
 
-            return message;
+            return message.ToString();
         }
 
         private async Task SendMessageToEmployees(IEnumerable<MissingCheckInOutEmployee> employees)

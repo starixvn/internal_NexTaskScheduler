@@ -6,6 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
+    using Hangfire.Common;
     using Microsoft.Extensions.Options;
     using NexTaskScheduler.Core.Constant;
     using NexTaskScheduler.Core.Enum;
@@ -22,8 +23,6 @@
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
-        private readonly DateTime today = DateTime.Now;
-
         public BioTimeChangeScheduleAlert(IBaseService baseService,
             INexbotService nexbotService,
             IRecurringJobManager recurringJob,
@@ -37,8 +36,8 @@
 
         public void Initialize()
         {
-            RecurringJob.AddOrUpdate(MessageCategory.BioTimeChange.GetDisplayName(),
-                () => SendMessages(MessageCategory.BioTimeChange),
+            recurringJob.AddOrUpdate(MessageCategory.BioTimeChange.GetDisplayName(),
+                Job.FromExpression(() => SendMessages(MessageCategory.BioTimeChange)),
                 configs.Value.BioTimeChangeSchedule,
                 TimeZoneInfo.Local);
         }

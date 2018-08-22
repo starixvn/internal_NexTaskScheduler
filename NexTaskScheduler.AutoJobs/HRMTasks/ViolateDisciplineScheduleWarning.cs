@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
@@ -90,15 +91,16 @@
 
         private string GenerateGroupMessage(IEnumerable<LateInEarlyOutDiscipline> violaters, DateTime fromDate, DateTime toDate)
         {
-            string message = $"Hi All. There is/are {violaters.Count()} employee(s) violate Late in/Early out discipline over 3 times from {fromDate.ToString("dd MMM, yyyy")} to {toDate.ToString("dd MMM, yyyy")}: {Constants.NewLine}";
+            StringBuilder message = new StringBuilder();
+            message.Append($"Hi All. There is/are {violaters.Count()} employee(s) violate Late in/Early out discipline over 3 times from {fromDate.ToString("dd MMM, yyyy")} to {toDate.ToString("dd MMM, yyyy")}: {Constants.NewLine}");
 
             foreach (var violater in violaters)
             {
-                message += $"_- {violater.FullName} ({violater.NickName}) violate {violater.TotalTimes} time(s)._ {Constants.NewLine}";
+                message.Append($"_- {violater.FullName} ({violater.NickName}) violate {violater.TotalTimes} time(s)._ {Constants.NewLine}");
             }
-            message += "Please access https://hrm.nexcel.vn/report/lateinearlyoutdiscipline to view more details. And don't forget to warning employees who violate the discipline over 3 times. Thanks ";
+            message.Append("Please access https://hrm.nexcel.vn/report/lateinearlyoutdiscipline to view more details. And don't forget to warning employees who violate the discipline over 3 times. Thanks");
 
-            return message;
+            return message.ToString();
         }
     }
 }

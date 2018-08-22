@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Core.Constant;
     using Hangfire;
@@ -71,15 +72,16 @@
 
         private string GenerateMessage(IEnumerable<LateInEarlyOutModel> deductedEmployees)
         {
-            var message = $"Hi All,{Constants.NewLine}";
-            message += $"There is/are inform {deductedEmployees.Count()} employee(s) need to deduct balance for Late in/Early out: {Constants.NewLine}";
+            StringBuilder message = new StringBuilder();
+            message.Append($"Hi All,{Constants.NewLine}");
+            message.Append($"There is/are inform {deductedEmployees.Count()} employee(s) need to deduct balance for Late in/Early out: {Constants.NewLine}");
             foreach (var e in deductedEmployees)
             {
                 string balanceCurrentYear = (e.BalanceCurrentYear / 60).ToString("0.0");
-                message += $"_- {e.FullName} ({e.NickName}). Balance Current Year: {balanceCurrentYear} hour(s)._ {Constants.NewLine}";
+                message.Append($"_- {e.FullName} ({e.NickName}). Balance Current Year: {balanceCurrentYear} hour(s)._ {Constants.NewLine}");
             }
-            message += "Please access https://hrm.nexcel.vn/report/lateinearlyout to review it and take a deduction. Thanks.";
-            return message;
+            message.Append("Please access https://hrm.nexcel.vn/report/lateinearlyout to review it and take a deduction. Thanks.");
+            return message.ToString();
         }
     }
 }
