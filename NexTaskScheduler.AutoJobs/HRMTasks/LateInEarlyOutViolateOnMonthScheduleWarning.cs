@@ -90,6 +90,14 @@
                         }
                     }
                 }
+                else
+                {
+                    foreach (var violater in violaters)
+                    {
+                        string message = GeneratePersonalMessage(violater);
+                        await nexbotService.SendMessage(violater.ConversationId, message);
+                    }
+                }
             }
         }
 
@@ -103,7 +111,7 @@
             }
             else
             {
-                msg += $"You got {violater.TimeOnMonth} time(s) Late in/Early out on {DateTime.Now.ToString("MMM, yyyy")}. If you Late in/Early out one more time on this month, you should violate Nexcel's policy.{Constants.NewLine}Please notice that. Thanks";
+                msg += $"You got {violater.TimeOnMonth} time(s) Late in/Early out on {DateTime.Now.ToString("MMM, yyyy")}. If you Late in/Early out one more time on this month, you will violate Nexcel's policy.{Constants.NewLine}Please notice that. Thanks";
             }
 
             return msg;
