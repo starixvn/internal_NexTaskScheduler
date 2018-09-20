@@ -74,7 +74,7 @@
             message.Append($"Hi All, There is/are {timeChanges.Count()} change(s) of time: {Constants.NewLine}");
             foreach (var timeChange in timeChanges)
             {
-                message.Append($"_- Device Id: {timeChange.DeviceId}. Device Name: {timeChange.DeviceName}. Time Changed: {timeChange.TimeChange.ToShortFormatedDate()}. _ {Constants.NewLine}");
+                message.Append($"_- Device Id: {timeChange.DeviceId}. Device Name: {timeChange.DeviceName}. Time Changed: {timeChange.TimeChange.ToShortFormatedDate()}._ {Constants.NewLine}");
             }
             message.Append($"Please, review the change(s). Thanks");
             return message.ToString();

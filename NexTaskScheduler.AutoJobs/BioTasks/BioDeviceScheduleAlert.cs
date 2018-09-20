@@ -67,7 +67,7 @@
             message.Append($"Hi All, There is/are {bioDevices.Count()} device(s) injected into the BIO system: {Constants.NewLine}");
             foreach (var device in bioDevices)
             {
-                message.Append($"_ - Device Id: {device.DeviceId}. Device Name: {device.DeviceName } _ {Constants.NewLine}");
+                message.Append($"_- Device Id: {device.DeviceId}. Device Name: {device.DeviceName }_ {Constants.NewLine}");
             }
             message.Append($"Please review this. Thanks");
             return message.ToString();
