@@ -69,7 +69,7 @@
 
         private async Task<IEnumerable<DateTime>> GetTimeEntries(int redmineId, DateTime fromDate, DateTime toDate)
         {
-            string timeEntriesUrl = configs.Value.BaseUrl + "time_entries.json?user_id={0}&spent_on=><{1}|{2}";
+            string timeEntriesUrl = configs.Value.BaseUrl + "time_entries.json?user_id={0}&spent_on=><{1}|{2}&limit=100";
             var url = new Uri(string.Format(timeEntriesUrl, redmineId, fromDate.ToString(dateTimeFormat), toDate.ToString(dateTimeFormat)));
             HttpClient client = AuthorizeRequestHeader();
             HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
@@ -89,7 +89,7 @@
                 }
             }
 
-            return listDates;
+            return listDates.Distinct();
         }
 
         private async Task<IEnumerable<DateTime>> GetWorkedDates(int empId, DateTime fromDate, DateTime toDate)
