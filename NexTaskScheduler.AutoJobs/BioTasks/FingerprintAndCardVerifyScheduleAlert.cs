@@ -75,7 +75,7 @@
                 typeToApprove += member.IsFingerprintWarning && member.IsCardWarning ? " and **Card**" : string.Empty;
                 typeToApprove += member.IsCardWarning && !member.IsFingerprintWarning ? "**Card**" : string.Empty;
 
-                message.Append($"_ - {member.FullName} ({member.NickName})'s {typeToApprove}. _ {Constants.NewLine}");
+                message.Append($"_- {member.FullName} ({member.NickName})'s {typeToApprove}._ {Constants.NewLine}");
             }
             var hrmLink = "https://hrm.nexcel.vn/fingerprintscanner";
             message.Append($"Please, access {hrmLink} to review and take appropriate action. Thanks");
