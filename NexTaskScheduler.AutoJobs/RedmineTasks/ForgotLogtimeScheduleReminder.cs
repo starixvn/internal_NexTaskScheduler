@@ -100,7 +100,7 @@
         {
             StringBuilder message = new StringBuilder();
             message.Append($"Dear {employee.NickName}, {Constants.NewLine}");
-            message.Append($"You have forgot log time on: {Constants.NewLine}");
+            message.Append($"You forgot log time on: {Constants.NewLine}");
             foreach (var date in employee.ForgotLogtimeDates)
             {
                 message.Append($"_- {date.ToString("dd MMM, yyyy")}_{Constants.NewLine}");
