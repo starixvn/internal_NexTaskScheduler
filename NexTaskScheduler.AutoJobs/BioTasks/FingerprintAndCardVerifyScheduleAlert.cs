@@ -77,7 +77,7 @@
 
                 message.Append($"_- {member.FullName} ({member.NickName})'s {typeToApprove}._ {Constants.NewLine}");
             }
-            var hrmLink = "https://hrm.nexcel.vn/fingerprintscanner";
+            var hrmLink = "https://hrm.nexcel.vn/bio/fingerprint";
             message.Append($"Please, access {hrmLink} to review and take appropriate action. Thanks");
             return message.ToString();
         }
