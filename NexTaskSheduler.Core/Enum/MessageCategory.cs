@@ -27,5 +27,8 @@
 
         [Display(Name = "Warning Not Follow Late In/ Early Out Policy")]
         ViolateLateInEarlyOutDiscipline = 8,
+
+        [Display(Name = "NexGoal Auto Job")]
+        NexGoalAutoJobSchedule = 9,
     }
 }

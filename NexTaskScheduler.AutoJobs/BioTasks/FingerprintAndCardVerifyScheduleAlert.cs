@@ -16,7 +16,7 @@
     using NexTaskScheduler.Criteria.BioStation;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class FingerprintAndCardVerifyScheduleAlert : IAutoReminder
+    public class FingerprintAndCardVerifyScheduleAlert : IJobSchedule
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
@@ -37,12 +37,12 @@
         public void Initialize()
         {
             recurringJob.AddOrUpdate(MessageCategory.BioFingerprintAndCard.GetDisplayName(),
-               Job.FromExpression(() => SendMessages(MessageCategory.BioFingerprintAndCard)),
+               Job.FromExpression(() => RunJob(MessageCategory.BioFingerprintAndCard)),
                configs.Value.FingerprintAndCardCheckSchedule,
                TimeZoneInfo.Local);
         }
 
-        public async Task SendMessages(MessageCategory categoryId)
+        public async Task RunJob(MessageCategory categoryId)
         {
             var members = await baseService.GetDataAsync<FingerprintAndCardSummary>(
                 new GetPendingFingerprintAndCardCriteria()

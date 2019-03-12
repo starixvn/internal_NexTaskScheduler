@@ -16,7 +16,7 @@
     using NexTaskScheduler.Criteria.HRM;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class DeductLateInEarlyOutScheduleAlert : IAutoReminder
+    public class DeductLateInEarlyOutScheduleAlert : IJobSchedule
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
@@ -38,12 +38,12 @@
         public void Initialize()
         {
             recurringJob.AddOrUpdate(MessageCategory.DeductLateInEarlyOut.GetDisplayName(),
-                Job.FromExpression(() => SendMessages(MessageCategory.DeductLateInEarlyOut)),
+                Job.FromExpression(() => RunJob(MessageCategory.DeductLateInEarlyOut)),
                 configs.Value.LateInEarlyOutDeductSchedule,
                 TimeZoneInfo.Local);
         }
 
-        public async Task SendMessages(MessageCategory categoryId)
+        public async Task RunJob(MessageCategory categoryId)
         {
             var deductedEmployees = await baseService.GetDataAsync<LateInEarlyOutModel>(
                 new GetLateInEarlyOutDuductionCriteria { Year = DateTime.Now.Year });

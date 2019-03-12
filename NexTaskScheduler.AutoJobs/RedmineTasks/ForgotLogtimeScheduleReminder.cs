@@ -15,7 +15,7 @@
     using NexTaskScheduler.Core.Models.Redmine;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class ForgotLogtimeScheduleReminder : IAutoReminder
+    public class ForgotLogtimeScheduleReminder : IJobSchedule
     {
         private readonly INexbotService nexbotService;
         private readonly IRedmineService redmineService;
@@ -36,12 +36,12 @@
         public void Initialize()
         {
             recurringJob.AddOrUpdate(MessageCategory.ForgotSpendTime.GetDisplayName(),
-               Job.FromExpression(() => SendMessages(MessageCategory.ForgotSpendTime)),
+               Job.FromExpression(() => RunJob(MessageCategory.ForgotSpendTime)),
                configs.Value.RemindForgotLogtimeSchedule,
                TimeZoneInfo.Local);
         }
 
-        public async Task SendMessages(MessageCategory categoryId)
+        public async Task RunJob(MessageCategory categoryId)
         {
             var forgotLogtimeEmployees = await redmineService.GetForgotLogtimeEmployees();
 

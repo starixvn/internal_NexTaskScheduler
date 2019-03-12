@@ -14,6 +14,7 @@
     using NexTaskScheduler.AutoJobs;
     using NexTaskScheduler.AutoJobs.BioTasks;
     using NexTaskScheduler.AutoJobs.HRMTasks;
+    using NexTaskScheduler.AutoJobs.NexGoalTasks;
     using NexTaskScheduler.AutoJobs.RedmineTasks;
     using NexTaskScheduler.Core.Authorize;
     using NexTaskScheduler.Core.Enum;
@@ -50,6 +51,7 @@
             services.Configure<NexbotConfigs>(options => Configuration.GetSection("NexbotConfigs").Bind(options));
             services.Configure<CronExpressionConfigs>(options => Configuration.GetSection("CronExpressions").Bind(options));
             services.Configure<RedmineConfigs>(options => Configuration.GetSection("RedmineConfigs").Bind(options));
+            services.Configure<NexGoalConfigs>(options => Configuration.GetSection("NexGoalConfigs").Bind(options));
             services.AddHangfire(config => config.UseSqlServerStorage(Cryptography.DecryptConnectionString(Configuration.GetConnectionString("Hangfire"))));
 
             InjecServices(services);
@@ -112,8 +114,9 @@
             services.AddTransient<DeductLateInEarlyOutScheduleAlert>();
             services.AddTransient<LateInEarlyOutViolateOnMonthScheduleWarning>();
             services.AddTransient<ViolateDisciplineScheduleWarning>();
+            services.AddTransient<NexGoalAutoJobSchedule>();
 
-            services.AddTransient<Func<MessageCategory, IAutoReminder>>(serviceProvider => key =>
+            services.AddTransient<Func<MessageCategory, IJobSchedule>>(serviceProvider => key =>
             {
                 switch (key)
                 {
@@ -140,6 +143,9 @@
 
                     case MessageCategory.ViolateLateInEarlyOutDiscipline:
                         return serviceProvider.GetService<ViolateDisciplineScheduleWarning>();
+
+                    case MessageCategory.NexGoalAutoJobSchedule:
+                        return serviceProvider.GetService<NexGoalAutoJobSchedule>();
 
                     default:
                         throw new KeyNotFoundException(); // or maybe return null, up to you

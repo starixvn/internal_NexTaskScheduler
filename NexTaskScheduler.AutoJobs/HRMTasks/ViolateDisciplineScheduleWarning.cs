@@ -16,7 +16,7 @@
     using NexTaskScheduler.Criteria.HRM;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class ViolateDisciplineScheduleWarning : IAutoReminder
+    public class ViolateDisciplineScheduleWarning : IJobSchedule
     {
         private readonly IHRMService hrmService;
         private readonly INexbotService nexbotService;
@@ -41,12 +41,12 @@
         public void Initialize()
         {
             recurringJob.AddOrUpdate(MessageCategory.ViolateLateInEarlyOutDiscipline.GetDisplayName(),
-                Job.FromExpression(() => SendMessages(MessageCategory.ViolateLateInEarlyOutDiscipline)),
+                Job.FromExpression(() => RunJob(MessageCategory.ViolateLateInEarlyOutDiscipline)),
                 configs.Value.ViolateLateInEarlyOutDiscipline,
                 TimeZoneInfo.Local);
         }
 
-        public async Task SendMessages(MessageCategory categoryId)
+        public async Task RunJob(MessageCategory categoryId)
         {
             var toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
             var fromDate = toDate.AddYears(-1).AddDays(1);

@@ -15,7 +15,7 @@
     using NexTaskScheduler.Criteria.BioStation;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class BioDeviceScheduleAlert : IAutoReminder
+    public class BioDeviceScheduleAlert : IJobSchedule
     {
         private readonly IBaseService baseService;
         private readonly INexbotService nexbotService;
@@ -36,12 +36,12 @@
         public void Initialize()
         {
             recurringJob.AddOrUpdate(MessageCategory.BioDevice.GetDisplayName(),
-                Job.FromExpression(() => SendMessages(MessageCategory.BioDevice)),
+                Job.FromExpression(() => RunJob(MessageCategory.BioDevice)),
                 configs.Value.BioDeviceSchedule,
                 TimeZoneInfo.Local);
         }
 
-        public async Task SendMessages(MessageCategory categoryId)
+        public async Task RunJob(MessageCategory categoryId)
         {
             var pendingDevices = await baseService.GetDataAsync<BioDevice>(new GetPendingBioDevicesCriteria()).ConfigureAwait(false);
             if (pendingDevices.Any())

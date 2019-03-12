@@ -16,7 +16,7 @@
     using NexTaskScheduler.Criteria.HRM;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class RemindMissingCheckInCheckOutSchedule : IAutoReminder
+    public class RemindMissingCheckInCheckOutSchedule : IJobSchedule
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
@@ -37,12 +37,12 @@
         public void Initialize()
         {
             recurringJob.AddOrUpdate(MessageCategory.MissingCheckInCheckOut.GetDisplayName(),
-                Job.FromExpression(() => SendMessages(MessageCategory.MissingCheckInCheckOut)),
+                Job.FromExpression(() => RunJob(MessageCategory.MissingCheckInCheckOut)),
                 configs.Value.MissingCheckInCheckOutSchedule,
                 TimeZoneInfo.Local);
         }
 
-        public async Task SendMessages(MessageCategory categoryId)
+        public async Task RunJob(MessageCategory categoryId)
         {
             var missingCheckInOuts = await baseService.GetDataAsync<MissingCheckInOutEmployee>(
                 new GetMissingCheckInCheckOutCriteria()

@@ -3,10 +3,10 @@
     using System.Threading.Tasks;
     using NexTaskScheduler.Core.Enum;
 
-    public interface IAutoReminder
+    public interface IJobSchedule
     {
         void Initialize();
 
-        Task SendMessages(MessageCategory categoryId);
+        Task RunJob(MessageCategory categoryId);
     }
 }

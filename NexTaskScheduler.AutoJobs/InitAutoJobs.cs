@@ -9,11 +9,11 @@
 
     public class InitAutoJobs
     {
-        private readonly Func<MessageCategory, IAutoReminder> autoReminder;
+        private readonly Func<MessageCategory, IJobSchedule> autoReminder;
         private readonly INexbotService nexbotService;
         private readonly IRecurringJobManager recurringJob;
 
-        public InitAutoJobs(Func<MessageCategory, IAutoReminder> autoReminder,
+        public InitAutoJobs(Func<MessageCategory, IJobSchedule> autoReminder,
             INexbotService nexbotService,
             IRecurringJobManager recurringJob)
         {

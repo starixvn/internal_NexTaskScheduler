@@ -17,7 +17,7 @@
     using NexTaskScheduler.Criteria.HRM;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class LateInEarlyOutViolateOnMonthScheduleWarning : IAutoReminder
+    public class LateInEarlyOutViolateOnMonthScheduleWarning : IJobSchedule
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
@@ -42,12 +42,12 @@
         public void Initialize()
         {
             recurringJob.AddOrUpdate(MessageCategory.LateInEarlyOutViolateInMonth.GetDisplayName(),
-                Job.FromExpression(() => SendMessages(MessageCategory.LateInEarlyOutViolateInMonth)),
+                Job.FromExpression(() => RunJob(MessageCategory.LateInEarlyOutViolateInMonth)),
                 configs.Value.CurrentMonthLateInEarlyOutSchedule,
                 TimeZoneInfo.Local);
         }
 
-        public async Task SendMessages(MessageCategory categoryId)
+        public async Task RunJob(MessageCategory categoryId)
         {
             var criteria = new GetLateInEarlyOutViolaterOnCurrentMonthCriteria
             {

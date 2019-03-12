@@ -17,5 +17,7 @@
         public string ViolateLateInEarlyOutDiscipline { get; set; }
 
         public string RemindForgotLogtimeSchedule { get; set; }
+
+        public string NexGoalAutoJobSchedule { get; set; } = "5 0 * * *";
     }
 }

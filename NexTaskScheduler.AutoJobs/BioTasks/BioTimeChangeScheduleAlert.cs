@@ -16,7 +16,7 @@
     using NexTaskScheduler.Criteria.BioStation;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class BioTimeChangeScheduleAlert : IAutoReminder
+    public class BioTimeChangeScheduleAlert : IJobSchedule
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
@@ -37,12 +37,12 @@
         public void Initialize()
         {
             recurringJob.AddOrUpdate(MessageCategory.BioTimeChange.GetDisplayName(),
-                Job.FromExpression(() => SendMessages(MessageCategory.BioTimeChange)),
+                Job.FromExpression(() => RunJob(MessageCategory.BioTimeChange)),
                 configs.Value.BioTimeChangeSchedule,
                 TimeZoneInfo.Local);
         }
 
-        public async Task SendMessages(MessageCategory categoryId)
+        public async Task RunJob(MessageCategory categoryId)
         {
             var criteria = new GetWarningBioTimeChangeCriteria
             {
