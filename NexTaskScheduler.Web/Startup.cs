@@ -52,6 +52,7 @@
             services.Configure<CronExpressionConfigs>(options => Configuration.GetSection("CronExpressions").Bind(options));
             services.Configure<RedmineConfigs>(options => Configuration.GetSection("RedmineConfigs").Bind(options));
             services.Configure<NexGoalConfigs>(options => Configuration.GetSection("NexGoalConfigs").Bind(options));
+            services.Configure<NexHrmConfigs>(options => Configuration.GetSection("NexHrmConfigs").Bind(options));
             services.AddHangfire(config => config.UseSqlServerStorage(Cryptography.DecryptConnectionString(Configuration.GetConnectionString("Hangfire"))));
 
             InjecServices(services);

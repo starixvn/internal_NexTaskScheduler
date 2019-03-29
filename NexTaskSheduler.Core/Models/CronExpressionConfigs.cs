@@ -19,5 +19,7 @@
         public string RemindForgotLogtimeSchedule { get; set; }
 
         public string NexGoalAutoJobSchedule { get; set; } = "5 0 * * *";
+
+        public string ScheduledMessageSchedule { get; set; }
     }
 }

@@ -30,5 +30,8 @@
 
         [Display(Name = "NexGoal Auto Job")]
         NexGoalAutoJobSchedule = 9,
+
+        [Display(Name = "Nex HRM Scheduled Message")]
+        NexHrmScheduledMessage = 10,
     }
 }
