@@ -33,13 +33,13 @@
         {
             recurringJob.AddOrUpdate(MessageCategory.NexHrmScheduledMessage.GetDisplayName(),
                 Job.FromExpression(() => RunJob(MessageCategory.NexGoalAutoJobSchedule)),
-                configs.Value.NexGoalAutoJobSchedule,
+                configs.Value.ScheduledMessageSchedule,
                 TimeZoneInfo.Local);
         }
 
         public async Task RunJob(MessageCategory categoryId)
         {
-            var request = CreateRequestHeader("/ScheduleMessage", Method.PUT);
+            var request = CreateRequestHeader(hrmConfig.Value.ScheduledMessageRoute, Method.POST);
 
             webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
             await webClient.ExecuteTaskAsync(request);
