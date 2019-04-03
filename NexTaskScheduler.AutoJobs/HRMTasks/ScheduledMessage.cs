@@ -32,7 +32,7 @@
         public void Initialize()
         {
             recurringJob.AddOrUpdate(MessageCategory.NexHrmScheduledMessage.GetDisplayName(),
-                Job.FromExpression(() => RunJob(MessageCategory.NexGoalAutoJobSchedule)),
+                Job.FromExpression(() => RunJob(MessageCategory.NexHrmScheduledMessage)),
                 configs.Value.ScheduledMessageSchedule,
                 TimeZoneInfo.Local);
         }
