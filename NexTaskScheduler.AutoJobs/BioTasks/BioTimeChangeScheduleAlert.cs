@@ -20,16 +20,19 @@
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
+        private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         public BioTimeChangeScheduleAlert(IBaseService baseService,
             INexbotService nexbotService,
+            ILogService logService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.baseService = baseService;
             this.nexbotService = nexbotService;
+            this.logService = logService;
             this.recurringJob = recurringJob;
             this.configs = configs;
         }
@@ -65,7 +68,7 @@
                 }
             }
 
-            await nexbotService.WriteCategoryMessageLog(categoryId);
+            await logService.WriteCategoryMessageLog(categoryId);
         }
 
         private string GenerateMesssage(IEnumerable<BioTimeChange> timeChanges)

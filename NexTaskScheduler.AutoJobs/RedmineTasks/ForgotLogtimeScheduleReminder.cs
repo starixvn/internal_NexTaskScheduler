@@ -19,16 +19,19 @@
     {
         private readonly INexbotService nexbotService;
         private readonly IRedmineService redmineService;
+        private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         public ForgotLogtimeScheduleReminder(INexbotService nexbotService,
             IRedmineService redmineService,
+            ILogService logService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.redmineService = redmineService;
+            this.logService = logService;
             this.recurringJob = recurringJob;
             this.configs = configs;
         }
@@ -52,7 +55,7 @@
                 await SendMessageToGroups(forgotLogtimeEmployees, categoryId);
             }
 
-            await nexbotService.WriteCategoryMessageLog(categoryId);
+            await logService.WriteCategoryMessageLog(categoryId);
         }
 
         private async Task SendMessageToGroups(IEnumerable<RedmineUser> forgotLogtimeEmployees, MessageCategory categoryId)

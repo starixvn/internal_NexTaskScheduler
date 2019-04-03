@@ -20,16 +20,19 @@
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
+        private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         public RemindMissingCheckInCheckOutSchedule(INexbotService nexbotService,
             IBaseService baseService,
+            ILogService logService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.baseService = baseService;
+            this.logService = logService;
             this.configs = configs;
             this.recurringJob = recurringJob;
         }
@@ -55,7 +58,7 @@
                 await SendMessageToEmployees(missingCheckInOuts.Where(e => !string.IsNullOrWhiteSpace(e.ConversationId)));
             }
 
-            await nexbotService.WriteCategoryMessageLog(categoryId);
+            await logService.WriteCategoryMessageLog(categoryId);
         }
 
         private async Task SendMessageToGroups(MessageCategory categoryId, IEnumerable<MissingCheckInOutEmployee> missingCheckInOuts)

@@ -19,16 +19,19 @@
     {
         private readonly IBaseService baseService;
         private readonly INexbotService nexbotService;
+        private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
 
         public BioDeviceScheduleAlert(IBaseService baseService,
             INexbotService nexbotService,
+            ILogService logService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.baseService = baseService;
             this.nexbotService = nexbotService;
+            this.logService = logService;
             this.recurringJob = recurringJob;
             this.configs = configs;
         }
@@ -58,7 +61,7 @@
                 }
             }
 
-            await nexbotService.WriteCategoryMessageLog(categoryId);
+            await logService.WriteCategoryMessageLog(categoryId);
         }
 
         private static string GenerateMessage(IEnumerable<BioDevice> bioDevices)

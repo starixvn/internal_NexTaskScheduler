@@ -8,23 +8,27 @@
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
+    using NexTaskScheduler.Service.Services.Interfaces;
     using RestSharp;
 
     public class ScheduledMessage : IJobSchedule
     {
         private readonly IRestClient webClient;
         private readonly IRecurringJobManager recurringJob;
+        private readonly ILogService logService;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
         private readonly IOptionsSnapshot<NexHrmConfigs> hrmConfig;
 
         public ScheduledMessage(
             IRestClient webClient,
             IRecurringJobManager recurringJob,
+            ILogService logService,
             IOptionsSnapshot<CronExpressionConfigs> configs,
             IOptionsSnapshot<NexHrmConfigs> hrmConfig)
         {
             this.webClient = webClient;
             this.recurringJob = recurringJob;
+            this.logService = logService;
             this.configs = configs;
             this.hrmConfig = hrmConfig;
         }
@@ -43,6 +47,7 @@
 
             webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
             await webClient.ExecuteTaskAsync(request);
+            await logService.WriteCategoryMessageLog(categoryId);
         }
 
         private RestRequest CreateRequestHeader(string resource, Method method)

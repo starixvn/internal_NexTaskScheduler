@@ -102,6 +102,7 @@
             services.AddTransient<IHRMService, HRMService>();
             services.AddTransient<IRedmineService, RedmineService>();
             services.AddTransient<IHangFireService, HangFireService>();
+            services.AddTransient<ILogService, LogService>();
         }
 
         private void InjectAutoJobs(IServiceCollection services)

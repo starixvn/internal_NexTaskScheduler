@@ -10,15 +10,16 @@
     public class InitAutoJobs
     {
         private readonly Func<MessageCategory, IJobSchedule> autoReminder;
-        private readonly INexbotService nexbotService;
+        private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
 
         public InitAutoJobs(Func<MessageCategory, IJobSchedule> autoReminder,
             INexbotService nexbotService,
+            ILogService logService,
             IRecurringJobManager recurringJob)
         {
             this.autoReminder = autoReminder;
-            this.nexbotService = nexbotService;
+            this.logService = logService;
             this.recurringJob = recurringJob;
         }
 
@@ -34,7 +35,7 @@
 
         public async Task WriteLogToDetectServerStatus()
         {
-            await nexbotService.WriteLog("Server Status Log", $"Server still online at {DateTime.Now.ToLongTimeString()}");
+            await logService.WriteLog("Server Status Log", $"Server still online at {DateTime.Now.ToLongTimeString()}");
         }
     }
 }

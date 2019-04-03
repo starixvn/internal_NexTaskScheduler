@@ -67,22 +67,5 @@
 
             return response.Data;
         }
-
-        public async Task WriteLog(string messageType, string logContent)
-        {
-            var criteria = new WriteLogCriteria
-            {
-                MessageType = messageType,
-                LogContent = logContent
-            };
-
-            await ExecuteNonQueryAsync(criteria);
-        }
-
-        public async Task WriteCategoryMessageLog(MessageCategory category)
-        {
-            string type = category.GetDisplayName();
-            await WriteLog(type, $"Task {type} executed at {DateTime.Now.ToShortFormatedDate()}");
-        }
     }
 }

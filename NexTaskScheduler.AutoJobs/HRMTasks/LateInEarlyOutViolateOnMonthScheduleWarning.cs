@@ -21,6 +21,7 @@
     {
         private readonly INexbotService nexbotService;
         private readonly IBaseService baseService;
+        private readonly ILogService logService;
         private readonly IHangFireService hangFireService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
@@ -28,12 +29,14 @@
         public LateInEarlyOutViolateOnMonthScheduleWarning(
             INexbotService nexbotService,
             IBaseService baseService,
+            ILogService logservice,
             IHangFireService hangFireService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.nexbotService = nexbotService;
             this.baseService = baseService;
+            this.logService = logService;
             this.hangFireService = hangFireService;
             this.recurringJob = recurringJob;
             this.configs = configs;
@@ -70,7 +73,7 @@
                 }
             }
 
-            await nexbotService.WriteCategoryMessageLog(categoryId);
+            await logService.WriteCategoryMessageLog(categoryId);
         }
 
         private async Task SendMessageToViolatedEmployees(MessageCategory categoryId, IEnumerable<LateInEarlyOutViolateModel> violaters)

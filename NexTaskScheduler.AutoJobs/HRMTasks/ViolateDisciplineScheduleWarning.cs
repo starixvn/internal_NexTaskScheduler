@@ -20,6 +20,7 @@
     {
         private readonly IHRMService hrmService;
         private readonly INexbotService nexbotService;
+        private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IHangFireService hangFireService;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
@@ -27,12 +28,14 @@
         public ViolateDisciplineScheduleWarning(
             IHRMService hrmService,
             INexbotService nexbotService,
+            ILogService logService,
             IHangFireService hangFireService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
             this.hrmService = hrmService;
             this.nexbotService = nexbotService;
+            this.logService = logService;
             this.hangFireService = hangFireService;
             this.configs = configs;
             this.recurringJob = recurringJob;
@@ -71,7 +74,7 @@
                 }
             }
 
-            await nexbotService.WriteCategoryMessageLog(categoryId);
+            await logService.WriteCategoryMessageLog(categoryId);
         }
 
         private async Task SendMessageToGroup(IEnumerable<LateInEarlyOutDiscipline> violaters, DateTime fromDate, DateTime toDate)
