@@ -29,7 +29,7 @@
         public LateInEarlyOutViolateOnMonthScheduleWarning(
             INexbotService nexbotService,
             IBaseService baseService,
-            ILogService logservice,
+            ILogService logService,
             IHangFireService hangFireService,
             IRecurringJobManager recurringJob,
             IOptionsSnapshot<CronExpressionConfigs> configs)
