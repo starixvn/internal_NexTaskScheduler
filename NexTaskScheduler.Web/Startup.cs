@@ -118,6 +118,7 @@
             services.AddTransient<ViolateDisciplineScheduleWarning>();
             services.AddTransient<NexGoalAutoJobSchedule>();
             services.AddTransient<ScheduledMessage>();
+            services.AddTransient<RemindReachedWorkingTime>();
 
             services.AddTransient<Func<MessageCategory, IJobSchedule>>(serviceProvider => key =>
             {
@@ -152,6 +153,9 @@
 
                     case MessageCategory.NexHrmScheduledMessage:
                         return serviceProvider.GetService<ScheduledMessage>();
+
+                    case MessageCategory.RemindReachedWorkingTime:
+                        return serviceProvider.GetService<RemindReachedWorkingTime>();
 
                     default:
                         throw new KeyNotFoundException(); // or maybe return null, up to you

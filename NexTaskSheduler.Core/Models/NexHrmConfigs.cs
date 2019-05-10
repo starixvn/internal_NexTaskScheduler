@@ -5,5 +5,7 @@
         public string ApiUrl { get; set; }
 
         public string ScheduledMessageRoute { get; set; }
+
+        public string ReachedWorkingTimeRoute { get; set; }
     }
 }

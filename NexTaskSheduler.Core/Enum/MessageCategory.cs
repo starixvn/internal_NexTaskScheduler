@@ -33,5 +33,8 @@
 
         [Display(Name = "Nex HRM Scheduled Message")]
         NexHrmScheduledMessage = 10,
+
+        [Display(Name = "Remind Reached Working Time")]
+        RemindReachedWorkingTime = 11,
     }
 }
