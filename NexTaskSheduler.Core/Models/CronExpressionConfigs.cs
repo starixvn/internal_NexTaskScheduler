@@ -24,6 +24,6 @@
 
         public string ReachedWorkingTimeSchedule { get; set; }
 
-        public string ReSendErrorMessageSchedule { get; set; }
+        public string ReSendErrorMessageSchedule { get; set; } = "*/1 * * * *";
     }
 }
