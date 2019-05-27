@@ -36,5 +36,8 @@
 
         [Display(Name = "Remind Reached Working Time")]
         RemindReachedWorkingTime = 11,
+
+        [Display(Name = "Resend Error Message")]
+        ResendErrorMessage = 12
     }
 }

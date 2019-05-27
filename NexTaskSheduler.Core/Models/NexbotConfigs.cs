@@ -9,5 +9,7 @@
         public string MicrosoftAppPassword { get; set; } = "NJT594-!uoobpdkYYBF29:^";
 
         public string TokenUrl { get; set; } = "https://login.microsoftonline.com/botframework.com/oauth2/v2.0/token";
+
+        public string ReSendErrorMessage { get; set; }
     }
 }

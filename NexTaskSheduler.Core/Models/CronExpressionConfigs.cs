@@ -23,5 +23,7 @@
         public string ScheduledMessageSchedule { get; set; }
 
         public string ReachedWorkingTimeSchedule { get; set; }
+
+        public string ReSendErrorMessageSchedule { get; set; }
     }
 }
