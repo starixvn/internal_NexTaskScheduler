@@ -102,7 +102,7 @@
 
         private static string GenerateMessageForEmployee(MissingCheckInOutEmployee employee)
         {
-            var hrmLink = "https://hrm.nexcel.vn/checkinout/Create";
+            var hrmLink = "https://hrm.nexcel.vn/checkinout/Create?date=" + employee.AttendanceDate.ToString("MM/dd/yyyy") + "&type=" + employee.Type;
             var missType = employee.Type == 1 ? "Check In" : "Check Out";
             var message = $"Dear {employee.NickName}, {Constants.NewLine}";
             message += $"You have forgot _{missType}_ on _{employee.AttendanceDate.ToString("dd MMM, yyyy")}_ (shift {employee.ShiftCode}). {Constants.NewLine}";
