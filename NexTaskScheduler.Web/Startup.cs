@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using Fanex.Data;
     using Hangfire;
     using Hangfire.Storage;
@@ -85,6 +86,7 @@
 
         private void InitAutoJobs(IServiceCollection services)
         {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
             var serviceProvider = services.BuildServiceProvider();
             var initAutoJobs = serviceProvider.GetService<InitAutoJobs>();
             initAutoJobs.Initialize();
