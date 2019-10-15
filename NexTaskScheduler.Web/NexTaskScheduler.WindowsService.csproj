@@ -13,9 +13,6 @@
     <None Remove="appsettings.Local.json" />
     <None Remove="appsettings.Production.json" />
     <None Remove="App_Data\SP.xml" />
-    <None Remove="web.config" />
-    <None Remove="web.local.config" />
-    <None Remove="web.pro.config" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,15 +29,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\SP.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web.local.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="web.pro.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
