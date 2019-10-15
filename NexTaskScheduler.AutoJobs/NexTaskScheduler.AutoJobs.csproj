@@ -14,4 +14,8 @@
     <ProjectReference Include="..\NexTaskSheduler.Core\NexTaskScheduler.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="InitJobs\" />
+  </ItemGroup>
+
 </Project>

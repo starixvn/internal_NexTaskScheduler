@@ -3,23 +3,23 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using Fanex.Data;
     using Hangfire;
-    using Hangfire.Storage;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using NexTaskScheduler.AutoJobs;
     using NexTaskScheduler.AutoJobs.BioTasks;
     using NexTaskScheduler.AutoJobs.HRMTasks;
+    using NexTaskScheduler.AutoJobs.Interfaces;
     using NexTaskScheduler.AutoJobs.NexGoalTasks;
     using NexTaskScheduler.AutoJobs.RedmineTasks;
     using NexTaskScheduler.Core.Authorize;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Models;
+    using NexTaskScheduler.InitJobs.AutoJobs;
+    using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Respositories;
     using NexTaskScheduler.Service.Respositories.Interfaces;
     using NexTaskScheduler.Service.Services;
@@ -57,24 +57,23 @@
             services.AddHangfire(config => config.UseSqlServerStorage(Cryptography.DecryptConnectionString(Configuration.GetConnectionString("Hangfire"))));
 
             InjecServices(services);
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             InjectAutoJobs(services);
-
-            InitAutoJobs(services);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IApplicationLifetime applicationLifetime)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            applicationLifetime.ApplicationStopping.Register(OnShutdown);
-
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseHangfireDashboard("/hangfire", new DashboardOptions
             {
                 Authorization = new[] { new HangfireAuthorization() }
+            }).UseHangfireServer(options: new BackgroundJobServerOptions
+            {
+                WorkerCount = Configuration.GetValue<int>("WorkerCount"),
+                ServerName = Environment.MachineName
             });
+
             app.UseHangfireServer();
             app.UseMvc(routes =>
             {
@@ -82,14 +81,6 @@
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
-
-        private void InitAutoJobs(IServiceCollection services)
-        {
-            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
-            var serviceProvider = services.BuildServiceProvider();
-            var initAutoJobs = serviceProvider.GetService<InitAutoJobs>();
-            initAutoJobs.Initialize();
         }
 
         private void InjecServices(IServiceCollection services)
@@ -109,7 +100,7 @@
 
         private void InjectAutoJobs(IServiceCollection services)
         {
-            services.AddTransient<InitAutoJobs>();
+            services.AddScoped<IAutoJobInitial, AutoJobInitial>();
             services.AddTransient<BioDeviceScheduleAlert>();
             services.AddTransient<BioTimeChangeScheduleAlert>();
             services.AddTransient<FingerprintAndCardVerifyScheduleAlert>();
@@ -167,17 +158,6 @@
                         throw new KeyNotFoundException(); // or maybe return null, up to you
                 }
             });
-        }
-
-        private void OnShutdown()
-        {
-            using (var connection = JobStorage.Current.GetConnection())
-            {
-                foreach (var recurringJob in connection.GetRecurringJobs())
-                {
-                    RecurringJob.RemoveIfExists(recurringJob.Id);
-                }
-            }
         }
     }
 }

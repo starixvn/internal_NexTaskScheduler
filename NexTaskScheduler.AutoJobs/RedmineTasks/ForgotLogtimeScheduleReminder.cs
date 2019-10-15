@@ -13,6 +13,7 @@
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Core.Models.Redmine;
+    using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
 
     public class ForgotLogtimeScheduleReminder : IJobSchedule

@@ -13,6 +13,7 @@
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Criteria.BioStation;
+    using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
 
     public class BioDeviceScheduleAlert : IJobSchedule

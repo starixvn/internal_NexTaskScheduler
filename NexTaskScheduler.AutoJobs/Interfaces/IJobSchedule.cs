@@ -1,4 +1,4 @@
-﻿namespace NexTaskScheduler.AutoJobs
+﻿namespace NexTaskScheduler.Interfaces.AutoJobs
 {
     using System.Threading.Tasks;
     using NexTaskScheduler.Core.Enum;

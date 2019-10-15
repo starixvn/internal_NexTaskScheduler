@@ -15,6 +15,7 @@
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Core.Models.HRM;
     using NexTaskScheduler.Criteria.HRM;
+    using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
 
     public class LateInEarlyOutViolateOnMonthScheduleWarning : IJobSchedule

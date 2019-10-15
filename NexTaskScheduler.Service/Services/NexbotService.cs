@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using Microsoft.Extensions.Options;
     using NexTaskScheduler.Core.Enum;
-    using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Criteria.Hangfire;
     using NexTaskScheduler.Service.Models.Nexbot;

@@ -10,7 +10,6 @@ namespace NexTaskScheduler.Web.Controllers
     {
         public IActionResult Index()
         {
-            var auth = HttpContext.User;
             return View();
         }
 

@@ -1,19 +1,21 @@
-﻿namespace NexTaskScheduler.AutoJobs
+﻿namespace NexTaskScheduler.InitJobs.AutoJobs
 {
     using System;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
+    using NexTaskScheduler.AutoJobs.Interfaces;
     using NexTaskScheduler.Core.Enum;
+    using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
 
-    public class InitAutoJobs
+    public class AutoJobInitial : IAutoJobInitial
     {
         private readonly Func<MessageCategory, IJobSchedule> autoReminder;
         private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
 
-        public InitAutoJobs(Func<MessageCategory, IJobSchedule> autoReminder,
+        public AutoJobInitial(Func<MessageCategory, IJobSchedule> autoReminder,
             INexbotService nexbotService,
             ILogService logService,
             IRecurringJobManager recurringJob)

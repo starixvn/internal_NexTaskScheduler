@@ -14,6 +14,7 @@
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Core.Models.Bio;
     using NexTaskScheduler.Criteria.BioStation;
+    using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
 
     public class BioTimeChangeScheduleAlert : IJobSchedule

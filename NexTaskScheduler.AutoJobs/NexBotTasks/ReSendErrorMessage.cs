@@ -8,6 +8,7 @@
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
+    using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
     using RestSharp;
 
