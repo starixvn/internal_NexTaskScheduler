@@ -6,6 +6,16 @@
     <OutputType>WinExe</OutputType>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <PublishProtocol>FileSystem</PublishProtocol>
+    <Configuration>Release</Configuration>
+    <Platform>Any CPU</Platform>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <PublishDir>D:\Deploy\ChatBotHangfire</PublishDir>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <_IsPortable>false</_IsPortable>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Remove="appsettings.Development.json" />
