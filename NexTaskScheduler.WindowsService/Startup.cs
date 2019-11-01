@@ -3,10 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using Fanex.Data;
     using Hangfire;
+    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +18,6 @@
     using NexTaskScheduler.AutoJobs.Interfaces;
     using NexTaskScheduler.AutoJobs.NexGoalTasks;
     using NexTaskScheduler.AutoJobs.RedmineTasks;
-    using NexTaskScheduler.Core.Authorize;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.InitJobs.AutoJobs;
@@ -24,6 +26,7 @@
     using NexTaskScheduler.Service.Respositories.Interfaces;
     using NexTaskScheduler.Service.Services;
     using NexTaskScheduler.Service.Services.Interfaces;
+    using NexTaskScheduler.WindowsService.Extensions;
     using RestSharp;
 
     public class Startup
@@ -54,6 +57,31 @@
             services.Configure<RedmineConfigs>(options => Configuration.GetSection("RedmineConfigs").Bind(options));
             services.Configure<NexGoalConfigs>(options => Configuration.GetSection("NexGoalConfigs").Bind(options));
             services.Configure<NexHrmConfigs>(options => Configuration.GetSection("NexHrmConfigs").Bind(options));
+            services.Configure<Identify>(options => Configuration.GetSection("HangfireAuthenticate").Bind(options));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(options =>
+               {
+                   options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                   options.Cookie = new CookieBuilder
+                   {
+                       Name = "NexTaskScheduler.WindowsService",
+                       SecurePolicy = CookieSecurePolicy.SameAsRequest
+                   };
+                   options.Events.OnSigningOut = context =>
+                   {
+                       context.Response.Redirect(options.LoginPath);
+                       return Task.CompletedTask;
+                   };
+               });
+
+            services.AddSession(options =>
+            {
+                options.Cookie.IsEssential = true;
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.Name = "NexTaskScheduler.WindowsService";
+            });
+
             services.AddHangfire(config => config.UseSqlServerStorage(Cryptography.DecryptConnectionString(Configuration.GetConnectionString("Hangfire"))));
 
             InjecServices(services);
@@ -67,11 +95,18 @@
             app.UseAuthentication();
             app.UseHangfireDashboard("/hangfire", new DashboardOptions
             {
-                Authorization = new[] { new HangfireAuthorization() }
+                Authorization = new[] { new HangfireAuthorizationFilter() }
             }).UseHangfireServer(options: new BackgroundJobServerOptions
             {
                 WorkerCount = Configuration.GetValue<int>("WorkerCount"),
                 ServerName = Environment.MachineName
+            });
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Auth}/{action=Login}/{id?}");
             });
         }
 

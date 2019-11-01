@@ -44,7 +44,8 @@
                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                    logging.AddEventLog(new EventLogSettings
                    {
-                       Filter = (x, logLevel) => x.Contains("Fanex.NCB.AutoJobs") && logLevel >= LogLevel.Information
+                       Filter = (x, logLevel) => x.Contains("NexTaskScheduler.WindowsService")
+                       && logLevel >= LogLevel.Information
                    });
                })
                .UseContentRoot(Directory.GetCurrentDirectory())

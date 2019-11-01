@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <ApplicationIcon />
     <StartupObject />
@@ -56,5 +56,15 @@
   <ItemGroup>
     <ProjectReference Include="..\NexTaskScheduler.AutoJobs\NexTaskScheduler.AutoJobs.csproj" />
     <ProjectReference Include="..\NexTaskScheduler.Service\NexTaskScheduler.Service.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="App_Configs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Auth\Login.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>
