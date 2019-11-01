@@ -8,6 +8,7 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.EventLog;
+    using NexTaskScheduler.WindowsService;
     using NexTaskScheduler.WindowsService.Extensions;
 
     public static class Program

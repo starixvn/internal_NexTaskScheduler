@@ -1,4 +1,4 @@
-﻿namespace NexTaskScheduler.Web
+﻿namespace NexTaskScheduler.WindowsService
 {
     using System;
     using System.Collections.Generic;

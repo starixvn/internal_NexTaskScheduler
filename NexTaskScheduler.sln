@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.Criteria",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.Service", "NexTaskScheduler.Service\NexTaskScheduler.Service.csproj", "{03C17416-0570-446D-969B-594A3F7CC3B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.WindowsService", "NexTaskScheduler.Web\NexTaskScheduler.WindowsService.csproj", "{AC95633F-F07B-466F-B3CD-1B2B1A9F0201}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.WindowsService", "NexTaskScheduler.WindowsService\NexTaskScheduler.WindowsService.csproj", "{AC95633F-F07B-466F-B3CD-1B2B1A9F0201}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.AutoJobs", "NexTaskScheduler.AutoJobs\NexTaskScheduler.AutoJobs.csproj", "{23CA6041-B9BC-4591-ADF4-853ED52DB5D5}"
 EndProject
