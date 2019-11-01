@@ -16,7 +16,9 @@
     <SelfContained>true</SelfContained>
     <_IsPortable>false</_IsPortable>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="appsettings.Development.json" />
     <None Remove="appsettings.json" />
