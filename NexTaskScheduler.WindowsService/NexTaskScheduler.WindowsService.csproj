@@ -1,16 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <ApplicationIcon />
-    <OutputType>WinExe</OutputType>
     <StartupObject />
   </PropertyGroup>
   <PropertyGroup>
     <PublishProtocol>FileSystem</PublishProtocol>
     <Configuration>Release</Configuration>
     <Platform>Any CPU</Platform>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <PublishDir>D:\Deploy\ChatBotHangfire</PublishDir>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>true</SelfContained>
