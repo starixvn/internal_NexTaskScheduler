@@ -73,14 +73,6 @@
                 WorkerCount = Configuration.GetValue<int>("WorkerCount"),
                 ServerName = Environment.MachineName
             });
-
-            app.UseHangfireServer();
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
         }
 
         private void InjecServices(IServiceCollection services)
