@@ -25,6 +25,7 @@
     <None Remove="appsettings.Local.json" />
     <None Remove="appsettings.Production.json" />
     <None Remove="App_Data\SP.xml" />
+    <None Remove="Views\Auth\Login.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +44,7 @@
     <Content Include="App_Data\SP.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Views\Auth\Login.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
