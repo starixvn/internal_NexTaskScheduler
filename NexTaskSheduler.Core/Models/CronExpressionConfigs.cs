@@ -26,6 +26,6 @@
 
         public string ReSendErrorMessageSchedule { get; set; } = "*/1 * * * *";
 
-        public string MailTransfer { get; set; } = "0 7 * * *";
+        public string MailTransfer { get; set; } = "*/5 * * * *";
     }
 }

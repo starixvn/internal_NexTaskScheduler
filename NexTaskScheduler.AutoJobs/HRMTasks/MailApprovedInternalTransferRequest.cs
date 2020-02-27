@@ -1,6 +1,7 @@
 ﻿namespace NexTaskScheduler.AutoJobs.HRMTasks
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
@@ -8,6 +9,7 @@
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
+    using NexTaskScheduler.Criteria.HRM;
     using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
     using RestSharp;
@@ -44,7 +46,7 @@
 
         public async Task RunJob(MessageCategory categoryId)
         {
-            var request = CreateRequestHeader(hrmConfig.Value.ScheduledMessageRoute, Method.POST);
+            var request = CreateRequestHeader(hrmConfig.Value.MailApproveTransfer, Method.GET);
 
             webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
             await webClient.ExecuteTaskAsync(request);
