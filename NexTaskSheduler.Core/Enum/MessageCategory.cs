@@ -38,6 +38,9 @@
         RemindReachedWorkingTime = 11,
 
         [Display(Name = "Resend Error Message")]
-        ResendErrorMessage = 12
+        ResendErrorMessage = 12,
+
+        [Display(Name = "Mail Approved Internal Transfer Request")]
+        MailTransfer = 13
     }
 }

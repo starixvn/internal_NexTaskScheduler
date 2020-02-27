@@ -140,6 +140,7 @@
             services.AddTransient<ScheduledMessage>();
             services.AddTransient<RemindReachedWorkingTime>();
             services.AddTransient<ReSendErrorMessage>();
+            services.AddTransient<MailApprovedInternalTransferRequest>();
 
             services.AddTransient<Func<MessageCategory, IJobSchedule>>(serviceProvider => key =>
             {
@@ -180,6 +181,9 @@
 
                     case MessageCategory.ResendErrorMessage:
                         return serviceProvider.GetService<ReSendErrorMessage>();
+
+                    case MessageCategory.MailTransfer:
+                        return serviceProvider.GetService<MailApprovedInternalTransferRequest>();
 
                     default:
                         throw new KeyNotFoundException(); // or maybe return null, up to you
