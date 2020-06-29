@@ -25,5 +25,7 @@
         public string ReachedWorkingTimeSchedule { get; set; }
 
         public string ReSendErrorMessageSchedule { get; set; } = "*/1 * * * *";
+
+        public string ReminderBirthdayAndFirstWorkingday { get; set; }
     }
 }

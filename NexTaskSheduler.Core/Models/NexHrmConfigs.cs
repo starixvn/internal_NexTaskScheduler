@@ -7,5 +7,7 @@
         public string ScheduledMessageRoute { get; set; }
 
         public string ReachedWorkingTimeRoute { get; set; }
+
+        public string ReminderBirthdayAndFirstWorkingdayRoute { get; set; }
     }
 }
