@@ -23,5 +23,12 @@
         public string ViolateDisciplineScheduleWarningRoute { get; set; }
 
         public string LateInEarlyOutDeductScheduleRoute { get; set; }
+        
+        public string BioDevice { get; set; }
+
+        public string BioTimeChange { get; set; }
+
+        public string BioFingerprintAndCard { get; set; }
+
     }
 }

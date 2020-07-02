@@ -1,41 +1,37 @@
 ﻿namespace NexTaskScheduler.AutoJobs.BioTasks
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
     using Microsoft.Extensions.Options;
-    using NexTaskScheduler.Core.Constant;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
-    using NexTaskScheduler.Core.Models.Bio;
-    using NexTaskScheduler.Criteria.BioStation;
     using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
+    using RestSharp;
 
     public class FingerprintAndCardVerifyScheduleAlert : IJobSchedule
     {
-        private readonly INexbotService nexbotService;
-        private readonly IBaseService baseService;
         private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
+        private readonly IOptionsSnapshot<NexHrmConfigs> hrmConfig;
+        private readonly IRestClient webClient;
 
-        public FingerprintAndCardVerifyScheduleAlert(IBaseService baseService,
-            INexbotService nexbotService,
+        public FingerprintAndCardVerifyScheduleAlert(
             ILogService logService,
             IRecurringJobManager recurringJob,
+            IRestClient webClient,
+            IOptionsSnapshot<NexHrmConfigs> hrmConfig,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
-            this.nexbotService = nexbotService;
-            this.baseService = baseService;
             this.logService = logService;
             this.recurringJob = recurringJob;
             this.configs = configs;
+            this.hrmConfig = hrmConfig;
+            this.webClient = webClient;
         }
 
         public void Initialize()
@@ -48,42 +44,17 @@
 
         public async Task RunJob(MessageCategory categoryId)
         {
-            var members = await baseService.GetDataAsync<FingerprintAndCardSummary>(
-                new GetPendingFingerprintAndCardCriteria()
-                ).ConfigureAwait(false);
+            var request = CreateRequestHeader(hrmConfig.Value.BioFingerprintAndCard, Method.GET);
 
-            if (members.Any())
-            {
-                var conversationIds = await nexbotService.GetRegisteredConversation(categoryId).ConfigureAwait(false);
-
-                if (conversationIds.Any())
-                {
-                    var message = GenerateMesssage(members);
-                    foreach (var conversationId in conversationIds)
-                    {
-                        await nexbotService.SendMessage(conversationId, message).ConfigureAwait(false);
-                    }
-                }
-            }
-
+            webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
+            await webClient.ExecuteTaskAsync(request);
             await logService.WriteCategoryMessageLog(categoryId);
         }
 
-        private static string GenerateMesssage(IEnumerable<FingerprintAndCardSummary> members)
+        private RestRequest CreateRequestHeader(string resource, Method method)
         {
-            StringBuilder message = new StringBuilder();
-            message.Append($"Hi All, There is/are {members.Count()} new registered fingerprint(s) and/or card(s) waiting to be approved:{Constants.NewLine}");
-            foreach (var member in members)
-            {
-                string typeToApprove = member.IsFingerprintWarning ? "**Fingerprint**" : string.Empty;
-                typeToApprove += member.IsFingerprintWarning && member.IsCardWarning ? " and **Card**" : string.Empty;
-                typeToApprove += member.IsCardWarning && !member.IsFingerprintWarning ? "**Card**" : string.Empty;
-
-                message.Append($"_- {member.FullName} ({member.NickName})'s {typeToApprove}._ {Constants.NewLine}");
-            }
-            var hrmLink = "https://hrm.nexcel.vn/bio/fingerprint";
-            message.Append($"Please, access {hrmLink} to review and take appropriate action. Thanks");
-            return message.ToString();
+            var request = new RestRequest(resource, method);
+            return request;
         }
     }
 }

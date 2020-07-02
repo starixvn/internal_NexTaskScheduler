@@ -1,41 +1,37 @@
 ﻿namespace NexTaskScheduler.AutoJobs.BioTasks
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
     using Microsoft.Extensions.Options;
-    using NexTaskScheduler.Core.Constant;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
-    using NexTaskScheduler.Core.Models.Bio;
-    using NexTaskScheduler.Criteria.BioStation;
     using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
+    using RestSharp;
 
     public class BioTimeChangeScheduleAlert : IJobSchedule
     {
-        private readonly INexbotService nexbotService;
-        private readonly IBaseService baseService;
         private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
+        private readonly IOptionsSnapshot<NexHrmConfigs> hrmConfig;
+        private readonly IRestClient webClient;
 
-        public BioTimeChangeScheduleAlert(IBaseService baseService,
-            INexbotService nexbotService,
+        public BioTimeChangeScheduleAlert(
             ILogService logService,
             IRecurringJobManager recurringJob,
+            IRestClient webClient,
+            IOptionsSnapshot<NexHrmConfigs> hrmConfig,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
-            this.baseService = baseService;
-            this.nexbotService = nexbotService;
             this.logService = logService;
             this.recurringJob = recurringJob;
             this.configs = configs;
+            this.hrmConfig = hrmConfig;
+            this.webClient = webClient;
         }
 
         public void Initialize()
@@ -48,40 +44,17 @@
 
         public async Task RunJob(MessageCategory categoryId)
         {
-            var criteria = new GetWarningBioTimeChangeCriteria
-            {
-                FromDate = DateTime.Now.Date.AddDays(-1),
-                ToDate = DateTime.Now.Date.AddDays(1)
-            };
-            var warningTimeChanges = await baseService.GetDataAsync<BioTimeChange>(criteria);
+            var request = CreateRequestHeader(hrmConfig.Value.BioTimeChange, Method.GET);
 
-            if (warningTimeChanges.Any())
-            {
-                var conversationIds = await nexbotService.GetRegisteredConversation(categoryId).ConfigureAwait(false);
-
-                if (conversationIds.Any())
-                {
-                    var message = GenerateMesssage(warningTimeChanges);
-                    foreach (var conversationId in conversationIds)
-                    {
-                        await nexbotService.SendMessage(conversationId, message).ConfigureAwait(false);
-                    }
-                }
-            }
-
+            webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
+            await webClient.ExecuteTaskAsync(request);
             await logService.WriteCategoryMessageLog(categoryId);
         }
 
-        private string GenerateMesssage(IEnumerable<BioTimeChange> timeChanges)
+        private RestRequest CreateRequestHeader(string resource, Method method)
         {
-            var message = new StringBuilder();
-            message.Append($"Hi All, There is/are {timeChanges.Count()} change(s) of time: {Constants.NewLine}");
-            foreach (var timeChange in timeChanges)
-            {
-                message.Append($"_- Device Id: {timeChange.DeviceId}. Device Name: {timeChange.DeviceName}. Time Changed: {timeChange.TimeChange.ToShortFormatedDate()}._ {Constants.NewLine}");
-            }
-            message.Append($"Please, review the change(s). Thanks");
-            return message.ToString();
+            var request = new RestRequest(resource, method);
+            return request;
         }
     }
 }

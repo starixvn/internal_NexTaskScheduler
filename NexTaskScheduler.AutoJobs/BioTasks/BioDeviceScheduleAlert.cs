@@ -1,40 +1,37 @@
 ﻿namespace NexTaskScheduler.AutoJobs.BioTasks
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
     using Microsoft.Extensions.Options;
-    using NexTaskScheduler.Core.Constant;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
-    using NexTaskScheduler.Criteria.BioStation;
     using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
+    using RestSharp;
 
     public class BioDeviceScheduleAlert : IJobSchedule
     {
-        private readonly IBaseService baseService;
-        private readonly INexbotService nexbotService;
         private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
+        private readonly IOptionsSnapshot<NexHrmConfigs> hrmConfig;
+        private readonly IRestClient webClient;
 
-        public BioDeviceScheduleAlert(IBaseService baseService,
-            INexbotService nexbotService,
+        public BioDeviceScheduleAlert(
             ILogService logService,
             IRecurringJobManager recurringJob,
+            IRestClient webClient,
+            IOptionsSnapshot<NexHrmConfigs> hrmConfig,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
-            this.baseService = baseService;
-            this.nexbotService = nexbotService;
             this.logService = logService;
             this.recurringJob = recurringJob;
             this.configs = configs;
+            this.hrmConfig = hrmConfig;
+            this.webClient = webClient;
         }
 
         public void Initialize()
@@ -47,34 +44,17 @@
 
         public async Task RunJob(MessageCategory categoryId)
         {
-            var pendingDevices = await baseService.GetDataAsync<BioDevice>(new GetPendingBioDevicesCriteria()).ConfigureAwait(false);
-            if (pendingDevices.Any())
-            {
-                var conversationIds = await nexbotService.GetRegisteredConversation(categoryId).ConfigureAwait(false);
+            var request = CreateRequestHeader(hrmConfig.Value.BioDevice, Method.GET);
 
-                if (conversationIds.Any())
-                {
-                    var message = GenerateMessage(pendingDevices);
-                    foreach (var conversationId in conversationIds)
-                    {
-                        await nexbotService.SendMessage(conversationId, message).ConfigureAwait(false);
-                    }
-                }
-            }
-
+            webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
+            await webClient.ExecuteTaskAsync(request);
             await logService.WriteCategoryMessageLog(categoryId);
         }
 
-        private static string GenerateMessage(IEnumerable<BioDevice> bioDevices)
+        private RestRequest CreateRequestHeader(string resource, Method method)
         {
-            StringBuilder message = new StringBuilder();
-            message.Append($"Hi All, There is/are {bioDevices.Count()} device(s) injected into the BIO system: {Constants.NewLine}");
-            foreach (var device in bioDevices)
-            {
-                message.Append($"_- Device Id: {device.DeviceId}. Device Name: {device.DeviceName }_ {Constants.NewLine}");
-            }
-            message.Append($"Please review this. Thanks");
-            return message.ToString();
+            var request = new RestRequest(resource, method);
+            return request;
         }
     }
 }
