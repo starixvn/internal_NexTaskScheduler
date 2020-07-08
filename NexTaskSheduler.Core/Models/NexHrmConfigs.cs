@@ -15,5 +15,7 @@
         public string ReachedWorkingTimeRoute { get; set; }
 
         public string ReminderBirthdayAndFirstWorkingdayRoute { get; set; }
+
+        public string ReminderMissingCheckInCheckOutScheduleRoute { get; set; }
     }
 }

@@ -65,8 +65,7 @@
         private RestRequest GetToken()
         {
             var route = $"{hrmConfig.Value.AuthTokenRoute}?username={hrmConfig.Value.UserName}&password={hrmConfig.Value.Password}";
-            var request = CreateRequestHeader(route, Method.POST);
-
+            var request = new RestRequest(route, Method.POST);
             return request;
         }
     }
