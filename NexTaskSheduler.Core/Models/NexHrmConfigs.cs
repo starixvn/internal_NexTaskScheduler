@@ -17,5 +17,7 @@
         public string ReminderBirthdayAndFirstWorkingdayRoute { get; set; }
 
         public string ReminderMissingCheckInCheckOutScheduleRoute { get; set; }
+
+        public string LateInEarlyOutViolateOnMonthScheduleWarningRoute { get; set; }
     }
 }
