@@ -5,6 +5,7 @@
     using Hangfire;
     using Hangfire.Common;
     using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
@@ -45,15 +46,26 @@
         public async Task RunJob(MessageCategory categoryId)
         {
             var request = CreateRequestHeader(hrmConfig.Value.BioTimeChange, Method.GET);
-
             webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
-            await webClient.ExecuteTaskAsync(request);
-            await logService.WriteCategoryMessageLog(categoryId);
+            var tokenReponse = await webClient.ExecuteTaskAsync(GetToken());
+            if (tokenReponse.IsSuccessful)
+            {
+                request.AddHeader("Authorization", JsonConvert.DeserializeObject(tokenReponse.Content).ToString());
+                await webClient.ExecuteTaskAsync(request);
+                await logService.WriteCategoryMessageLog(categoryId);
+            }
         }
 
         private RestRequest CreateRequestHeader(string resource, Method method)
         {
             var request = new RestRequest(resource, method);
+            return request;
+        }
+
+        private RestRequest GetToken()
+        {
+            var route = $"{hrmConfig.Value.AuthTokenRoute}?username={hrmConfig.Value.UserName}&password={hrmConfig.Value.Password}";
+            var request = new RestRequest(route, Method.POST);
             return request;
         }
     }
