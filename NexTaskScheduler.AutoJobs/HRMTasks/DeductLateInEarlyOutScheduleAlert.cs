@@ -1,42 +1,38 @@
 ﻿namespace NexTaskScheduler.AutoJobs.HRMTasks
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
-    using Core.Constant;
     using Hangfire;
     using Hangfire.Common;
     using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
-    using NexTaskScheduler.Core.Models.HRM;
-    using NexTaskScheduler.Criteria.HRM;
     using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
+    using RestSharp;
 
     public class DeductLateInEarlyOutScheduleAlert : IJobSchedule
     {
-        private readonly INexbotService nexbotService;
-        private readonly IBaseService baseService;
-        private readonly ILogService logService;
+        private readonly IRestClient webClient;
         private readonly IRecurringJobManager recurringJob;
+        private readonly ILogService logService;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
+        private readonly IOptionsSnapshot<NexHrmConfigs> hrmConfig;
 
         public DeductLateInEarlyOutScheduleAlert(
-            INexbotService nexbotService,
-            IBaseService baseService,
-            ILogService logService,
+            IRestClient webClient,
             IRecurringJobManager recurringJob,
-            IOptionsSnapshot<CronExpressionConfigs> configs)
+            ILogService logService,
+            IOptionsSnapshot<CronExpressionConfigs> configs,
+            IOptionsSnapshot<NexHrmConfigs> hrmConfig)
         {
-            this.nexbotService = nexbotService;
-            this.baseService = baseService;
-            this.logService = logService;
+            this.webClient = webClient;
             this.recurringJob = recurringJob;
+            this.logService = logService;
             this.configs = configs;
+            this.hrmConfig = hrmConfig;
         }
 
         public void Initialize()
@@ -49,43 +45,29 @@
 
         public async Task RunJob(MessageCategory categoryId)
         {
-            var deductedEmployees = await baseService.GetDataAsync<LateInEarlyOutModel>(
-                new GetLateInEarlyOutDuductionCriteria { Year = DateTime.Now.Year });
-
-            if (deductedEmployees.Any())
+            var request = CreateRequestHeader(hrmConfig.Value.LateInEarlyOutDeductScheduleRoute, Method.POST);
+            webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
+            var tokenReponse = await webClient.ExecuteTaskAsync(GetToken());
+            if (tokenReponse.IsSuccessful)
             {
-                var conversations = await nexbotService.GetRegisteredConversation(categoryId);
-
-                if (conversations.Any())
-                {
-                    var message = GenerateMessage(deductedEmployees);
-                    await SendMessageToConversation(conversations, message);
-                }
-            }
-
-            await logService.WriteCategoryMessageLog(categoryId);
-        }
-
-        private async Task SendMessageToConversation(IEnumerable<string> conversations, string message)
-        {
-            foreach (var conversation in conversations)
-            {
-                await nexbotService.SendMessage(conversation, message);
+                request.AddHeader("Authorization", JsonConvert.DeserializeObject(tokenReponse.Content).ToString());
+                await webClient.ExecuteTaskAsync(request);
+                await logService.WriteCategoryMessageLog(categoryId);
             }
         }
 
-        private string GenerateMessage(IEnumerable<LateInEarlyOutModel> deductedEmployees)
+        private RestRequest CreateRequestHeader(string resource, Method method)
         {
-            StringBuilder message = new StringBuilder();
-            message.Append($"Hi All,{Constants.NewLine}");
-            message.Append($"There is/are inform {deductedEmployees.Count()} employee(s) need to deduct balance for Late in/Early out: {Constants.NewLine}");
-            foreach (var e in deductedEmployees)
-            {
-                string balanceCurrentYear = (e.BalanceCurrentYear / 60).ToString("0.0");
-                message.Append($"_- {e.FullName} ({e.NickName}). Balance Current Year: {balanceCurrentYear} hour(s)._ {Constants.NewLine}");
-            }
-            message.Append("Please access https://hrm.nexcel.vn/report/lateinearlyout to review it and take a deduction. Thanks.");
-            return message.ToString();
+            var request = new RestRequest(resource, method);
+            return request;
+        }
+
+        private RestRequest GetToken()
+        {
+            var route = $"{hrmConfig.Value.AuthTokenRoute}?username={hrmConfig.Value.UserName}&password={hrmConfig.Value.Password}";
+            var request = new RestRequest(route, Method.POST);
+
+            return request;
         }
     }
 }

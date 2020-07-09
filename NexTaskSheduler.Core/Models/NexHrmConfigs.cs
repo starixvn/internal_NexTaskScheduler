@@ -21,5 +21,7 @@
         public string LateInEarlyOutViolateOnMonthScheduleWarningRoute { get; set; }
 
         public string ViolateDisciplineScheduleWarningRoute { get; set; }
+
+        public string LateInEarlyOutDeductScheduleRoute { get; set; }
     }
 }
