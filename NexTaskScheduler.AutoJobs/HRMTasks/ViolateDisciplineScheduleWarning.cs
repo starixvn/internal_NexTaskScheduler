@@ -1,45 +1,38 @@
 ﻿namespace NexTaskScheduler.AutoJobs.HRMTasks
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
     using Microsoft.Extensions.Options;
-    using NexTaskScheduler.Core.Constant;
+    using Newtonsoft.Json;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
-    using NexTaskScheduler.Core.Models.HRM;
-    using NexTaskScheduler.Criteria.HRM;
     using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
+    using RestSharp;
 
     public class ViolateDisciplineScheduleWarning : IJobSchedule
     {
-        private readonly IHRMService hrmService;
-        private readonly INexbotService nexbotService;
-        private readonly ILogService logService;
+        private readonly IRestClient webClient;
         private readonly IRecurringJobManager recurringJob;
-        private readonly IHangFireService hangFireService;
+        private readonly ILogService logService;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
+        private readonly IOptionsSnapshot<NexHrmConfigs> hrmConfig;
 
         public ViolateDisciplineScheduleWarning(
-            IHRMService hrmService,
-            INexbotService nexbotService,
-            ILogService logService,
-            IHangFireService hangFireService,
+            IRestClient webClient,
             IRecurringJobManager recurringJob,
-            IOptionsSnapshot<CronExpressionConfigs> configs)
+            ILogService logService,
+            IOptionsSnapshot<CronExpressionConfigs> configs,
+            IOptionsSnapshot<NexHrmConfigs> hrmConfig)
         {
-            this.hrmService = hrmService;
-            this.nexbotService = nexbotService;
-            this.logService = logService;
-            this.hangFireService = hangFireService;
-            this.configs = configs;
+            this.webClient = webClient;
             this.recurringJob = recurringJob;
+            this.logService = logService;
+            this.configs = configs;
+            this.hrmConfig = hrmConfig;
         }
 
         public void Initialize()
@@ -52,59 +45,29 @@
 
         public async Task RunJob(MessageCategory categoryId)
         {
-            var toDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
-            var fromDate = toDate.AddYears(-1).AddDays(1);
-
-            var criteria = new GetViolateLateInEarlyOutDisciplineCriteria
+            var request = CreateRequestHeader(hrmConfig.Value.ViolateDisciplineScheduleWarningRoute, Method.POST);
+            webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
+            var tokenReponse = await webClient.ExecuteTaskAsync(GetToken());
+            if (tokenReponse.IsSuccessful)
             {
-                FromDate = fromDate,
-                ToDate = toDate
-            };
-
-            var violaters = await hrmService.GetLateInEarlyOutDiscipline(criteria);
-
-            if (violaters.Any())
-            {
-                bool isChangedObject = await hangFireService.ObjectIsChangedOrNotExists(categoryId, violaters);
-
-                if (isChangedObject)
-                {
-                    await SendMessageToGroup(violaters, fromDate, toDate);
-
-                    await hangFireService.UpdateJsonObject(categoryId, violaters);
-                }
-            }
-
-            await logService.WriteCategoryMessageLog(categoryId);
-        }
-
-        private async Task SendMessageToGroup(IEnumerable<LateInEarlyOutDiscipline> violaters, DateTime fromDate, DateTime toDate)
-        {
-            var conversations = await nexbotService.GetRegisteredConversation(MessageCategory.ViolateLateInEarlyOutDiscipline);
-
-            if (conversations.Any())
-            {
-                string message = GenerateGroupMessage(violaters, fromDate, toDate);
-
-                foreach (var conversation in conversations)
-                {
-                    await nexbotService.SendMessage(conversation, message);
-                }
+                request.AddHeader("Authorization", JsonConvert.DeserializeObject(tokenReponse.Content).ToString());
+                await webClient.ExecuteTaskAsync(request);
+                await logService.WriteCategoryMessageLog(categoryId);
             }
         }
 
-        private string GenerateGroupMessage(IEnumerable<LateInEarlyOutDiscipline> violaters, DateTime fromDate, DateTime toDate)
+        private RestRequest CreateRequestHeader(string resource, Method method)
         {
-            StringBuilder message = new StringBuilder();
-            message.Append($"Hi All. There is/are {violaters.Count()} employee(s) violate Late in/Early out discipline over 3 times from {fromDate.ToString("dd MMM, yyyy")} to {toDate.ToString("dd MMM, yyyy")}: {Constants.NewLine}");
+            var request = new RestRequest(resource, method);
+            return request;
+        }
 
-            foreach (var violater in violaters)
-            {
-                message.Append($"_- {violater.FullName} ({violater.NickName}) violate {violater.TotalTimes} time(s)._ {Constants.NewLine}");
-            }
-            message.Append("Please access https://hrm.nexcel.vn/report/lateinearlyoutdiscipline to view more details. And don't forget to warning employees who violate the discipline over 3 times. Thanks");
+        private RestRequest GetToken()
+        {
+            var route = $"{hrmConfig.Value.AuthTokenRoute}?username={hrmConfig.Value.UserName}&password={hrmConfig.Value.Password}";
+            var request = new RestRequest(route, Method.POST);
 
-            return message.ToString();
+            return request;
         }
     }
 }

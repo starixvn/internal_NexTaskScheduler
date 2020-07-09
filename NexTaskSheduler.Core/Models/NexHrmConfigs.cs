@@ -19,5 +19,7 @@
         public string ReminderMissingCheckInCheckOutScheduleRoute { get; set; }
 
         public string LateInEarlyOutViolateOnMonthScheduleWarningRoute { get; set; }
+
+        public string ViolateDisciplineScheduleWarningRoute { get; set; }
     }
 }

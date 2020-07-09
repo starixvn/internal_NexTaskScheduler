@@ -22,8 +22,6 @@
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.InitJobs.AutoJobs;
     using NexTaskScheduler.Interfaces.AutoJobs;
-    using NexTaskScheduler.Service.Respositories;
-    using NexTaskScheduler.Service.Respositories.Interfaces;
     using NexTaskScheduler.Service.Services;
     using NexTaskScheduler.Service.Services.Interfaces;
     using NexTaskScheduler.WindowsService.Extensions;
@@ -118,8 +116,6 @@
             services.AddTransient<IRestClient, RestClient>();
             services.AddTransient<INexbotService, NexbotService>();
             services.AddTransient<IRedmineService, RedmineService>();
-            services.AddTransient<IHRMRepository, HRMRepository>();
-            services.AddTransient<IHRMService, HRMService>();
             services.AddTransient<IRedmineService, RedmineService>();
             services.AddTransient<IHangFireService, HangFireService>();
             services.AddTransient<ILogService, LogService>();
