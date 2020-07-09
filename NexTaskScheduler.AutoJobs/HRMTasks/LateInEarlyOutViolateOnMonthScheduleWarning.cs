@@ -51,7 +51,7 @@
             if (tokenReponse.IsSuccessful)
             {
                 request.AddHeader("Authorization", JsonConvert.DeserializeObject(tokenReponse.Content).ToString());
-                var result = await webClient.ExecuteTaskAsync(request);
+                await webClient.ExecuteTaskAsync(request);
                 await logService.WriteCategoryMessageLog(categoryId);
             }
         }
