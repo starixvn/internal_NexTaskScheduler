@@ -30,5 +30,7 @@
 
         public string BioFingerprintAndCard { get; set; }
 
+        public string ForgotSpendTime { get; set; }
+
     }
 }

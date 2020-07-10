@@ -1,40 +1,38 @@
 ﻿namespace NexTaskScheduler.AutoJobs.RedmineTasks
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Hangfire;
     using Hangfire.Common;
     using Microsoft.Extensions.Options;
-    using NexTaskScheduler.Core.Constant;
+    using Newtonsoft.Json;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
-    using NexTaskScheduler.Core.Models.Redmine;
     using NexTaskScheduler.Interfaces.AutoJobs;
     using NexTaskScheduler.Service.Services.Interfaces;
+    using RestSharp;
 
     public class ForgotLogtimeScheduleReminder : IJobSchedule
     {
-        private readonly INexbotService nexbotService;
-        private readonly IRedmineService redmineService;
         private readonly ILogService logService;
         private readonly IRecurringJobManager recurringJob;
         private readonly IOptionsSnapshot<CronExpressionConfigs> configs;
+        private readonly IRestClient webClient;
+        private readonly IOptionsSnapshot<NexHrmConfigs> hrmConfig;
 
-        public ForgotLogtimeScheduleReminder(INexbotService nexbotService,
-            IRedmineService redmineService,
+        public ForgotLogtimeScheduleReminder(
             ILogService logService,
             IRecurringJobManager recurringJob,
+            IRestClient webClient,
+            IOptionsSnapshot<NexHrmConfigs> hrmConfig,
             IOptionsSnapshot<CronExpressionConfigs> configs)
         {
-            this.nexbotService = nexbotService;
-            this.redmineService = redmineService;
             this.logService = logService;
             this.recurringJob = recurringJob;
             this.configs = configs;
+            this.hrmConfig = hrmConfig;
+            this.webClient = webClient;
         }
 
         public void Initialize()
@@ -47,70 +45,28 @@
 
         public async Task RunJob(MessageCategory categoryId)
         {
-            var forgotLogtimeEmployees = await redmineService.GetForgotLogtimeEmployees();
-
-            if (forgotLogtimeEmployees.Any())
+            var request = CreateRequestHeader(hrmConfig.Value.ForgotSpendTime, Method.POST);
+            webClient.BaseUrl = new Uri(hrmConfig.Value.ApiUrl);
+            var tokenReponse = await webClient.ExecuteTaskAsync(GetToken());
+            if (tokenReponse.IsSuccessful)
             {
-                await SendMessageToEmployees(forgotLogtimeEmployees.Where(e => !string.IsNullOrWhiteSpace(e.ConversationId)));
-
-                await SendMessageToGroups(forgotLogtimeEmployees, categoryId);
-            }
-
-            await logService.WriteCategoryMessageLog(categoryId);
-        }
-
-        private async Task SendMessageToGroups(IEnumerable<RedmineUser> forgotLogtimeEmployees, MessageCategory categoryId)
-        {
-            var conversationIds = await nexbotService.GetRegisteredConversation(categoryId);
-
-            if (conversationIds.Any())
-            {
-                string message = GenerateGroupMessage(forgotLogtimeEmployees);
-
-                foreach (var conversationId in conversationIds)
-                {
-                    await nexbotService.SendMessage(conversationId, message);
-                }
+                request.AddHeader("Authorization", JsonConvert.DeserializeObject(tokenReponse.Content).ToString());
+                await webClient.ExecuteTaskAsync(request);
+                await logService.WriteCategoryMessageLog(categoryId);
             }
         }
 
-        private string GenerateGroupMessage(IEnumerable<RedmineUser> employees)
+        private RestRequest CreateRequestHeader(string resource, Method method)
         {
-            StringBuilder message = new StringBuilder();
-            message.Append($"Hi All. There is/are {employees.Count()} employee(s) forgot log time on Nexdev: {Constants.NewLine}");
-
-            foreach (var employee in employees)
-            {
-                foreach (var date in employee.ForgotLogtimeDates)
-                {
-                    message.Append($"_- {employee.FullName} ({employee.NickName}) forgot log time on {date.ToString("dd MMM, yyyy")}_ {Constants.NewLine}");
-                }
-            }
-            message.Append("Please notice that. Thanks ");
-
-            return message.ToString();
+            var request = new RestRequest(resource, method);
+            return request;
         }
 
-        private async Task SendMessageToEmployees(IEnumerable<RedmineUser> forgotLogtimeEmployees)
+        private RestRequest GetToken()
         {
-            foreach (var employee in forgotLogtimeEmployees)
-            {
-                var message = GenerateMessage(employee);
-                await nexbotService.SendMessage(employee.ConversationId, message);
-            }
-        }
-
-        private static string GenerateMessage(RedmineUser employee)
-        {
-            StringBuilder message = new StringBuilder();
-            message.Append($"Dear {employee.NickName}, {Constants.NewLine}");
-            message.Append($"You forgot log time on: {Constants.NewLine}");
-            foreach (var date in employee.ForgotLogtimeDates)
-            {
-                message.Append($"_- {date.ToString("dd MMM, yyyy")}_{Constants.NewLine}");
-            }
-            message.Append($"Please log time on https://nexdev.net/ or you can log time directly on https://hrm.nexcel.vn/ Dashboard. Thanks");
-            return message.ToString();
+            var route = $"{hrmConfig.Value.AuthTokenRoute}?username={hrmConfig.Value.UserName}&password={hrmConfig.Value.Password}";
+            var request = new RestRequest(route, Method.POST);
+            return request;
         }
     }
 }

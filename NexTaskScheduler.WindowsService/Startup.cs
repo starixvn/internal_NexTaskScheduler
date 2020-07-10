@@ -115,8 +115,6 @@
             services.AddSingleton<IBaseService, BaseService>();
             services.AddTransient<IRestClient, RestClient>();
             services.AddTransient<INexbotService, NexbotService>();
-            services.AddTransient<IRedmineService, RedmineService>();
-            services.AddTransient<IRedmineService, RedmineService>();
             services.AddTransient<IHangFireService, HangFireService>();
             services.AddTransient<ILogService, LogService>();
         }
