@@ -50,7 +50,7 @@
             var tokenReponse = await webClient.ExecuteTaskAsync(GetToken());
             if (tokenReponse.IsSuccessful)
             {
-                request.AddHeader("Authorization", JsonConvert.DeserializeObject(tokenReponse.Content).ToString());
+                request.AddHeader("Authorization", $"Bearer {JsonConvert.DeserializeObject(tokenReponse.Content).ToString()}");
                 await webClient.ExecuteTaskAsync(request);
                 await logService.WriteCategoryMessageLog(categoryId);
             }
