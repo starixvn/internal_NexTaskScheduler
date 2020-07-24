@@ -114,8 +114,6 @@
             services.AddSingleton<IRecurringJobManager, RecurringJobManager>();
             services.AddSingleton<IBaseService, BaseService>();
             services.AddTransient<IRestClient, RestClient>();
-            services.AddTransient<INexbotService, NexbotService>();
-            services.AddTransient<IHangFireService, HangFireService>();
             services.AddTransient<ILogService, LogService>();
         }
 

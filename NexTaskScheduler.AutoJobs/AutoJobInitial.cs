@@ -16,7 +16,6 @@
         private readonly IRecurringJobManager recurringJob;
 
         public AutoJobInitial(Func<MessageCategory, IJobSchedule> autoReminder,
-            INexbotService nexbotService,
             ILogService logService,
             IRecurringJobManager recurringJob)
         {
