@@ -6,24 +6,19 @@
     using System.Threading.Tasks;
     using Fanex.Data;
     using Hangfire;
-    using Microsoft.AspNetCore.Authentication.Cookies;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using NexTaskScheduler.AutoJobs.BioTasks;
     using NexTaskScheduler.AutoJobs.HRMTasks;
     using NexTaskScheduler.AutoJobs.Interfaces;
     using NexTaskScheduler.AutoJobs.NexGoalTasks;
-    using NexTaskScheduler.AutoJobs.RedmineTasks;
     using NexTaskScheduler.Core.Enum;
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.InitJobs.AutoJobs;
     using NexTaskScheduler.Interfaces.AutoJobs;
-    using NexTaskScheduler.Service.Services;
-    using NexTaskScheduler.Service.Services.Interfaces;
     using NexTaskScheduler.WindowsService.Extensions;
     using RestSharp;
 
@@ -112,9 +107,7 @@
         {
             services.AddSingleton(_ => Configuration);
             services.AddSingleton<IRecurringJobManager, RecurringJobManager>();
-            services.AddSingleton<IBaseService, BaseService>();
             services.AddTransient<IRestClient, RestClient>();
-            services.AddTransient<ILogService, LogService>();
         }
 
         private void InjectAutoJobs(IServiceCollection services)
@@ -124,7 +117,6 @@
             services.AddTransient<BioTimeChangeScheduleAlert>();
             services.AddTransient<FingerprintAndCardVerifyScheduleAlert>();
             services.AddTransient<RemindMissingCheckInCheckOutSchedule>();
-            services.AddTransient<ForgotLogtimeScheduleReminder>();
             services.AddTransient<DeductLateInEarlyOutScheduleAlert>();
             services.AddTransient<LateInEarlyOutViolateOnMonthScheduleWarning>();
             services.AddTransient<ViolateDisciplineScheduleWarning>();
@@ -149,9 +141,6 @@
 
                     case MessageCategory.MissingCheckInCheckOut:
                         return serviceProvider.GetService<RemindMissingCheckInCheckOutSchedule>();
-
-                    case MessageCategory.ForgotSpendTime:
-                        return serviceProvider.GetService<ForgotLogtimeScheduleReminder>();
 
                     case MessageCategory.DeductLateInEarlyOut:
                         return serviceProvider.GetService<DeductLateInEarlyOutScheduleAlert>();

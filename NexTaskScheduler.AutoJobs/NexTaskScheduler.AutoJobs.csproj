@@ -1,8 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="InitJobs\**" />
+    <EmbeddedResource Remove="InitJobs\**" />
+    <None Remove="InitJobs\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Hangfire.Core" Version="1.6.20" />
@@ -10,12 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NexTaskScheduler.Service\NexTaskScheduler.Service.csproj" />
     <ProjectReference Include="..\NexTaskSheduler.Core\NexTaskScheduler.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="InitJobs\" />
   </ItemGroup>
 
 </Project>

@@ -1,17 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.Core", "NexTaskSheduler.Core\NexTaskScheduler.Core.csproj", "{2282EC2A-86A3-47D5-8E83-7008447296E8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.Criteria", "NexTaskScheduler.Criteria\NexTaskScheduler.Criteria.csproj", "{0E0C879D-EB6B-4FE7-B029-1720D1E4A75A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.Service", "NexTaskScheduler.Service\NexTaskScheduler.Service.csproj", "{03C17416-0570-446D-969B-594A3F7CC3B4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.WindowsService", "NexTaskScheduler.WindowsService\NexTaskScheduler.WindowsService.csproj", "{AC95633F-F07B-466F-B3CD-1B2B1A9F0201}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.AutoJobs", "NexTaskScheduler.AutoJobs\NexTaskScheduler.AutoJobs.csproj", "{23CA6041-B9BC-4591-ADF4-853ED52DB5D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NexTaskScheduler.Jobs", "NexTaskScheduler.Jobs\NexTaskScheduler.Jobs.csproj", "{F30A202D-92BE-42C3-B11F-99E94253A6A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,22 +17,10 @@ Global
 		{2282EC2A-86A3-47D5-8E83-7008447296E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2282EC2A-86A3-47D5-8E83-7008447296E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2282EC2A-86A3-47D5-8E83-7008447296E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E0C879D-EB6B-4FE7-B029-1720D1E4A75A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E0C879D-EB6B-4FE7-B029-1720D1E4A75A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E0C879D-EB6B-4FE7-B029-1720D1E4A75A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E0C879D-EB6B-4FE7-B029-1720D1E4A75A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{03C17416-0570-446D-969B-594A3F7CC3B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03C17416-0570-446D-969B-594A3F7CC3B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03C17416-0570-446D-969B-594A3F7CC3B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03C17416-0570-446D-969B-594A3F7CC3B4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC95633F-F07B-466F-B3CD-1B2B1A9F0201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC95633F-F07B-466F-B3CD-1B2B1A9F0201}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC95633F-F07B-466F-B3CD-1B2B1A9F0201}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC95633F-F07B-466F-B3CD-1B2B1A9F0201}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23CA6041-B9BC-4591-ADF4-853ED52DB5D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23CA6041-B9BC-4591-ADF4-853ED52DB5D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23CA6041-B9BC-4591-ADF4-853ED52DB5D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23CA6041-B9BC-4591-ADF4-853ED52DB5D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F30A202D-92BE-42C3-B11F-99E94253A6A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F30A202D-92BE-42C3-B11F-99E94253A6A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F30A202D-92BE-42C3-B11F-99E94253A6A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F30A202D-92BE-42C3-B11F-99E94253A6A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

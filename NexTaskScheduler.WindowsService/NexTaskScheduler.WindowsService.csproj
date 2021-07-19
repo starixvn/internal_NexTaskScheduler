@@ -10,7 +10,7 @@
     <PublishProtocol>FileSystem</PublishProtocol>
     <Configuration>Release</Configuration>
     <Platform>Any CPU</Platform>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <PublishDir>D:\Deploy\ChatBotHangfire</PublishDir>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>true</SelfContained>
@@ -51,7 +51,6 @@
     <PackageReference Include="Fanex.Data" Version="3.0.0-rc1" />
     <PackageReference Include="Fanex.Data.Repository" Version="3.0.0-rc1" />
     <PackageReference Include="Hangfire" Version="1.6.20" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.11" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="2.1.1" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.6.0" />
@@ -59,7 +58,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NexTaskScheduler.AutoJobs\NexTaskScheduler.AutoJobs.csproj" />
-    <ProjectReference Include="..\NexTaskScheduler.Service\NexTaskScheduler.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
