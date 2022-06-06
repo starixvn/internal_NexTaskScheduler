@@ -1,20 +1,21 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+FROM registry.nexdev.net:5050/docker/dotnet/core/sdk:5.0.102-ca-patch-buster-slim AS builder
 
-FROM mcr.microsoft.com/dotnet/runtime:5.0-buster-slim AS base
-WORKDIR /app
-
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
+
+COPY ["nuget.config", "."]
 COPY ["NexTaskScheduler.Jobs/NexTaskScheduler.Jobs.csproj", "NexTaskScheduler.Jobs/"]
+COPY ["NexTaskSheduler.Core/NexTaskScheduler.Core.csproj", "NexTaskSheduler.Core/"]
 RUN dotnet restore "NexTaskScheduler.Jobs/NexTaskScheduler.Jobs.csproj"
+
 COPY . .
+
 WORKDIR "/src/NexTaskScheduler.Jobs"
-RUN dotnet build "NexTaskScheduler.Jobs.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "NexTaskScheduler.Jobs.csproj" -c Release -o /app/publish
+RUN dotnet publish -r linux-x64 --self-contained false -o /app
 
-FROM base AS final
+FROM registry.nexdev.net:5050/docker/dotnet/core/aspnet:5.0-buster-slim AS base
+
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=builder /app .
+
 ENTRYPOINT ["dotnet", "NexTaskScheduler.Jobs.dll"]

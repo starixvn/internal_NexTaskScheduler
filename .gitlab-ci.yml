@@ -1,0 +1,4 @@
+include:
+  - project: 'ci/repos-ci/nexus_nexcel_nex_task_scheduler'
+    ref: master
+    file: 'gitlab-ci.yml'
