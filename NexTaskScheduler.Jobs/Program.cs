@@ -63,8 +63,10 @@ namespace NexTaskScheduler.Jobs
 
         private static void AddWorker(IServiceCollection services)
         {
+            services.AddHostedService<ReSendErrorMessageWorker>();
             services.AddHostedService<NewBioDeviceAlertWorker>();
             services.AddHostedService<BioTimeChangeAlertWorker>();
+
             services.AddHostedService<FingerprintAndCardVerifyAlertWorker>();
             services.AddHostedService<DeductLateInEarlyOutAlertWorker>();
             services.AddHostedService<LateInEarlyOutViolateOnMonthWarningWorker>();
@@ -74,10 +76,18 @@ namespace NexTaskScheduler.Jobs
             services.AddHostedService<SendScheduledMessageWorker>();
             services.AddHostedService<ViolateDisciplineWarningWorker>();
 
-            services.AddHostedService<ReSendErrorMessageWorker>();
-
             services.AddHostedService<NexGoalAutoJobWorker>();
             services.AddHostedService<LumiGoalAutoJobWorker>();
+
+            services.AddHostedService<LumiFingerprintAndCardVerifyAlertWorker>();
+            services.AddHostedService<LumiDeductLateInEarlyOutAlertWorker>();
+            services.AddHostedService<LumiLateInEarlyOutViolateOnMonthWarningWorker>();
+            services.AddHostedService<LumiRemindBirthdayAndFirstWorkingdayWorker>();
+            services.AddHostedService<LumiRemindMissingCheckInCheckOutWorker>();
+            services.AddHostedService<LumiRemindReachedWorkingTimeWorker>();
+            services.AddHostedService<LumiSendScheduledMessageWorker>();
+            services.AddHostedService<LumiViolateDisciplineWarningWorker>();
+            
         }
     }
 }

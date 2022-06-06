@@ -28,5 +28,21 @@
 
         public const string LumiGoalAutoJob = "LumiGoalAutoJob";
 
+        public const string LumiFingerprintAndCardVerifyAlert = "LumiFingerprintAndCardVerifyAlert";
+
+        public const string LumiDeductLateInEarlyOutAlert = "LumiDeductLateInEarlyOutAlert";
+
+        public const string LumiLateInEarlyOutViolateOnMonthWarning = "LumiLateInEarlyOutViolateOnMonthWarning";
+
+        public const string LumiRemindBirthdayAndFirstWorkingday = "LumiRemindBirthdayAndFirstWorkingday";
+
+        public const string LumiRemindMissingCheckInCheckOut = "LumiRemindMissingCheckInCheckOut";
+
+        public const string LumiRemindReachedWorkingTime = "LumiRemindReachedWorkingTime";
+
+        public const string LumiSendScheduledMessage = "LumiSendScheduledMessage";
+
+        public const string LumiViolateDisciplineWarning = "LumiViolateDisciplineWarning";
+
     }
 }
