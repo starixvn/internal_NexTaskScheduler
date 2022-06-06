@@ -1,0 +1,103 @@
+﻿namespace NexTaskScheduler.Jobs
+{
+    using System.Collections.Generic;
+    using Fanex.Logging;
+    using Fanex.Logging.Extensions;
+    using Fanex.Logging.Extensions.AspNetCore;
+    using Fanex.Logging.Sentry;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using NexTaskScheduler.Core;
+    using NexTaskScheduler.Core.Models;
+    using NexTaskScheduler.Jobs.Middleware;
+    using NexTaskScheduler.Jobs.Workers;
+    using RestSharp;
+    using Sentry;
+
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers();
+            AddConfiguration(services, Configuration);
+            AddDependencyInjection(services);
+            AddWorker(services);
+        }
+
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
+            }
+
+            app.UseMiddleware<ErrorHandler>();
+
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Auth}/{action=Index}/{id?}");
+            });
+        }
+
+        private static void AddConfiguration(IServiceCollection services, IConfiguration configuration)
+        {
+            LogManager
+            .SetDefaultLogCategory(configuration.GetSection("LogCategory").Value)
+            .Use(new List<ILogEngine>
+            {
+                new SentryLogging(new SentryEngineOptions
+                {
+                    Dsn = new Dsn(configuration.GetSection("SentryEngineOptions:Dsn").Value)
+                })
+            });
+
+            ExceptionHandler
+                .UseConfig(new LoggingConfiguration());
+
+            services.Configure<List<JobSetting>>(configuration.GetSection("JobSettings"));
+        }
+
+        private static void AddDependencyInjection(IServiceCollection services)
+        {
+            services.AddSingleton<ILogger, Logger>();
+            services.AddSingleton<ILogServiceProvider, LogServiceProvider>();
+
+            services.AddSingleton<IRestClient, RestClient>();
+        }
+
+        private static void AddWorker(IServiceCollection services)
+        {
+            services.AddHostedService<NewBioDeviceAlertWorker>();
+            services.AddHostedService<BioTimeChangeAlertWorker>();
+            services.AddHostedService<FingerprintAndCardVerifyAlertWorker>();
+            services.AddHostedService<DeductLateInEarlyOutAlertWorker>();
+            services.AddHostedService<LateInEarlyOutViolateOnMonthWarningWorker>();
+            services.AddHostedService<RemindBirthdayAndFirstWorkingdayWorker>();
+            services.AddHostedService<RemindMissingCheckInCheckOutWorker>();
+            services.AddHostedService<RemindReachedWorkingTimeWorker>();
+            services.AddHostedService<SendScheduledMessageWorker>();
+            services.AddHostedService<ViolateDisciplineWarningWorker>();
+            services.AddHostedService<ReSendErrorMessageWorker>();
+            services.AddHostedService<NexGoalAutoJobWorker>();
+            services.AddHostedService<LumiGoalAutoJobWorker>();
+        }
+    }
+}
