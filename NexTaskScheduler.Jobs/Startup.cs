@@ -32,6 +32,7 @@
             AddConfiguration(services, Configuration);
             AddDependencyInjection(services);
             AddWorker(services);
+            AddLumiWorker(services);
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -97,7 +98,19 @@
             services.AddHostedService<ViolateDisciplineWarningWorker>();
             services.AddHostedService<ReSendErrorMessageWorker>();
             services.AddHostedService<NexGoalAutoJobWorker>();
+        }
+
+        private static void AddLumiWorker(IServiceCollection services)
+        {
             services.AddHostedService<LumiGoalAutoJobWorker>();
+            services.AddHostedService<LumiFingerprintAndCardVerifyAlertWorker>();
+            services.AddHostedService<LumiDeductLateInEarlyOutAlertWorker>();
+            services.AddHostedService<LumiLateInEarlyOutViolateOnMonthWarningWorker>();
+            services.AddHostedService<LumiRemindBirthdayAndFirstWorkingdayWorker>();
+            services.AddHostedService<LumiRemindMissingCheckInCheckOutWorker>();
+            services.AddHostedService<LumiRemindReachedWorkingTimeWorker>();
+            services.AddHostedService<LumiSendScheduledMessageWorker>();
+            services.AddHostedService<LumiViolateDisciplineWarningWorker>();
         }
     }
 }

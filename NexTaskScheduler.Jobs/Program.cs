@@ -38,15 +38,5 @@ namespace NexTaskScheduler.Jobs
                     logging.SetMinimumLevel(LogLevel.Trace);
                 })
                 .UseNLog();
-
-            services.AddHostedService<LumiFingerprintAndCardVerifyAlertWorker>();
-            services.AddHostedService<LumiDeductLateInEarlyOutAlertWorker>();
-            services.AddHostedService<LumiLateInEarlyOutViolateOnMonthWarningWorker>();
-            services.AddHostedService<LumiRemindBirthdayAndFirstWorkingdayWorker>();
-            services.AddHostedService<LumiRemindMissingCheckInCheckOutWorker>();
-            services.AddHostedService<LumiRemindReachedWorkingTimeWorker>();
-            services.AddHostedService<LumiSendScheduledMessageWorker>();
-            services.AddHostedService<LumiViolateDisciplineWarningWorker>();
-            
     }
 }
