@@ -9,97 +9,29 @@
     using NexTaskScheduler.Core.Models;
     using RestSharp;
 
-    public class BaseWorker : BackgroundService
+    public abstract class BaseWorker : BackgroundService
     {
         private readonly ILogServiceProvider logService;
-
-        private Timer timer;
-        private bool isRunning;
-
         protected JobSetting jobSetting;
         protected IRestClient restClient;
         private bool isFirstRun = true;
 
-
-        public BaseWorker(ILogServiceProvider logService,
+        protected BaseWorker(ILogServiceProvider logService,
             IRestClient restClient)
         {
             this.logService = logService;
             this.restClient = restClient;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            timer = new Timer(Execute,
-               null,
-               TimeSpan.Zero,
-               TimeSpan.FromSeconds(jobSetting.TimeInterval));
-
-            await Task.CompletedTask;
-        }
-
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            logService.WriteLogFileInfo($"{jobSetting.JobName}: Service Starting");
+            logService.WriteLogFileInfo($"{jobSetting.JobName}: Service starting");
             return base.StartAsync(cancellationToken);
         }
 
-        private void Execute(object state)
+        public async Task DoWorkAsync()
         {
-            try
-            {
-                if (IsJobReadyToRun() && !isRunning)
-                {
-                    isRunning = true;
-                    logService.WriteLogFileInfo($"{jobSetting.JobName}: Doing...");
-                    _ = ExecuteJobAsync();
-                    logService.WriteLogFileInfo($"{jobSetting.JobName}: Done.");
-                }
-            }
-            catch (Exception ex)
-            {
-                logService.WriteExceptionSentryErrorAsync(ex);
-                logService.WriteLogFileInfo($"{jobSetting.JobName}: Error - {ex}");
-            }
-            finally
-            {
-                isRunning = false;
-                isFirstRun = false;
-            }
-        }
-
-        private bool IsJobReadyToRun()
-        {
-            bool isReady;
-            if(!jobSetting.IsEnabled)
-            {
-                isReady = false;
-            }
-            else
-            {
-                if (isFirstRun && jobSetting.IsRunAtStarted)
-                {
-                    isReady = true;
-                }
-                else
-                {
-                    isReady = IsValidTimeRun();
-                }
-            }
-
-            return isReady;
-        }
-
-        private bool IsValidTimeRun()
-        {
-            var isValid = string.IsNullOrWhiteSpace(jobSetting.RunAtFixedTime)
-                || jobSetting.RunAtFixedTime.Contains(DateTime.Now.ToString("HH:mm"));
-            return isValid;
-        }
-
-        public virtual async Task ExecuteJobAsync()
-        {
-            var method = string.Equals(jobSetting.Method, "GET", StringComparison.OrdinalIgnoreCase) 
+            var method = string.Equals(jobSetting.Method, "GET", StringComparison.OrdinalIgnoreCase)
                 ? Method.GET : Method.POST;
             var request = CreateRequestHeader(jobSetting.RequestUrl, method);
             restClient.BaseUrl = new Uri(jobSetting.BaseUrl);
@@ -115,20 +47,90 @@
             await restClient.ExecuteAsync(request);
         }
 
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            const byte MillisecondsDelay = 10;
+            await Task.Delay(MillisecondsDelay).ConfigureAwait(false);
+
+            try
+            {
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    await RunJobAsync();
+
+                    await Task.Delay(TimeSpan.FromSeconds(jobSetting.TimeInterval), stoppingToken);
+                }
+
+                logService.WriteLogFileInfo($"Execution ended. Cancelation token cancelled = {stoppingToken.IsCancellationRequested}");
+            }
+            catch (Exception ex)
+            {
+                logService.WriteLogFileInfo("Unhandeled exception. Execution Stopping");
+                logService.WriteLogFileInfo(ex.Message);
+            }
+        }
+
+        private async Task RunJobAsync()
+        {
+            try
+            {
+                if (IsJobReadyToRun())
+                {
+                    logService.WriteLogFileInfo($"{jobSetting.JobName}: Doing...");
+                    await DoWorkAsync();
+                    logService.WriteLogFileInfo($"{jobSetting.JobName}: Done.");
+                }
+            }
+            catch (Exception ex)
+            {
+                await logService.WriteExceptionSentryErrorAsync(ex);
+                logService.WriteLogFileInfo($"{jobSetting.JobName}: Error - {ex.Message}");
+            }
+        }
+
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
-            logService.WriteLogFileInfo($"{jobSetting.JobName}: Stopping Service");
-            timer?.Change(Timeout.Infinite, 0);
-            isFirstRun = true;
+            logService.WriteLogFileInfo($"{jobSetting.JobName}: Stopping service");
+
             await base.StopAsync(cancellationToken);
         }
 
         public override void Dispose()
         {
-            logService.WriteLogFileInfo($"{jobSetting.JobName}: Disposing Service");
-            timer.Dispose();
+            logService.WriteLogFileInfo($"{jobSetting.JobName}: Disposing service");
             GC.SuppressFinalize(this);
             base.Dispose();
+        }
+
+        private bool IsJobReadyToRun()
+        {
+            bool isReady;
+            if (!jobSetting.IsEnabled)
+            {
+                isReady = false;
+            }
+            else
+            {
+                if (isFirstRun && jobSetting.IsRunAtStarted)
+                {
+                    isReady = true;
+                }
+                else
+                {
+                    isReady = IsValidTimeRun();
+                }
+
+                isFirstRun = false;
+            }
+
+            return isReady;
+        }
+
+        private bool IsValidTimeRun()
+        {
+            var isValid = string.IsNullOrWhiteSpace(jobSetting.RunAtFixedTime)
+                || jobSetting.RunAtFixedTime.Contains(DateTime.Now.ToString("HH:mm"));
+            return isValid;
         }
 
         private RestRequest CreateRequestHeader(string resource, Method method)

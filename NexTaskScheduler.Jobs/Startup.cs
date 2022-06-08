@@ -31,6 +31,7 @@
             services.AddControllers();
             AddConfiguration(services, Configuration);
             AddDependencyInjection(services);
+
             AddWorker(services);
             AddLumiWorker(services);
         }
