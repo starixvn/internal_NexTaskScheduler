@@ -14,7 +14,6 @@
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Jobs.Middleware;
     using NexTaskScheduler.Jobs.Workers;
-    using RestSharp;
     using Sentry;
 
     public class Startup
@@ -31,6 +30,7 @@
             services.AddControllers();
             AddConfiguration(services, Configuration);
             AddDependencyInjection(services);
+            services.AddHttpClient();
 
             AddWorker(services);
             AddLumiWorker(services);
@@ -81,8 +81,6 @@
         {
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ILogServiceProvider, LogServiceProvider>();
-
-            services.AddSingleton<IRestClient, RestClient>();
         }
 
         private static void AddWorker(IServiceCollection services)

@@ -1,26 +1,27 @@
 ﻿namespace NexTaskScheduler.Jobs.Workers
 {
     using System;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Hosting;
     using Newtonsoft.Json;
     using NexTaskScheduler.Core;
     using NexTaskScheduler.Core.Models;
-    using RestSharp;
 
     public abstract class BaseWorker : BackgroundService
     {
         private readonly ILogServiceProvider logService;
         protected JobSetting jobSetting;
-        protected IRestClient restClient;
+        private readonly IHttpClientFactory clientFactory;
         private bool isFirstRun = true;
 
         protected BaseWorker(ILogServiceProvider logService,
-            IRestClient restClient)
+            IHttpClientFactory clientFactory)
         {
             this.logService = logService;
-            this.restClient = restClient;
+            this.clientFactory = clientFactory;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -31,20 +32,13 @@
 
         public async Task DoWorkAsync()
         {
-            var method = string.Equals(jobSetting.Method, "GET", StringComparison.OrdinalIgnoreCase)
-                ? Method.GET : Method.POST;
-            var request = CreateRequestHeader(jobSetting.RequestUrl, method);
-            restClient.BaseUrl = new Uri(jobSetting.BaseUrl);
+            string token = string.Empty;
             if (jobSetting.IsAuth)
             {
-                var tokenReponse = await restClient.ExecuteAsync(GetToken());
-                if (tokenReponse.IsSuccessful)
-                {
-                    request.AddHeader("Authorization", $"Bearer {JsonConvert.DeserializeObject(tokenReponse.Content)}");
-                }
+                token = await GetTokenAsync();
             }
 
-            await restClient.ExecuteAsync(request);
+            await SendHttpClientAsync<JobCommonResponse>(jobSetting.BaseUrl, jobSetting.RequestUrl, jobSetting.Method, token);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -133,15 +127,46 @@
             return isValid;
         }
 
-        private RestRequest CreateRequestHeader(string resource, Method method)
+        private async Task<string> GetTokenAsync()
         {
-            var request = new RestRequest(resource, method);
-            return request;
+            string token = await SendHttpClientAsync<string>(jobSetting.BaseUrl, jobSetting.AuthRequestUrl, "POST", string.Empty);
+            return token;
         }
 
-        private RestRequest GetToken()
+        public async Task<T> SendHttpClientAsync<T>(string baseUrl, string endppoint, string method, string token)
         {
-            var request = new RestRequest(jobSetting.AuthRequestUrl, Method.POST);
+            using var request = CreateRequest(baseUrl, endppoint, method);
+            var client = clientFactory.CreateClient();
+
+            if (!string.IsNullOrWhiteSpace(token))
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+
+            using var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResult = await response.Content.ReadAsStringAsync();
+
+                var result = JsonConvert.DeserializeObject<T>(jsonResult);
+
+                return result;
+            }
+
+            var err = await response.Content.ReadAsStringAsync();
+            await logService.WriteMessageSentryErrorAsync(err);
+            return default;
+        }
+
+        private HttpRequestMessage CreateRequest(string baseUrl, string endPoint, string method)
+        {
+            var httpMethod = string.Equals(method, "GET", StringComparison.OrdinalIgnoreCase)
+                ? HttpMethod.Get : HttpMethod.Post;
+
+            Uri url = new($"{baseUrl}{endPoint}");
+            var request = new HttpRequestMessage(httpMethod, url);
+
             return request;
         }
     }
