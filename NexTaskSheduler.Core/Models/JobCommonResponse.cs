@@ -2,9 +2,9 @@
 {
     public class JobCommonResponse
     {
-        public int Code { get; set; }
+        public int? Code { get; set; }
 
-        public int Message { get; set; }
+        public string Message { get; set; }
 
         public bool IsSuccessful { get; set; }
     }
