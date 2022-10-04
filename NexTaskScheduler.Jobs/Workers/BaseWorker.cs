@@ -129,8 +129,13 @@
 
         private async Task<string> GetTokenAsync()
         {
-            string token = await SendHttpClientAsync<string>(jobSetting.BaseUrl, jobSetting.AuthRequestUrl, "POST", string.Empty);
-            return token;
+            using var request = CreateRequest(jobSetting.BaseUrl, jobSetting.AuthRequestUrl, "POST");
+            var client = clientFactory.CreateClient();
+
+            using var response = await client.SendAsync(request);
+            var jsonResult = await response.Content.ReadAsStringAsync();
+
+            return jsonResult;
         }
 
         public async Task<T> SendHttpClientAsync<T>(string baseUrl, string endppoint, string method, string token)
@@ -150,7 +155,6 @@
                 var jsonResult = await response.Content.ReadAsStringAsync();
 
                 var result = JsonConvert.DeserializeObject<T>(jsonResult);
-
                 return result;
             }
 
