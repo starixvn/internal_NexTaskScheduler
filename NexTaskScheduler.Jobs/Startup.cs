@@ -93,10 +93,13 @@
             services.AddHostedService<RemindBirthdayAndFirstWorkingdayWorker>();
             services.AddHostedService<RemindMissingCheckInCheckOutWorker>();
             services.AddHostedService<RemindReachedWorkingTimeWorker>();
+            services.AddHostedService<ImportDataFromBioStarWorker>();
             services.AddHostedService<SendScheduledMessageWorker>();
             services.AddHostedService<ViolateDisciplineWarningWorker>();
             services.AddHostedService<ReSendErrorMessageWorker>();
             services.AddHostedService<NexGoalAutoJobWorker>();
+
+            
         }
 
         private static void AddLumiWorker(IServiceCollection services)
@@ -108,6 +111,7 @@
             services.AddHostedService<LumiRemindBirthdayAndFirstWorkingdayWorker>();
             services.AddHostedService<LumiRemindMissingCheckInCheckOutWorker>();
             services.AddHostedService<LumiRemindReachedWorkingTimeWorker>();
+            services.AddHostedService<LumiImportDataFromBioStarWorker>();
             services.AddHostedService<LumiSendScheduledMessageWorker>();
             services.AddHostedService<LumiViolateDisciplineWarningWorker>();
         }
