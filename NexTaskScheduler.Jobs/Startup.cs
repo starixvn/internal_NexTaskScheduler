@@ -1,10 +1,6 @@
 ﻿namespace NexTaskScheduler.Jobs
 {
     using System.Collections.Generic;
-    using Fanex.Logging;
-    using Fanex.Logging.Extensions;
-    using Fanex.Logging.Extensions.AspNetCore;
-    using Fanex.Logging.Sentry;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -14,7 +10,6 @@
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Jobs.Middleware;
     using NexTaskScheduler.Jobs.Workers;
-    using Sentry;
 
     public class Startup
     {
@@ -61,25 +56,11 @@
 
         private static void AddConfiguration(IServiceCollection services, IConfiguration configuration)
         {
-            LogManager
-            .SetDefaultLogCategory(configuration.GetSection("LogCategory").Value)
-            .Use(new List<ILogEngine>
-            {
-                new SentryLogging(new SentryEngineOptions
-                {
-                    Dsn = new Dsn(configuration.GetSection("SentryEngineOptions:Dsn").Value)
-                })
-            });
-
-            ExceptionHandler
-                .UseConfig(new LoggingConfiguration());
-
             services.Configure<List<JobSetting>>(configuration.GetSection("JobSettings"));
         }
 
         private static void AddDependencyInjection(IServiceCollection services)
         {
-            services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ILogServiceProvider, LogServiceProvider>();
         }
 

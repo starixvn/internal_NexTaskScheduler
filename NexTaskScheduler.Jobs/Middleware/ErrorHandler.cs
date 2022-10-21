@@ -24,7 +24,7 @@
             }
             catch (Exception ex)
             {
-                await logService.WriteExceptionSentryErrorAsync(ex);
+                logService.WriteLogFileException(ex);
             }
         }
     }

@@ -77,8 +77,7 @@
             }
             catch (Exception ex)
             {
-                await logService.WriteExceptionSentryErrorAsync(ex);
-                logService.WriteLogFileInfo($"{jobSetting.JobName}: Error - {ex.Message}");
+                logService.WriteLogFileException(ex);
             }
         }
 
@@ -159,7 +158,7 @@
             }
 
             var err = await response.Content.ReadAsStringAsync();
-            await logService.WriteMessageSentryErrorAsync(err);
+            logService.WriteLogFileInfo(err);
             return default;
         }
 
