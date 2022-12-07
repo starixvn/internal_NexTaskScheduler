@@ -48,5 +48,8 @@
 
         public const string LumiViolateDisciplineWarning = "LumiViolateDisciplineWarning";
 
+        public const string SkypeAccountAutoMapping = "SkypeAccountAutoMapping";
+
+        public const string LuminetSkypeAccountAutoMapping = "LuminetSkypeAccountAutoMapping";
     }
 }

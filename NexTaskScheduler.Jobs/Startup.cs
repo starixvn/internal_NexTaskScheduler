@@ -79,8 +79,7 @@
             services.AddHostedService<ViolateDisciplineWarningWorker>();
             services.AddHostedService<ReSendErrorMessageWorker>();
             services.AddHostedService<NexGoalAutoJobWorker>();
-
-            
+            services.AddHostedService<SkypeAccountAutomapWorker>();
         }
 
         private static void AddLumiWorker(IServiceCollection services)
@@ -95,6 +94,7 @@
             services.AddHostedService<LumiImportDataFromBioStarWorker>();
             services.AddHostedService<LumiSendScheduledMessageWorker>();
             services.AddHostedService<LumiViolateDisciplineWarningWorker>();
+            services.AddHostedService<LuminetSkypeAccountAutoMappingWorker>();
         }
     }
 }
