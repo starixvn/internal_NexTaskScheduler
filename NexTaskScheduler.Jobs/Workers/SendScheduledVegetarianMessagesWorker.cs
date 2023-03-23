@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace NexTaskScheduler.Jobs.Workers
 {
-    internal class SendScheduledVegetarianMessages : BaseWorker
+    internal class SendScheduledVegetarianMessagesWorker : BaseWorker
     {
-        public SendScheduledVegetarianMessages(
+        public SendScheduledVegetarianMessagesWorker(
             IOptions<List<JobSetting>> jobSettings,
             IHttpClientFactory clientFactory,
             ILogServiceProvider logService)
