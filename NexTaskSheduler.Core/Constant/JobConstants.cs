@@ -22,6 +22,8 @@
 
         public const string SendScheduledMessage = "SendScheduledMessage";
 
+        public const string SendScheduledVegetarianMessages = "SendScheduledVegetarianMessages";
+
         public const string ViolateDisciplineWarning = "ViolateDisciplineWarning";
 
         public const string ReSendErrorMessage = "ReSendErrorMessage";
