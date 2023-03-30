@@ -81,6 +81,7 @@
             services.AddHostedService<ReSendErrorMessageWorker>();
             services.AddHostedService<NexGoalAutoJobWorker>();
             services.AddHostedService<SkypeAccountAutomapWorker>();
+            services.AddHostedService<LateInEarlyOutAutoDeductWorker>();
         }
 
         private static void AddLumiWorker(IServiceCollection services)

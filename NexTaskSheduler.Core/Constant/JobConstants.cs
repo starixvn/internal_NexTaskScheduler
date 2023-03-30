@@ -53,5 +53,7 @@
         public const string SkypeAccountAutoMapping = "SkypeAccountAutoMapping";
 
         public const string LuminetSkypeAccountAutoMapping = "LuminetSkypeAccountAutoMapping";
+
+        public const string LateInEarlyOutAutoDeduct = "LateInEarlyOutAutoDeduct";
     }
 }
