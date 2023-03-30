@@ -69,7 +69,7 @@
             services.AddHostedService<NewBioDeviceAlertWorker>();
             services.AddHostedService<BioTimeChangeAlertWorker>();
             services.AddHostedService<FingerprintAndCardVerifyAlertWorker>();
-            services.AddHostedService<DeductLateInEarlyOutAlertWorker>();
+            services.AddHostedService<DeductLateInEarlyOutWorker>();
             services.AddHostedService<LateInEarlyOutViolateOnMonthWarningWorker>();
             services.AddHostedService<RemindBirthdayAndFirstWorkingdayWorker>();
             services.AddHostedService<RemindMissingCheckInCheckOutWorker>();

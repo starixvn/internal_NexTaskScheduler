@@ -8,9 +8,9 @@
     using NexTaskScheduler.Core.Extentions;
     using NexTaskScheduler.Core.Models;
 
-    public class DeductLateInEarlyOutAlertWorker : BaseWorker
+    public class DeductLateInEarlyOutWorker : BaseWorker
     {
-        public DeductLateInEarlyOutAlertWorker(
+        public DeductLateInEarlyOutWorker(
             IOptions<List<JobSetting>> jobSettings,
             IHttpClientFactory clientFactory,
             ILogServiceProvider logService)
