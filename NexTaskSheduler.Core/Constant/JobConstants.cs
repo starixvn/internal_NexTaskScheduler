@@ -22,7 +22,7 @@
 
         public const string SendScheduledMessage = "SendScheduledMessage";
 
-        public const string SendScheduledVegetarianMessages = "SendScheduledVegetarianMessages";
+        public const string CreateScheduledVegetarianMessages = "CreateScheduledVegetarianMessages";
 
         public const string ViolateDisciplineWarning = "ViolateDisciplineWarning";
 

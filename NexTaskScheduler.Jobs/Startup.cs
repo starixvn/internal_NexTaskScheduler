@@ -1,6 +1,5 @@
 ﻿namespace NexTaskScheduler.Jobs
 {
-    using System.Collections.Generic;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -10,6 +9,7 @@
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Jobs.Middleware;
     using NexTaskScheduler.Jobs.Workers;
+    using System.Collections.Generic;
 
     public class Startup
     {
@@ -76,7 +76,7 @@
             services.AddHostedService<RemindReachedWorkingTimeWorker>();
             services.AddHostedService<ImportDataFromBioStarWorker>();
             services.AddHostedService<SendScheduledMessageWorker>();
-            services.AddHostedService<SendScheduledVegetarianMessagesWorker>();
+            services.AddHostedService<CreateScheduledVegetarianMessagesWorker>();
             services.AddHostedService<ViolateDisciplineWarningWorker>();
             services.AddHostedService<ReSendErrorMessageWorker>();
             services.AddHostedService<NexGoalAutoJobWorker>();
