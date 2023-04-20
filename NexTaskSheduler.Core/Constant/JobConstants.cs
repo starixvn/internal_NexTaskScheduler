@@ -22,7 +22,7 @@
 
         public const string SendScheduledMessage = "SendScheduledMessage";
 
-        public const string CreateScheduledVegetarianMessages = "CreateScheduledVegetarianMessages";
+        public const string RemindVegetarianMeal = "RemindVegetarianMeal";
 
         public const string ViolateDisciplineWarning = "ViolateDisciplineWarning";
 
@@ -47,6 +47,8 @@
         public const string LumiImportDataFromBioStar = "LumiImportDataFromBioStar";
 
         public const string LumiSendScheduledMessage = "LumiSendScheduledMessage";
+
+        public const string LumiRemindVegetarianMeal = "LumiRemindVegetarianMeal";
 
         public const string LumiViolateDisciplineWarning = "LumiViolateDisciplineWarning";
 

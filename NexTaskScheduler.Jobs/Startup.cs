@@ -76,7 +76,7 @@
             services.AddHostedService<RemindReachedWorkingTimeWorker>();
             services.AddHostedService<ImportDataFromBioStarWorker>();
             services.AddHostedService<SendScheduledMessageWorker>();
-            services.AddHostedService<CreateScheduledVegetarianMessagesWorker>();
+            services.AddHostedService<RemindVegetarianMealWorker>();
             services.AddHostedService<ViolateDisciplineWarningWorker>();
             services.AddHostedService<ReSendErrorMessageWorker>();
             services.AddHostedService<NexGoalAutoJobWorker>();
@@ -93,6 +93,7 @@
             services.AddHostedService<LumiRemindBirthdayAndFirstWorkingdayWorker>();
             services.AddHostedService<LumiRemindMissingCheckInCheckOutWorker>();
             services.AddHostedService<LumiRemindReachedWorkingTimeWorker>();
+            services.AddHostedService<LumiRemindVegetarianMealWorker>();
             services.AddHostedService<LumiImportDataFromBioStarWorker>();
             services.AddHostedService<LumiSendScheduledMessageWorker>();
             services.AddHostedService<LumiViolateDisciplineWarningWorker>();

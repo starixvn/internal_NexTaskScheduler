@@ -21,7 +21,5 @@
         public bool IsAuth { get; set; }
 
         public string AuthRequestUrl { get; set; }
-
-        public bool IsRunWhenStartApp { get; set; }
     }
 }
