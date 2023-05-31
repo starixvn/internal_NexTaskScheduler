@@ -16,6 +16,8 @@
 
         public const string RemindMissingCheckInCheckOut = "RemindMissingCheckInCheckOut";
 
+        public const string ReminderLateInEarlyOutMoreThanSixtyMinute = "ReminderLateInEarlyOutMoreThanSixtyMinute";
+
         public const string RemindReachedWorkingTime = "RemindReachedWorkingTime";
 
         public const string ImportDataFromBioStar = "ImportDataFromBioStar";

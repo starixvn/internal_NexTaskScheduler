@@ -73,6 +73,7 @@
             services.AddHostedService<LateInEarlyOutViolateOnMonthWarningWorker>();
             services.AddHostedService<RemindBirthdayAndFirstWorkingdayWorker>();
             services.AddHostedService<RemindMissingCheckInCheckOutWorker>();
+            services.AddHostedService<ReminderLateInEarlyOutMoreThanSixtyMinuteWorker>();
             services.AddHostedService<RemindReachedWorkingTimeWorker>();
             services.AddHostedService<ImportDataFromBioStarWorker>();
             services.AddHostedService<SendScheduledMessageWorker>();
