@@ -1,4 +1,4 @@
-FROM hub.nexdev.net/base/dotnet/core/sdk:5.0.102-ca-patch-buster-slim AS builder
+FROM hub.nexdev.net/base/dotnet/core/sdk:6.0-alpine AS builder
 
 WORKDIR /src
 
@@ -13,7 +13,7 @@ WORKDIR "/src/NexTaskScheduler.Jobs"
 
 RUN dotnet publish -r linux-x64 --self-contained false -o /app
 
-FROM hub.nexdev.net/base/dotnet/core/aspnet:5.0-buster-slim AS base
+FROM hub.nexdev.net/base/dotnet/core/aspnet:6.0-alpine AS base
 
 WORKDIR /app
 COPY --from=builder /app .
