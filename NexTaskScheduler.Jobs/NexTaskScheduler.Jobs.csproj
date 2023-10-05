@@ -14,4 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\NexTaskSheduler.Core\NexTaskScheduler.Core.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1nexaws_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>
