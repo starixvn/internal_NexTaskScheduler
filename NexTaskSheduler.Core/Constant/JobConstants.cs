@@ -38,6 +38,8 @@
 
         public const string LumiDeductLateInEarlyOutAlert = "LumiDeductLateInEarlyOutAlert";
 
+        public const string LumiLateInEarlyOutAutoDeduct = "LumiLateInEarlyOutAutoDeduct";
+
         public const string LumiLateInEarlyOutViolateOnMonthWarning = "LumiLateInEarlyOutViolateOnMonthWarning";
 
         public const string LumiRemindBirthdayAndFirstWorkingday = "LumiRemindBirthdayAndFirstWorkingday";

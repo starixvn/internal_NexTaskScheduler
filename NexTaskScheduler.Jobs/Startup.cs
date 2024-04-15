@@ -1,5 +1,6 @@
 ﻿namespace NexTaskScheduler.Jobs
 {
+    using System.Collections.Generic;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -9,7 +10,6 @@
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Jobs.Middleware;
     using NexTaskScheduler.Jobs.Workers;
-    using System.Collections.Generic;
 
     public class Startup
     {
@@ -99,6 +99,7 @@
             services.AddHostedService<LumiSendScheduledMessageWorker>();
             services.AddHostedService<LumiViolateDisciplineWarningWorker>();
             services.AddHostedService<LuminetSkypeAccountAutoMappingWorker>();
+            services.AddHostedService<LumiDeductLateInEarlyOutWorker>();
         }
     }
 }
