@@ -20,6 +20,8 @@
 
         public const string RemindReachedWorkingTime = "RemindReachedWorkingTime";
 
+        public const string NotifyEmployeeCheckOut = "NotifyEmployeeCheckOut";
+
         public const string ImportDataFromBioStar = "ImportDataFromBioStar";
 
         public const string SendScheduledMessage = "SendScheduledMessage";
@@ -47,6 +49,8 @@
         public const string LumiRemindMissingCheckInCheckOut = "LumiRemindMissingCheckInCheckOut";
 
         public const string LumiRemindReachedWorkingTime = "LumiRemindReachedWorkingTime";
+
+        public const string LumiNotifyEmployeeCheckOut = "LumiNotifyEmployeeCheckOut";
 
         public const string LumiImportDataFromBioStar = "LumiImportDataFromBioStar";
 
