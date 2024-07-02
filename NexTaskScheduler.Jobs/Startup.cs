@@ -84,6 +84,8 @@
             services.AddHostedService<SkypeAccountAutomapWorker>();
             services.AddHostedService<LateInEarlyOutAutoDeductWorker>();
             services.AddHostedService<NotifyEmployeeCheckoutWorker>();
+            services.AddHostedService<NotifyEmployeeCheckinWorker>();
+            services.AddHostedService<RemindProcessPendingRequestWorker>();
         }
 
         private static void AddLumiWorker(IServiceCollection services)
@@ -102,6 +104,8 @@
             services.AddHostedService<LuminetSkypeAccountAutoMappingWorker>();
             services.AddHostedService<LumiDeductLateInEarlyOutWorker>();
             services.AddHostedService<LumiNotifyEmployeeCheckoutWorker>();
+            services.AddHostedService<LumiNotifyEmployeeCheckinWorker>();
+            services.AddHostedService<LumiRemindProcessPendingRequestWorker>();
         }
     }
 }

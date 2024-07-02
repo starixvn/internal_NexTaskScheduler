@@ -65,5 +65,13 @@
         public const string LuminetSkypeAccountAutoMapping = "LuminetSkypeAccountAutoMapping";
 
         public const string LateInEarlyOutAutoDeduct = "LateInEarlyOutAutoDeduct";
+
+        public const string RemindProcessRequestPendingLongTime = "RemindProcessRequestPendingLongTime";
+
+        public const string LumiRemindProcessRequestPendingLongTime = "LumiRemindProcessRequestPendingLongTime";
+
+        public const string NotifyEmployeeCheckIn = "NotifyEmployeeCheckIn";
+
+        public const string LumiNotifyEmployeeCheckIn = "LumiNotifyEmployeeCheckIn";
     }
 }
