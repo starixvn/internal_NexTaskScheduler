@@ -21,5 +21,7 @@
         public bool IsAuth { get; set; }
 
         public string AuthRequestUrl { get; set; }
+
+        public bool IsRunAtWeekend { get; set; }
     }
 }

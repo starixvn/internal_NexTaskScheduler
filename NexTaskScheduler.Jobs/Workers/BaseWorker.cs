@@ -98,7 +98,7 @@
         private bool IsJobReadyToRun()
         {
             bool isReady;
-            if (!jobSetting.IsEnabled)
+            if (!jobSetting.IsEnabled || (!jobSetting.IsRunAtWeekend && IsWeekendToday()))
             {
                 isReady = false;
             }
@@ -118,6 +118,8 @@
 
             return isReady;
         }
+
+        private static bool IsWeekendToday() => DateTime.Now.DayOfWeek == DayOfWeek.Saturday || DateTime.Now.DayOfWeek == DayOfWeek.Sunday;
 
         private bool IsValidTimeRun()
         {
