@@ -73,5 +73,7 @@
         public const string NotifyEmployeeCheckIn = "NotifyEmployeeCheckIn";
 
         public const string LumiNotifyEmployeeCheckIn = "LumiNotifyEmployeeCheckIn";
+
+        public const string RemoveOldMessageLogAndSystemLog = "RemoveOldMessageLogAndSystemLog";
     }
 }

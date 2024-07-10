@@ -10,6 +10,7 @@
     using NexTaskScheduler.Core.Models;
     using NexTaskScheduler.Jobs.Middleware;
     using NexTaskScheduler.Jobs.Workers;
+    using NexTaskScheduler.Jobs.Workers.NexBot;
 
     public class Startup
     {
@@ -66,6 +67,9 @@
 
         private static void AddWorker(IServiceCollection services)
         {
+            services.AddHostedService<ReSendErrorMessageWorker>();
+            services.AddHostedService<RemoveOldMessageLogAndSystemLogWorker>();
+
             services.AddHostedService<NewBioDeviceAlertWorker>();
             services.AddHostedService<BioTimeChangeAlertWorker>();
             services.AddHostedService<FingerprintAndCardVerifyAlertWorker>();
@@ -79,7 +83,6 @@
             services.AddHostedService<SendScheduledMessageWorker>();
             services.AddHostedService<RemindVegetarianMealWorker>();
             services.AddHostedService<ViolateDisciplineWarningWorker>();
-            services.AddHostedService<ReSendErrorMessageWorker>();
             services.AddHostedService<NexGoalAutoJobWorker>();
             services.AddHostedService<SkypeAccountAutomapWorker>();
             services.AddHostedService<LateInEarlyOutAutoDeductWorker>();
