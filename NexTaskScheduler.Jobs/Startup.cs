@@ -94,7 +94,6 @@
         private static void AddLumiWorker(IServiceCollection services)
         {
             services.AddHostedService<LumiGoalAutoJobWorker>();
-            services.AddHostedService<LumiFingerprintAndCardVerifyAlertWorker>();
             services.AddHostedService<LumiDeductLateInEarlyOutAlertWorker>();
             services.AddHostedService<LumiLateInEarlyOutViolateOnMonthWarningWorker>();
             services.AddHostedService<LumiRemindBirthdayAndFirstWorkingdayWorker>();
@@ -102,7 +101,6 @@
             services.AddHostedService<LumiRemindReachedWorkingTimeWorker>();
             services.AddHostedService<LumiRemindVegetarianMealWorker>();
             services.AddHostedService<LumiImportDataFromBioStarWorker>();
-            services.AddHostedService<LumiSendScheduledMessageWorker>();
             services.AddHostedService<LumiViolateDisciplineWarningWorker>();
             services.AddHostedService<LuminetSkypeAccountAutoMappingWorker>();
             services.AddHostedService<LumiDeductLateInEarlyOutWorker>();
