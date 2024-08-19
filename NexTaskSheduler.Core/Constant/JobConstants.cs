@@ -36,8 +36,6 @@
 
         public const string LumiGoalAutoJob = "LumiGoalAutoJob";
 
-        public const string LumiFingerprintAndCardVerifyAlert = "LumiFingerprintAndCardVerifyAlert";
-
         public const string LumiDeductLateInEarlyOutAlert = "LumiDeductLateInEarlyOutAlert";
 
         public const string LumiLateInEarlyOutAutoDeduct = "LumiLateInEarlyOutAutoDeduct";
@@ -53,8 +51,6 @@
         public const string LumiNotifyEmployeeCheckOut = "LumiNotifyEmployeeCheckOut";
 
         public const string LumiImportDataFromBioStar = "LumiImportDataFromBioStar";
-
-        public const string LumiSendScheduledMessage = "LumiSendScheduledMessage";
 
         public const string LumiRemindVegetarianMeal = "LumiRemindVegetarianMeal";
 
