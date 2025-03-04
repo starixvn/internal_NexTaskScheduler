@@ -89,6 +89,7 @@
             services.AddHostedService<NotifyEmployeeCheckoutWorker>();
             services.AddHostedService<NotifyEmployeeCheckinWorker>();
             services.AddHostedService<RemindProcessPendingRequestWorker>();
+            services.AddHostedService<LogTimeRemindWorker>();
         }
 
         private static void AddLumiWorker(IServiceCollection services)

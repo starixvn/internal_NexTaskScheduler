@@ -71,5 +71,7 @@
         public const string LumiNotifyEmployeeCheckIn = "LumiNotifyEmployeeCheckIn";
 
         public const string RemoveOldMessageLogAndSystemLog = "RemoveOldMessageLogAndSystemLog";
+
+        public const string LogTimeRemindWorker = "LogTimeRemindWorker";
     }
 }
