@@ -34,6 +34,18 @@
 
         public const string NexGoalAutoJob = "NexGoalAutoJob";
 
+        public const string RemoveOldMessageLogAndSystemLog = "RemoveOldMessageLogAndSystemLog";
+
+        public const string LogTimeRemindWorker = "LogTimeRemindWorker";
+
+        public const string NotifyEmployeeCheckIn = "NotifyEmployeeCheckIn";
+
+        public const string LateInEarlyOutAutoDeduct = "LateInEarlyOutAutoDeduct";
+
+        public const string RemindProcessRequestPendingLongTime = "RemindProcessRequestPendingLongTime";
+
+        public const string SkypeAccountAutoMapping = "SkypeAccountAutoMapping";
+
         public const string LumiGoalAutoJob = "LumiGoalAutoJob";
 
         public const string LumiDeductLateInEarlyOutAlert = "LumiDeductLateInEarlyOutAlert";
@@ -56,22 +68,38 @@
 
         public const string LumiViolateDisciplineWarning = "LumiViolateDisciplineWarning";
 
-        public const string SkypeAccountAutoMapping = "SkypeAccountAutoMapping";
-
         public const string LuminetSkypeAccountAutoMapping = "LuminetSkypeAccountAutoMapping";
-
-        public const string LateInEarlyOutAutoDeduct = "LateInEarlyOutAutoDeduct";
-
-        public const string RemindProcessRequestPendingLongTime = "RemindProcessRequestPendingLongTime";
 
         public const string LumiRemindProcessRequestPendingLongTime = "LumiRemindProcessRequestPendingLongTime";
 
-        public const string NotifyEmployeeCheckIn = "NotifyEmployeeCheckIn";
-
         public const string LumiNotifyEmployeeCheckIn = "LumiNotifyEmployeeCheckIn";
 
-        public const string RemoveOldMessageLogAndSystemLog = "RemoveOldMessageLogAndSystemLog";
+        public const string NexVisionGoalAutoJob = "NexVisionGoalAutoJob";
 
-        public const string LogTimeRemindWorker = "LogTimeRemindWorker";
+        public const string NexVisionDeductLateInEarlyOutAlert = "NexVisionDeductLateInEarlyOutAlert";
+
+        public const string NexVisionLateInEarlyOutAutoDeduct = "NexVisionLateInEarlyOutAutoDeduct";
+
+        public const string NexVisionLateInEarlyOutViolateOnMonthWarning = "NexVisionLateInEarlyOutViolateOnMonthWarning";
+
+        public const string NexVisionRemindBirthdayAndFirstWorkingday = "NexVisionRemindBirthdayAndFirstWorkingday";
+
+        public const string NexVisionRemindMissingCheckInCheckOut = "NexVisionRemindMissingCheckInCheckOut";
+
+        public const string NexVisionRemindReachedWorkingTime = "NexVisionRemindReachedWorkingTime";
+
+        public const string NexVisionNotifyEmployeeCheckOut = "NexVisionNotifyEmployeeCheckOut";
+
+        public const string NexVisionImportDataFromBioStar = "NexVisionImportDataFromBioStar";
+
+        public const string NexVisionRemindVegetarianMeal = "NexVisionRemindVegetarianMeal";
+
+        public const string NexVisionViolateDisciplineWarning = "NexVisionViolateDisciplineWarning";
+
+        public const string NexVisionSkypeAccountAutoMapping = "NexVisionSkypeAccountAutoMapping";
+
+        public const string NexVisionRemindProcessRequestPendingLongTime = "NexVisionRemindProcessRequestPendingLongTime";
+
+        public const string NexVisionNotifyEmployeeCheckIn = "NexVisionNotifyEmployeeCheckIn";
     }
 }
