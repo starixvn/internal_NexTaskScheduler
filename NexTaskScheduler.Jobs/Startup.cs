@@ -11,6 +11,7 @@
     using NexTaskScheduler.Jobs.Middleware;
     using NexTaskScheduler.Jobs.Workers;
     using NexTaskScheduler.Jobs.Workers.NexBot;
+    using NexTaskScheduler.Jobs.Workers.NexVision;
 
     public class Startup
     {
@@ -30,6 +31,7 @@
 
             AddWorker(services);
             AddLumiWorker(services);
+            AddNexVisionWorker(services);
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -108,6 +110,24 @@
             services.AddHostedService<LumiNotifyEmployeeCheckoutWorker>();
             services.AddHostedService<LumiNotifyEmployeeCheckinWorker>();
             services.AddHostedService<LumiRemindProcessPendingRequestWorker>();
+        }
+
+        private static void AddNexVisionWorker(IServiceCollection services)
+        {
+            services.AddHostedService<NexVisionGoalAutoJobWorker>();
+            services.AddHostedService<NexVisionDeductLateInEarlyOutAlertWorker>();
+            services.AddHostedService<NexVisionLateInEarlyOutViolateOnMonthWarningWorker>();
+            services.AddHostedService<NexVisionRemindBirthdayAndFirstWorkingdayWorker>();
+            services.AddHostedService<NexVisionRemindMissingCheckInCheckOutWorker>();
+            services.AddHostedService<NexVisionRemindReachedWorkingTimeWorker>();
+            services.AddHostedService<NexVisionRemindVegetarianMealWorker>();
+            services.AddHostedService<NexVisionImportDataFromBioStarWorker>();
+            services.AddHostedService<NexVisionViolateDisciplineWarningWorker>();
+            services.AddHostedService<NexVisionSkypeAccountAutoMappingWorker>();
+            services.AddHostedService<NexVisionDeductLateInEarlyOutWorker>();
+            services.AddHostedService<NexVisionNotifyEmployeeCheckoutWorker>();
+            services.AddHostedService<NexVisionNotifyEmployeeCheckinWorker>();
+            services.AddHostedService<NexVisionRemindProcessPendingRequestWorker>();
         }
     }
 }
