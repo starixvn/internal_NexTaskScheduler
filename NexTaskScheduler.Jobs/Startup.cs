@@ -111,6 +111,7 @@
             services.AddHostedService<LumiNotifyEmployeeCheckoutWorker>();
             services.AddHostedService<LumiNotifyEmployeeCheckinWorker>();
             services.AddHostedService<LumiRemindProcessPendingRequestWorker>();
+            services.AddHostedService<LumiRemindCancelMealWorker>();
         }
 
         private static void AddNexVisionWorker(IServiceCollection services)
