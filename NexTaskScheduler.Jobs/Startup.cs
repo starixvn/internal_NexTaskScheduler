@@ -92,6 +92,7 @@
             services.AddHostedService<NotifyEmployeeCheckinWorker>();
             services.AddHostedService<RemindProcessPendingRequestWorker>();
             services.AddHostedService<LogTimeRemindWorker>();
+            services.AddHostedService<RemindCancelMealWorker>();
         }
 
         private static void AddLumiWorker(IServiceCollection services)
