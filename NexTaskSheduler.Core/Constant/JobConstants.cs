@@ -101,5 +101,9 @@
         public const string NexVisionRemindProcessRequestPendingLongTime = "NexVisionRemindProcessRequestPendingLongTime";
 
         public const string NexVisionNotifyEmployeeCheckIn = "NexVisionNotifyEmployeeCheckIn";
+
+        public const string RemindCancelMeal = "RemindCancelMeal";
+
+        public const string LumiRemindCancelMeal = "LumiRemindCancelMeal";
     }
 }
