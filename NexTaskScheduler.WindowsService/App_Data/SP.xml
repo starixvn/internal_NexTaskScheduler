@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Functions>
-  <Function Name="NexHangfire">
-    <Setting Key="NexHangfire_WriteLog" SpName="NexHangfire_WriteLog" DbName="hangfire" Plain="0"></Setting>
-  </Function>
-</Functions>
