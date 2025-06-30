@@ -32,8 +32,6 @@
 
         public const string ReSendErrorMessage = "ReSendErrorMessage";
 
-        public const string NexGoalAutoJob = "NexGoalAutoJob";
-
         public const string RemoveOldMessageLogAndSystemLog = "RemoveOldMessageLogAndSystemLog";
 
         public const string LogTimeRemindWorker = "LogTimeRemindWorker";
@@ -45,8 +43,6 @@
         public const string RemindProcessRequestPendingLongTime = "RemindProcessRequestPendingLongTime";
 
         public const string SkypeAccountAutoMapping = "SkypeAccountAutoMapping";
-
-        public const string LumiGoalAutoJob = "LumiGoalAutoJob";
 
         public const string LumiDeductLateInEarlyOutAlert = "LumiDeductLateInEarlyOutAlert";
 
@@ -73,8 +69,6 @@
         public const string LumiRemindProcessRequestPendingLongTime = "LumiRemindProcessRequestPendingLongTime";
 
         public const string LumiNotifyEmployeeCheckIn = "LumiNotifyEmployeeCheckIn";
-
-        public const string NexVisionGoalAutoJob = "NexVisionGoalAutoJob";
 
         public const string NexVisionDeductLateInEarlyOutAlert = "NexVisionDeductLateInEarlyOutAlert";
 
