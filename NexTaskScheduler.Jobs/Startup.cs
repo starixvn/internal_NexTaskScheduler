@@ -85,7 +85,6 @@
             services.AddHostedService<SendScheduledMessageWorker>();
             services.AddHostedService<RemindVegetarianMealWorker>();
             services.AddHostedService<ViolateDisciplineWarningWorker>();
-            services.AddHostedService<NexGoalAutoJobWorker>();
             services.AddHostedService<SkypeAccountAutomapWorker>();
             services.AddHostedService<LateInEarlyOutAutoDeductWorker>();
             services.AddHostedService<NotifyEmployeeCheckoutWorker>();
@@ -97,7 +96,6 @@
 
         private static void AddLumiWorker(IServiceCollection services)
         {
-            services.AddHostedService<LumiGoalAutoJobWorker>();
             services.AddHostedService<LumiDeductLateInEarlyOutAlertWorker>();
             services.AddHostedService<LumiLateInEarlyOutViolateOnMonthWarningWorker>();
             services.AddHostedService<LumiRemindBirthdayAndFirstWorkingdayWorker>();
@@ -116,7 +114,6 @@
 
         private static void AddNexVisionWorker(IServiceCollection services)
         {
-            services.AddHostedService<NexVisionGoalAutoJobWorker>();
             services.AddHostedService<NexVisionDeductLateInEarlyOutAlertWorker>();
             services.AddHostedService<NexVisionLateInEarlyOutViolateOnMonthWarningWorker>();
             services.AddHostedService<NexVisionRemindBirthdayAndFirstWorkingdayWorker>();
